@@ -36,28 +36,6 @@ describe("aparências sorteadas", () => {
     expect(tingir(A, [1, 0, 2], "#5e3a26")).toBe(A); // máscara de outra malha: não tinge
   });
 
-  it("2026-11-06: a cor nova mantém a profundidade (sombra mais escura, rosado mais vermelho, mecha clara)", () => {
-    // pele: meio, sombra, rosado; cabelo: meio, mecha clara
-    const cores = [
-      [200, 140, 110],
-      [140, 90, 70],
-      [210, 125, 110],
-      [120, 80, 50],
-      [170, 125, 80],
-    ];
-    const P = new Float32Array(cores.length * 9),
-      I = Uint16Array.from({ length: cores.length * 3 }, (_, i) => i),
-      C = new Float32Array(cores.flat().map((v) => v / 255));
-    const A = { P, I, C } as unknown as Parameters<typeof tingir>[0];
-    const B = tingir(A, [1, 1, 1, 2, 2], "#5e3a26", "#1f1a18");
-    const rgb = (t: number) => [0, 1, 2].map((e) => B.C[t * 3 + e] * 255);
-    const luz = (c: number[]) => 0.3 * c[0] + 0.59 * c[1] + 0.11 * c[2];
-    expect(luz(rgb(1))).toBeLessThan(luz(rgb(0)) - 8); // a sombra continua sombra
-    expect(rgb(2)[0] - rgb(2)[1]).toBeGreaterThan(rgb(0)[0] - rgb(0)[1] + 4); // o rosado continua mais vermelho
-    expect(luz(rgb(4))).toBeGreaterThan(luz(rgb(3)) + 6); // a mecha clara aparece no cabelo preto
-    expect(new Set([0, 1, 2].map((t) => rgb(t).map(Math.round).join())).size).toBe(3); // nada de pele chapada
-  });
-
   it("v8.1: aplica pele e cabelo sobre textura sem apagar a pintura", () => {
     const A = {
       I: new Uint16Array([0, 1, 2, 3, 4, 5, 6, 7, 8]),
@@ -104,7 +82,7 @@ describe("aparências sorteadas", () => {
       ...DADOS,
       corpos: DADOS.corpos!.map((c, i) => ({ ...c, peso: i === 2 ? 1000 : 0 })),
     };
-    const corpos = dados.corpos.filter((c) => (c.sexo ?? "f") === "f" && !c.nome.startsWith("deusa_")),
+    const corpos = dados.corpos.filter((c) => (c.sexo ?? "f") === "f"),
       cabecas = ["propria", ...dados.cabecas!.filter((c) => (c.sexo ?? "f") === "f").map((c) => c.nome)];
     const anteriores = ED.dados.aparencias;
     ED.dados.aparencias = { [corpos[0].nome + "|propria"]: "ruim" };
@@ -126,7 +104,7 @@ describe("aparências sorteadas", () => {
     }
   });
 
-  it("sorteia cabeças e corpos femininos, incluindo heroína e líder e sem corpo de deusa, sem dominar uma cabeça", () => {
+  it("sorteia todas as cabeças e corpos femininos, incluindo heroína e líder, sem dominar uma cabeça", () => {
     let s = 7;
     const rnd = () => ((s = (s * 16807) % 2147483647) - 1) / 2147483646;
     const corpos = new Map<string, number>(),
@@ -137,15 +115,13 @@ describe("aparências sorteadas", () => {
       cabecas.set(a.cabeca, (cabecas.get(a.cabeca) ?? 0) + 1);
     }
     expect([...corpos.keys()].sort()).toEqual(
-      DADOS.corpos!.filter((c) => (c.sexo ?? "f") === "f" && !c.nome.startsWith("deusa_"))
+      DADOS.corpos!.filter((c) => (c.sexo ?? "f") === "f")
         .map((c) => c.nome)
         .sort(),
     );
     expect([...corpos.keys()]).toContain("heroina");
     expect([...corpos.keys()]).toContain("lider");
     expect([...corpos.keys()].some((n) => n.startsWith("corpo_m"))).toBe(false);
-    expect([...corpos.keys()].some((n) => n.startsWith("deusa_"))).toBe(false);
-    expect(aparenciaRecrutavel({ corpo: "deusa_verao", cabeca: "propria" }, DADOS)).toBe(false);
     // Personagens recrutadas usam cabeças femininas; cabeças masculinas não entram no sorteio.
     expect(
       [...cabecas.keys()].some((n) => {

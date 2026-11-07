@@ -16,6 +16,7 @@ export default tseslint.config(
       "tests/browser/tools/sim/bot.js",
       "tests/browser/resultados/",
       "assets/",
+      "backups/",
     ],
   },
   js.configs.recommended,

@@ -365,12 +365,9 @@ export function folDrain(m: Monster, n: number) {
     const reserva = reservaInimigo(m),
       etapa = Math.min(3, Math.max(0, Math.ceil((1 - reserva) / EXAUSTAO.perdaInterna) - 1));
     if (reserva <= 0) m.exaustoFolego = true;
-    if (m.fugaFolego! > 0) return;
-    // Quebra sem queda: a próxima barra já vem cheia (mantenedor, 2026-11-06: cada quebra custa o mesmo esforço).
-    if (m.protecaoFolego! > 0) m.fol = folCap(m);
-    else if (Math.random() < EXAUSTAO.chanceQueda[etapa]) folKO(m);
-    else if (reserva > 0) m.fol = folCap(m);
-    else {
+    if (m.protecaoFolego! > 0 || m.fugaFolego! > 0) return;
+    if (Math.random() < EXAUSTAO.chanceQueda[etapa]) folKO(m);
+    else if (reserva <= 0) {
       m.fugaFolego = EXAUSTAO.fuga.duracao;
       m.st = "flee";
       m.humanoGuardT = 0;

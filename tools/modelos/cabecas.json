@@ -9,191 +9,87 @@
   "escala": 1.6,
   "triangulos": 18000,
   "separar": [
-    {
-      "nome": "loira_trancas",
-      "malhas": [
-        2,
-        12
-      ],
-      "refinar": 7000,
-      "textura": 512
-    },
-    {
-      "nome": "ruiva_rabo",
-      "malhas": [
-        1
-      ],
-      "refinar": 7000,
-      "textura": 512
-    },
-    {
-      "nome": "morena_argolas",
-      "malhas": [
-        3
-      ],
-      "refinar": 7000,
-      "textura": 512
-    },
-    {
-      "nome": "acobreada_coque",
-      "malhas": [
-        6
-      ],
-      "refinar": 7000,
-      "textura": 512
-    },
+    { "nome": "loira_trancas", "malhas": [2, 12], "refinar": 3000, "textura": 512 },
+    { "nome": "ruiva_rabo", "malhas": [1], "refinar": 3000 },
+    { "nome": "morena_argolas", "malhas": [3], "refinar": 3000 },
+    { "nome": "acobreada_coque", "malhas": [6], "refinar": 3000 },
     {
       "nome": "marinho_coque",
-      "malhas": [
-        9
-      ],
-      "refinar": 7000,
+      "malhas": [9],
+      "refinar": 3000,
       "olhos": [
-        [
-          572,
-          438
-        ],
-        [
-          606,
-          438
-        ]
+        [572, 438],
+        [606, 438]
       ],
       "queixo": 0.31,
-      "nuca": 4,
-      "textura": 512
+      "nuca": 4
     },
     {
       "nome": "rosa",
-      "malhas": [
-        8
-      ],
-      "refinar": 7000,
+      "malhas": [8],
+      "refinar": 3000,
       "olhos": [
-        [
-          686,
-          437
-        ],
-        [
-          723,
-          434
-        ]
-      ],
-      "textura": 512
+        [686, 437],
+        [723, 434]
+      ]
     },
     {
       "nome": "verde_trancas",
-      "malhas": [
-        10
-      ],
-      "refinar": 7000,
+      "malhas": [10],
+      "refinar": 3000,
       "olhos": [
-        [
-          807,
-          436
-        ],
-        [
-          843,
-          435
-        ]
-      ],
-      "textura": 512
+        [807, 436],
+        [843, 435]
+      ]
     },
     {
       "nome": "morena_tiara",
-      "malhas": [
-        0
-      ],
-      "refinar": 7000,
+      "malhas": [0],
+      "refinar": 3000,
       "olhos": [
-        [
-          926,
-          431
-        ],
-        [
-          962,
-          431
-        ]
-      ],
-      "textura": 512
+        [926, 431],
+        [962, 431]
+      ]
     },
     {
       "nome": "barbudo",
-      "malhas": [
-        7
-      ],
+      "malhas": [7],
       "refinar": 3000,
       "olhos": [
-        [
-          265,
-          613
-        ],
-        [
-          296,
-          613
-        ]
+        [265, 613],
+        [296, 613]
       ]
     },
     {
       "nome": "anao_ruivo",
-      "malhas": [
-        5
-      ],
+      "malhas": [5],
       "refinar": 3000,
       "olhos": [
-        [
-          412,
-          606
-        ],
-        [
-          445,
-          606
-        ]
+        [412, 606],
+        [445, 606]
       ]
     },
     {
       "nome": "velho_grisalho",
-      "malhas": [
-        4
-      ],
+      "malhas": [4],
       "refinar": 3000,
       "olhos": [
-        [
-          567,
-          608
-        ],
-        [
-          599,
-          608
-        ]
+        [567, 608],
+        [599, 608]
       ],
       "nuca": 0.3
     },
     {
       "nome": "careca_cicatriz",
-      "malhas": [
-        11
-      ],
+      "malhas": [11],
       "refinar": 3000,
       "olhos": [
-        [
-          723,
-          611
-        ],
-        [
-          757,
-          611
-        ],
-        [
-          728,
-          590
-        ],
-        [
-          766,
-          628
-        ]
+        [723, 611],
+        [757, 611],
+        [728, 590],
+        [766, 628]
       ]
     }
   ],
-  "pasta": "build/modelos/cabecas",
-  "denso": 70000
+  "pasta": "build/modelos/cabecas"
 }

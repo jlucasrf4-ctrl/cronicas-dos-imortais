@@ -35,7 +35,7 @@ import { GEMS, GEM_VAR, STONES } from "../data/arte.ts";
 import { NODES } from "../data/arvores.ts";
 import { PROFS, STAT } from "../data/atributos.ts";
 import { AVE, CAMPO_VIDA, CRIT_SP } from "../data/campo.ts";
-import { ARCO_BASICO, ARREMESSO, CRAV2, DANO, FACA2, LACO, WPN } from "../data/combate.ts";
+import { ARREMESSO, CRAV2, DANO, FACA2, LACO, WPN } from "../data/combate.ts";
 import { BAG_LV, CITIES } from "../data/economia.ts";
 import { EQ_BASE, ORE_TABLE } from "../data/equipamento.ts";
 import { BOAR, SPECIES } from "../data/especies.ts";
@@ -113,7 +113,6 @@ import {
   toggleInv,
   tryAddItem,
   tryAddToInv,
-  anelAlcance,
 } from "../field/chao.ts";
 import { applyBleed, applyStun, hurtPlayer, bleedTick } from "../field/combate.ts";
 import { DMG, aplicarDano, armorRes, ensureFol, folCap, mixOfKey, monProf, plateMult } from "../field/dano.ts";
@@ -814,8 +813,6 @@ export function instalarGancho() {
     vestidoPorNome,
     glRetratoVivo,
     renderDungeonFrame,
-    anelAlcance, // 2026-11-06: o alcance do Alt (field/chao.ts)
-    ARCO_BASICO, // v8.1: a puxada do básico do arco (data/combate.ts)
     commandMode: SEL.commandMode,
     SEL, // v7.7: seleção do mapa (SEL.grupo)
     CACADA, // v7.7: fluxo de caça (map/cacada.ts)

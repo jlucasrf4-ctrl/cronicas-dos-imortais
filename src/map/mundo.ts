@@ -12,7 +12,7 @@
 import { dungeon, world, TELAS } from "../core/state.ts";
 import { JOGO } from "../ui/modos.ts";
 import { snapToLand, spawnAnimal, killAnimal } from "../sim/animais.ts";
-import { aguaEm, foraDaMontanha, montanhaEm } from "./terreno.ts";
+import { aguaEm } from "./terreno.ts";
 import { D3 } from "../field/projecao.ts";
 import { critSpawn, loboNeutro } from "../field/campo_vida.ts";
 import { spawnJavalino } from "../creatures/javali.ts";
@@ -55,7 +55,7 @@ export function mundoEntrar(h: Hero) {
   d.rows = MUNDO.vista.rows * MUNDO.pedacos;
   const cx = (d.cols * T) / 2,
     cy = (d.rows * T) / 2,
-    P = foraDaMontanha((JOGO.pos || h).x, (JOGO.pos || h).y); // v8.1: nunca dentro do paredão
+    P = JOGO.pos || { x: h.x, y: h.y };
   // o canto alinhado à grade de casas do mundo (o chão e os blocos de cenário ficam no lugar ao deslizar)
   const ax = Math.round((P.x / MUNDO.escala - cx) / T) * T,
     ay = Math.round((P.y / MUNDO.escala - cy) / T) * T;
@@ -91,12 +91,9 @@ function aguaNoCampo(x: number, y: number) {
   return !!o && aguaEm(o.x + x * MUNDO.escala, o.y + y * MUNDO.escala);
 }
 
-/** Algo barra o ponto (x, y) do campo para um corpo de raio r: água, tronco ou (v8.1) o paredão da montanha — o
- *  contorno liso do mapa (map/terreno.ts), não os modelos, então não sobra fresta entre duas colinas. */
+/** Algo barra o ponto (x, y) do campo para um corpo de raio r: água ou tronco. */
 export function barrado(x: number, y: number, r: number) {
   if (aguaNoCampo(x, y)) return true;
-  const o = dungeon.origem!;
-  if (montanhaEm(o.x + x * MUNDO.escala, o.y + y * MUNDO.escala)) return true;
   const c = cantoCampo()!,
     ax = x + c.x,
     ay = y + c.y,

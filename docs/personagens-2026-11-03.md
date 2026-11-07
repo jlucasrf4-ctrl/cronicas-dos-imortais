@@ -1,7 +1,5 @@
 # Personagens — atualização de 03/11/2026
 
-**Atualização de 05/11/2026:** o mantenedor alterou o teto para cerca de 25 mil triângulos e pediu prioridade para os rostos. A revisão atual está em `docs/modelos-modulares-2026-11-05.md`; os números abaixo documentam a etapa de 03/11.
-
 Orçamento acordado: até 20 mil triângulos no personagem completo. A auditoria
 confere corpo, qualquer cabeça compatível, roupas misturadas, arma, escudo e arco.
 A reserva dos três equipamentos é 4.200 triângulos, medida nos modelos do jogo.

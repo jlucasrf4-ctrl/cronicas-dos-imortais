@@ -28,7 +28,7 @@ import {
 } from "./heroina_anim.ts";
 import { VESTIDO, vestirComoHeroi } from "./vestidos.ts";
 import { mochilaVivaQuadro, retratoPainelQuadro } from "../retrato.ts";
-import { malhaChao, anelChao, anelLinha, raioBrilho } from "./chao.ts";
+import { malhaChao, anelChao, raioBrilho } from "./chao.ts";
 import { fitDungeonCanvas } from "../../field/masmorra.ts";
 import { perfW, perfH, glShadowPass, perfFrame, perfPausedView } from "../desempenho.ts";
 import { M4 } from "./geometria.ts";
@@ -42,7 +42,7 @@ import { glFree, gcol, glMesh } from "./malhas.ts";
 import { mbCenario } from "./cenario.ts";
 import { aimAngle } from "../../field/acertos.ts";
 import { heroFaceAngle } from "../../field/combate.ts";
-import { addRing, anelAlcance } from "../../field/chao.ts";
+import { addRing } from "../../field/chao.ts";
 import { spearPoseOv, wpnMesh, armaCravadaMatriz } from "./armas.ts";
 import { spearTwoHand, armasGLPush, spearMode, wpnKey } from "../../field/armas.ts";
 import { TIERS } from "../../items/inventario.ts";
@@ -932,7 +932,7 @@ const NEVOA_DEUSA = {
   pontas: [21.5, 13],
   larguraPonta: 1.5,
   folga: 0.45,
-  alfa: 0.5, // 2026-11-06: era 0,75 (as voltas sobrepostas ficavam opacas e escondiam a personagem)
+  alfa: 0.75,
   borda: 0.35,
   giro: 0.25,
   onda: 0.15,
@@ -1098,11 +1098,8 @@ function glNevoaDeusa(VP: Mat4) {
   // pontas que caem na frente e atrás. Cada fita tem 4 fileiras (borda, miolo, miolo, borda): o miolo cobre, as bordas
   // esfumam.
   // presas às juntas da pose ao vivo (Spine2 no peito, Hips no quadril): sobem, descem e giram com o corpo
-  // Só cobrem o corpo da deusa (pele nua); com a cabeça de deusa num corpo vestido ficam só os véus soltos
-  // (mantenedor, 2026-11-06: a aura escondia a personagem).
-  const corpoDeusa = h.visual?.corpo.startsWith("deusa_") || /^deusa_(primavera|verao|outono|inverno)$/.test(roupa);
   const N = NEVOA_DEUSA,
-    corpo = corpoDeusa ? corpoDaHeroina() : null,
+    corpo = corpoDaHeroina(),
     peito = corpo && peleNaJunta("Spine2"),
     quadril = corpo && peleNaJunta("Hips"),
     naPele = (S: Float32Array, [x, y, z]: number[]): [number, number, number] => [
@@ -1140,7 +1137,7 @@ function glNevoaDeusa(VP: Mat4) {
           );
         }
   };
-  const V = corpo ? verticesDaHeroina() : null;
+  const V = verticesDaHeroina();
   let contQuadril: ContornoDeusa | null = null;
   for (const [e, en] of N.enrolar.entries()) {
     const [y0, y1, voltas, meia, folga] = en,
@@ -1208,7 +1205,7 @@ function glNevoaDeusa(VP: Mat4) {
           // Largura tangencial da faixa para parecer uma tira de fumaça, sem formar placas cheias.
           tx = -Math.sin(a) * width * lado,
           tz = Math.cos(a) * width * 0.58 * lado,
-          fade = Math.sin(Math.PI * u) * (0.25 + 0.12 * (0.5 + 0.5 * Math.sin(a * 2.4 + fita))), // 2026-11-06: era 0,33 + 0,15
+          fade = Math.sin(Math.PI * u) * (0.33 + 0.15 * (0.5 + 0.5 * Math.sin(a * 2.4 + fita))),
           brilho = 0.86 + 0.14 * Math.sin(a + fita);
         vert(ponto(x + tx, y + Math.sin(a * 1.4) * 0.35, z + tz), fade, brilho);
       }
@@ -1293,12 +1290,6 @@ export function glFrame() {
     foco = d.foco?.alive ? d.foco : null;
   if (alvo && alvo !== foco)
     glPush(anelChao(true), M4.ch(M4.T(alvo.x, 0, alvo.y), M4.S(15, 1, 15)), [1, 0.6, 0.24, 1], false);
-  // segurar Alt: o alcance do básico (e o do arco carregado, mais apagado), fino e discreto
-  const alc = anelAlcance();
-  if (alc) {
-    glPush(anelLinha(alc.basico), M4.T(d.px, 0, d.py), [0.94, 0.91, 0.87, 1], false);
-    if (alc.carregado) glPush(anelLinha(alc.carregado), M4.T(d.px, 0, d.py), [0.55, 0.52, 0.48, 1], false);
-  }
   if (foco) {
     const r = foco === alvo ? 17 : 15;
     glPush(

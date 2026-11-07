@@ -3,8 +3,6 @@
    MAPART.coast com "evenodd", como o mapa recorta a terra), floresta onde o mapa tem floresta (as MESMAS árvores que o
    mapa desenha no zoom máximo: mesmas células, mesmo hash e mesma regra de maGenSymbols em map/vetorial.ts), montanha
    e a cor do chão tirada da imagem de terra do mapa (MAPART.land). Tudo em unidades do mapa.
-   v8.1: o paredão da montanha (MONTANHA, montanhaEm) barra o caminho no mapa (map/navegacao.ts, sim/animais.ts) e no
-   campo (map/mundo.ts barrado); o campo o enche com os modelos do Tripo (render/gl/montanhas.ts).
    A máscara de terra é desenhada por blocos (TERRENO.bloco unidades, 1 px por unidade) e guardada; a imagem de terra
    vira pixels uma vez. Sem o mapa pronto (testes em Node, carga), é tudo terra sem floresta. */
 import { MAPART, maDens, WORLD_K } from "./vetorial.ts";
@@ -81,33 +79,6 @@ export function aguaEm(x: number, y: number) {
 /** Densidades do mapa no ponto: [floresta 0–255, núcleo de montanha (0 = fora), distância da costa]. */
 export function densEm(x: number, y: number) {
   return terrenoPronto() ? maDens(x, y) : [0, 0, 255];
-}
-
-/** v8.1 — montanha (mantenedor 2026-11-06: "não passa, contorna"). O canal G da densidade do mapa é a distância até
- *  a borda da área de montanha (~12 por casa do campo, até 252 no miolo). borda: onde a montanha começa (o pé, que se
- *  anda: pedras e morrotes soltos); parede: daí para dentro não se passa, nem no mapa nem no campo (4 casas da borda);
- *  saida: até onde quem estava dentro (save antigo) é levado para fora. */
-export const MONTANHA = { borda: 10, parede: 48, saida: 40 };
-
-/** O valor de montanha (canal G, 0 = fora) no ponto do mapa; 0 sem o mapa pronto. */
-export function montanhaG(x: number, y: number) {
-  return MAPART.dens ? maDens(x, y)[1] : 0;
-}
-/** v8.1 — o ponto do mapa está no paredão da montanha (não se anda). */
-export function montanhaEm(x: number, y: number) {
-  return montanhaG(x, y) >= MONTANHA.parede;
-}
-/** v8.1 — o ponto do mapa mais perto de (x, y) fora do paredão (no pé da montanha); o próprio ponto se já está fora. */
-export function foraDaMontanha(x: number, y: number) {
-  if (montanhaG(x, y) < MONTANHA.parede) return { x, y };
-  for (let r = 4; r <= 400; r += 4)
-    for (let q = 0; q < 24; q++) {
-      const a = (q / 24) * Math.PI * 2,
-        px = x + Math.cos(a) * r,
-        py = y + Math.sin(a) * r;
-      if (montanhaG(px, py) < MONTANHA.saida && !aguaEm(px, py)) return { x: px, y: py };
-    }
-  return { x, y };
 }
 
 /** Cor da terra do mapa no ponto (0–1), ou null sem o mapa. */

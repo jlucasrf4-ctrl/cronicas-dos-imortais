@@ -235,69 +235,6 @@
   text-align: right;
 }
 
-/* 2026-11-06 — rosto e cores do primeiro personagem (ui/criacao.ts escolhaAparencia) */
-#cr-escolha {
-  margin: 0 0 14px;
-  padding: 8px 12px 10px;
-  border-left: 3px solid var(--aff);
-  background: rgba(255, 235, 190, 0.05);
-  font-size: 0.84rem;
-  color: #eadbb6;
-}
-#cr-escolha .cr-linha {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 6px;
-}
-#cr-escolha .cr-linha > span {
-  width: 52px;
-  flex: none;
-  opacity: 0.8;
-}
-#cr-escolha #cr-cabeca {
-  min-width: 70px;
-  text-align: center;
-  font-weight: 600;
-}
-#cr-escolha .cr-seta {
-  width: 26px;
-  height: 26px;
-  padding: 0;
-  font-size: 11px;
-  color: inherit;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(241, 226, 189, 0.3);
-  border-radius: 50%;
-  cursor: pointer;
-}
-#cr-escolha .cr-seta:hover {
-  border-color: #ff8a3a;
-}
-#cr-escolha .cr-cores {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-#cr-escolha .cr-cor {
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 0 0 1px rgba(241, 226, 189, 0.25);
-}
-/* "original": a cor do próprio modelo, um círculo vazio cortado */
-#cr-escolha .cr-cor.orig {
-  background: linear-gradient(135deg, transparent 45%, rgba(241, 226, 189, 0.7) 45% 55%, transparent 55%), rgba(0, 0, 0, 0.3);
-}
-#cr-escolha .cr-cor.on {
-  box-shadow:
-    0 0 0 2px #1b140c,
-    0 0 0 3px #ffd27a;
-}
-
 /* tela estreita: palco em cima, palavras embaixo */
 @media (max-width: 720px) {
   #create-modal.scene #create-card {

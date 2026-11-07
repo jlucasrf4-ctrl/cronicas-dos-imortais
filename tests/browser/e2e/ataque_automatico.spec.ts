@@ -13,7 +13,6 @@ test("clique repete básicos no foco; pausa, alcance, especial e Esc são respei
   await campoDireto(jogo);
   const resultado = await jogo.js<{
     passos: number[];
-    ritmo: boolean;
     pausa: boolean;
     longe: boolean;
     especial: boolean;
@@ -34,13 +33,10 @@ test("clique repete básicos no foco; pausa, alcance, especial e Esc são respei
       button,pointerId:1,bubbles:true,clientX:r.left+x*r.width/(d.cols*d.tile),
       clientY:r.top+y*r.height/(d.rows*d.tile)
     }));
-    const pronto=()=>{d.px=440;d.py=300;d.cd=0;d.autoCd=0;d.hitStop=0;d.parryVis=0;d.noAtk=0;d.down=0;d.mouseC=null;};
+    const pronto=()=>{d.px=440;d.py=300;d.cd=0;d.hitStop=0;d.parryVis=0;d.noAtk=0;d.down=0;d.mouseC=null;};
     pronto(); evento('pointerdown',0,m.x,m.y); evento('pointerup',0,m.x,m.y);
     const passos=[];
     for(let i=0;i<3;i++){pronto();d.mouse={x:100,y:100};t.renderDungeonFrame(.016);passos.push(d.lastStep);}
-    // ritmo: depois de um básico, o próximo espera 1/ATAQUE_AUTO.porSeg s mesmo sem recarga do golpe
-    const ritmo0=d.autoCd, passo0=d.lastStepAt; d.cd=0; d.parryVis=0;
-    t.renderDungeonFrame(.016); const ritmo=ritmo0>0 && d.lastStepAt===passo0;
     pronto(); d.invOpen=true; const hp=m.hp; t.renderDungeonFrame(.016);
     const pausa=m.hp===hp && d.cd===0; d.invOpen=false;
     pronto(); m.x=700; t.renderDungeonFrame(.016); const longe=m.hp===hp && d.cd===0; m.x=460;
@@ -61,11 +57,10 @@ test("clique repete básicos no foco; pausa, alcance, especial e Esc são respei
     pronto();evento('pointerdown',0,m.x,m.y);evento('pointerup',0,m.x,m.y);
     const golpe=d.cd>0 && !!d.slash;pronto();d.slash=null;t.renderDungeonFrame(.016);
     const manual=golpe && !d.slash && d.cd===0 && !d.alvoAutomatico;
-    return {passos,ritmo,pausa,longe,especial,esc,clava:clava&&troca,manual,desligou};
+    return {passos,pausa,longe,especial,esc,clava:clava&&troca,manual,desligou};
   })()`);
   expect(resultado).toEqual({
     passos: [0, 1, 2],
-    ritmo: true,
     pausa: true,
     longe: true,
     especial: true,

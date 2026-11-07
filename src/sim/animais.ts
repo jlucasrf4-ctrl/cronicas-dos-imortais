@@ -5,7 +5,7 @@ import { world, econ, CACA } from "../core/state.ts";
 import { CONFIG, DEFLECT_ANGLES_DEG } from "../core/config.ts";
 import { seedWild, boarSeed } from "./fauna.ts";
 import { isWaterCell, findNearestWater } from "../map/agua.ts";
-import { aguaEm, montanhaEm, terrenoPronto } from "../map/terreno.ts";
+import { aguaEm, terrenoPronto } from "../map/terreno.ts";
 import {
   NAV,
   navIsHero,
@@ -146,7 +146,7 @@ function seedPopulationVez() {
       x = b.x + Math.random() * b.w;
       y = b.y + Math.random() * b.h;
       tries++;
-    } while ((isWaterCell(x, y) || montanhaEm(x, y)) && tries < 40); // v8.1: nem no paredão da montanha
+    } while (isWaterCell(x, y) && tries < 40);
     return { x, y };
   }
   for (let i = 0; i < 26; i++) {
@@ -250,16 +250,7 @@ export function moveStep(
   if (!avoidWater || !NAV.ready || !a) return moveStepBase.apply(this, arguments as Repasse);
   try {
     const m = mnt();
-    // v8.1: montada vai reto por qualquer terreno, menos pelo paredão da montanha (aí segue a rota)
-    if (
-      m &&
-      m.with &&
-      a.id === m.with &&
-      a.camp &&
-      a.state !== "idle" &&
-      a.state !== "indungeon" &&
-      !cruzaMontanha(a.x, a.y, tx, ty)
-    )
+    if (m && m.with && a.id === m.with && a.camp && a.state !== "idle" && a.state !== "indungeon")
       return moveStepBase.apply(this, arguments as Repasse);
   } catch (_) {}
   const dist = Math.hypot(tx - a.x, ty - a.y);
@@ -331,22 +322,11 @@ export function moveStep(
 function aguaFina(x: number, y: number) {
   return isWaterCell(x, y) || (terrenoPronto() && aguaEm(x, y));
 }
-/** v8.1 — o que barra o passo no mapa: água fina ou o paredão da montanha (map/terreno.ts). */
-function barreiraFina(x: number, y: number) {
-  return aguaFina(x, y) || montanhaEm(x, y);
-}
-/** v8.0 — nenhum ponto de água (v8.1: nem de paredão) no caminho reto de (x0, y0) a (x1, y1) (amostras a cada ~2
- *  unidades). */
+/** v8.0 — nenhum ponto de água no caminho reto de (x0, y0) a (x1, y1) (amostras a cada ~2 unidades). */
 function caminhoSeco(x0: number, y0: number, x1: number, y1: number) {
   const n = Math.max(1, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / 2));
-  for (let i = 1; i <= n; i++) if (barreiraFina(x0 + ((x1 - x0) * i) / n, y0 + ((y1 - y0) * i) / n)) return false;
+  for (let i = 1; i <= n; i++) if (aguaFina(x0 + ((x1 - x0) * i) / n, y0 + ((y1 - y0) * i) / n)) return false;
   return true;
-}
-/** v8.1 — o caminho reto passa pelo paredão da montanha (amostras a cada ~4 unidades). */
-function cruzaMontanha(x0: number, y0: number, x1: number, y1: number) {
-  const n = Math.max(1, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / 4));
-  for (let i = 1; i <= n; i++) if (montanhaEm(x0 + ((x1 - x0) * i) / n, y0 + ((y1 - y0) * i) / n)) return true;
-  return false;
 }
 // etapa de moveStep: original + v5.9.04
 function moveStepBase(a: Andante, tx: number, ty: number, speed: number, dtMin: number, avoidWater: boolean) {
@@ -368,13 +348,13 @@ function moveStepBase(a: Andante, tx: number, ty: number, speed: number, dtMin: 
 
   if (avoidWater) {
     let placed = false;
-    const naAgua = barreiraFina(a.x, a.y); // v8.1: ou no paredão (save antigo): sai por onde der
+    const naAgua = aguaFina(a.x, a.y);
     for (const offDeg of DEFLECT_ANGLES_DEG) {
       const ang = baseAngle + (offDeg * Math.PI) / 180;
       const nx = clampX(a.x + Math.cos(ang) * step);
       const ny = clampY(a.y + Math.sin(ang) * step);
       // v8.0: o caminho inteiro do passo, não só onde ele para (correndo, um passo pulava um rio fino por cima)
-      if (naAgua ? !barreiraFina(nx, ny) : caminhoSeco(a.x, a.y, nx, ny)) {
+      if (naAgua ? !aguaFina(nx, ny) : caminhoSeco(a.x, a.y, nx, ny)) {
         a.x = nx;
         a.y = ny;
         a.dir = ang;
@@ -382,9 +362,7 @@ function moveStepBase(a: Andante, tx: number, ty: number, speed: number, dtMin: 
         break;
       }
     }
-    // v8.1: a heroína atravessa água para outra ilha, mas montanha não (contorna: mantenedor 2026-11-06)
-    const reto = { x: a.x + Math.cos(baseAngle) * step, y: a.y + Math.sin(baseAngle) * step };
-    if (!placed && (naAgua || (navIsHero(a) && !montanhaEm(reto.x, reto.y)))) {
+    if (!placed && (naAgua || navIsHero(a))) {
       // já dentro d'água (ou a heroína, que atravessa para outra ilha como antes): nada para frente, cansando extra
       a.x = clampX(a.x + Math.cos(baseAngle) * step);
       a.y = clampY(a.y + Math.sin(baseAngle) * step);

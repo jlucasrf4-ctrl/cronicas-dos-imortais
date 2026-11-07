@@ -115,35 +115,6 @@ export function anelChao(fino = false): GLMesh {
   return (CACHE[chave] = glMesh(b));
 }
 
-/** Anel no chão com raio e espessura de verdade (unidades do mundo), sem escala: a linha fica fina em qualquer raio
- *  (o alcance do Alt). Guardado por raio inteiro. */
-export function anelLinha(raio: number, esp = 1.2): GLMesh {
-  confereGL();
-  const r = Math.max(2, Math.round(raio)),
-    chave = "linha:" + r + ":" + esp;
-  const pronto = CACHE.malhas[chave];
-  if (pronto) return pronto;
-  const b = MB(),
-    N = Math.min(160, Math.max(48, Math.round(r / 3))),
-    r0 = r - esp,
-    y = 0.3;
-  for (let i = 0; i < N; i++) {
-    const a = (i / N) * Math.PI * 2,
-      a2 = ((i + 1) / N) * Math.PI * 2;
-    const p = (rr: number, ang: number) => [Math.cos(ang) * rr, y, Math.sin(ang) * rr];
-    const A = p(r0, a),
-      B = p(r, a),
-      Cc = p(r, a2),
-      D = p(r0, a2);
-    for (const q of [A, Cc, B, A, D, Cc]) {
-      b.p.push(q[0], q[1], q[2]);
-      b.n.push(0, 1, 0);
-      b.c.push(1, 1, 1);
-    }
-  }
-  return (CACHE.malhas[chave] = glMesh(b));
-}
-
 /** Raio do anel de um item, com a pulsação (t em segundos). */
 export function raioBrilho(key: string, t: number) {
   return Math.max(BRILHO.min, tamChao(key) * BRILHO.raio) * (1 + BRILHO.pulso * Math.sin(t * 3));

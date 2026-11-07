@@ -3,7 +3,6 @@ import { MEMO, TELAS, world, econ, CACA } from "../core/state.ts";
 import { WORLD_K } from "./vetorial.ts";
 import { CONFIG, SPAWN0 } from "../core/config.ts";
 import { isWaterCell } from "./agua.ts";
-import { montanhaEm } from "./terreno.ts";
 import { AREA_RESERVADA, ROCK_ZONES, TREE_WOOD } from "../data/recursos.ts";
 import { musgoCity } from "./vila_musgo.ts";
 import { galhoAdd } from "../items/galho.ts";
@@ -64,10 +63,8 @@ export function rndIn(z: number[]) {
     r = Math.sqrt(Math.random()) * z[2] * WORLD_K;
   return { x: z[0] * WORLD_K + Math.cos(a) * r, y: z[1] * WORLD_K + Math.sin(a) * r };
 }
-/** v8.1 — perto do acampamento ou da vila (AREA_RESERVADA), ou no paredão da montanha (não se chega): ali não nasce
- *  recurso do mapa. */
+/** v8.1 — perto do acampamento ou da vila (AREA_RESERVADA): ali não nasce recurso do mapa. */
 function areaReservada(x: number, y: number) {
-  if (montanhaEm(x, y)) return true;
   const camps = world.heroes.length
     ? world.heroes.map((h) => h.camp)
     : [{ x: SPAWN0.x * WORLD_K, y: SPAWN0.y * WORLD_K }];

@@ -43,21 +43,6 @@ function cabeca(cabeloParaTras: number): CabecaDados {
 }
 
 describe("encaixe do pescoço separado do cabelo", () => {
-  it("ajusta a proporção individual sem reduzir o rosto ou alterar o corpo e os pesos", () => {
-    for (const nome of ["busto_13", "busto_14", "busto_15"]) {
-      const cab = dados.cabecas!.find((c) => c.nome === nome)!;
-      expect(cab.escala).toBeLessThan(1);
-      const antes = comporPele(anim, { ...cab, escala: 1 }, corpo.encaixe);
-      const depois = comporPele(anim, cab, corpo.encaixe);
-      expect(depois.I).toEqual(antes.I);
-      expect(depois.J).toEqual(antes.J);
-      expect(depois.W).toEqual(antes.W);
-      expect(depois.P.subarray(0, anim.P.length)).toEqual(anim.P);
-      expect(depois.C).toEqual(antes.C);
-      for (let k = anim.P.length + 1; k < depois.P.length; k += 3)
-        expect(depois.P[k] - corpo.encaixe.queixo).toBeCloseTo((antes.P[k] - corpo.encaixe.queixo) * cab.escala!, 4);
-    }
-  });
   it("mudar o comprimento e o volume traseiro do cabelo não desloca a pele do pescoço", () => {
     const a = comporPele(anim, cabeca(-1500), corpo.encaixe);
     const b = comporPele(anim, cabeca(-7000), corpo.encaixe);

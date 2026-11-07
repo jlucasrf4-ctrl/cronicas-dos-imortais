@@ -13,21 +13,7 @@ export default defineConfig(({ mode }) => {
   const teste = mode === "test";
   return {
     plugins: [viteSingleFile(), jogo({ saida: teste ? "vtest.html" : "game.html" })],
-    server: {
-      port: 5173,
-      strictPort: false,
-      // 2026-11-06: uma pasta de resultados de teste corrompida pelo disco derrubava o vigia de arquivos (scandir
-      // UNKNOWN) e o jogo não abria. O dev server só precisa vigiar index.html, src/ e tools/.
-      watch: {
-        ignored: [
-          "**/tests/browser/resultados/**",
-          "**/build/**",
-          "**/dist/**",
-          "**/backups/**",
-          "**/arquivos de transferência/**",
-        ],
-      },
-    },
+    server: { port: 5173, strictPort: false },
     build: {
       outDir: "dist",
       emptyOutDir: !teste,

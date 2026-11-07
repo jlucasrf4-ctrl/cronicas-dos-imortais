@@ -1,9 +1,8 @@
 /* ==== Aparências dos personagens (src/assets/models/aparencias.json, tools/gerar-aparencias.ts).
-   Personagens novos sorteiam corpo e cabeça entre as opções femininas, incluindo heroína e líder; os corpos das
-   deusas ficam fora do sorteio (as cabeças delas entram).
+   Personagens novos sorteiam corpo e cabeça entre todas as opções femininas, incluindo heroína, líder e deusas.
    Cada opção tem a mesma chance, independentemente dos pesos antigos e das notas do Editor. ==== */
 import { decodificarAnim, type Anim, type DadosAnim } from "./esqueleto.ts";
-import { TINGIR, CABECAS_FORA } from "../../data/aparencias.ts";
+import { TINGIR } from "../../data/aparencias.ts";
 import { ENCAIXES } from "../../data/encaixes.ts";
 import { unirPescoco } from "./unir-pescoco.ts";
 
@@ -63,8 +62,6 @@ export interface CabecaDados {
   /** v8.1 — a textura em `AparenciasDados.texturas` (a folha das cabeças masculinas: as cartas de cada uma se espalham
    *  pela imagem inteira, que vai uma vez só no JSON) */
   texDe?: string;
-  /** v8.1 — multiplica o tamanho padrão da cabeça trocada (uTroca) só para esta cabeça */
-  escala?: number;
 }
 export interface AparenciasDados {
   corpos?: CorpoDados[];
@@ -112,24 +109,14 @@ function bytes(b64: string) {
 export const cabeNoCorpo = (corpo: { sexo?: string }, cab: { nome: string; sexo?: string }) =>
   cab.nome === "propria" || (cab.sexo ?? "f") === (corpo.sexo ?? "f");
 
-/** A cabeça entra no sorteio e na escolha da criação (as muito parecidas ficam de fora: CABECAS_FORA). */
-export const cabecaNoJogo = (cab: { nome: string }) => !CABECAS_FORA.includes(cab.nome);
-
-/** Corpo que pode sair no sorteio de recrutáveis: feminino e não é deusa (mantenedor, 2026-11-06: os corpos das
- *  deusas ficam fora da aleatoriedade; as cabeças delas continuam). */
-const corpoSorteavel = (c: { nome: string; sexo?: string }) => (c.sexo ?? "f") === "f" && !c.nome.startsWith("deusa_");
-
 /** Sorteia corpo e cabeça femininos separadamente, com chances iguais (`rnd` 0..1).
  * Pesos dos modelos e notas do Editor não excluem nem favorecem uma aparência na geração.
  * Sem dados (testes em Node): a heroína de sempre. */
 export function sortearAparencia(dados: AparenciasDados = DADOS, rnd: () => number = Math.random): Aparencia {
-  const corpos = (dados.corpos ?? []).filter(corpoSorteavel);
+  const corpos = (dados.corpos ?? []).filter((c) => (c.sexo ?? "f") === "f");
   if (!corpos.length) return { corpo: "heroina", cabeca: "propria" };
   const corpo = corpos[Math.floor(rnd() * corpos.length)];
-  const cabecas = [
-    "propria",
-    ...(dados.cabecas ?? []).filter((c) => cabeNoCorpo(corpo, c) && cabecaNoJogo(c)).map((c) => c.nome),
-  ];
+  const cabecas = ["propria", ...(dados.cabecas ?? []).filter((c) => cabeNoCorpo(corpo, c)).map((c) => c.nome)];
   return { corpo: corpo.nome, cabeca: cabecas[Math.floor(rnd() * cabecas.length)] };
 }
 
@@ -138,7 +125,7 @@ export function aparenciaRecrutavel(ap?: Aparencia, dados: AparenciasDados = DAD
   if (!ap) return false;
   if (!dados.corpos?.length) return ap.corpo === "heroina" && ap.cabeca === "propria";
   const corpo = dados.corpos.find((c) => c.nome === ap.corpo);
-  if (!corpo || !corpoSorteavel(corpo)) return false;
+  if (!corpo || (corpo.sexo ?? "f") !== "f") return false;
   return ap.cabeca === "propria" || !!dados.cabecas?.some((c) => c.nome === ap.cabeca && cabeNoCorpo(corpo, c));
 }
 
@@ -168,13 +155,10 @@ function deLab(L: number, a: number, b: number) {
 /**
  * v8.1 — troca a cor da pele e do cabelo de uma pele montada (cor por triângulo). Quem é pele e quem é cabelo vem da
  * máscara feita na ferramenta (tools/lib/mascara.ts: 1 pele, 2 cabelo), não da cor: pela cor, o couro marrom da heroína
- * virava pele e o delineado dos olhos virava cabelo. Em triângulos com textura, a cor do vértice multiplica a imagem:
- * usamos a cor-base registrada para trocar o matiz sem apagar a pintura. Os detalhes do rosto (3: pálpebras, sombra,
- * boca) acompanham a pele. Máscara de outro tamanho: não tinge.
- * 2026-11-06 (mantenedor: "a troca de cor não mantém as tonalidades que dão profundidade"): cada triângulo é levado
- * em CIELAB da mediana da parte até a cor nova, MANTENDO a diferença dele para a mediana — a luz (sombras, dobras),
- * o matiz (o rosado das bochechas, o reflexo das mechas). Antes, todo triângulo virava a mesma cor com só metade da
- * variação de luz: a pele ficava chapada e o cabelo, um bloco. TINGIR: os limites dessa diferença.
+ * virava pele e o delineado dos olhos virava cabelo. Cada triângulo marcado passa à cor nova, na luz dele em relação à
+ * mediana da parte (a sombra e os reflexos das mechas ficam; TINGIR.contraste). Em triângulos com textura, a cor do
+ * vértice multiplica a imagem: usamos a cor-base registrada para trocar o matiz sem apagar a pintura. Os detalhes do
+ * rosto (3: pálpebras, sombra, boca) acompanham a pele. Máscara de outro tamanho: não tinge.
  */
 export function tingir(
   A: Anim,
@@ -192,14 +176,8 @@ export function tingir(
   };
   const multiplicarTextura = (t: number, cor: string, base?: number[]) => {
     const alvo = hexRgb(cor),
-      origem = base?.length === 3 ? base : [255, 255, 255],
-      // cada canal longe demais da razão de luz estourava um texel claro do cabelo em azul/ciano
-      kY = Math.max(1, lum(alvo, 0)) / Math.max(1, lum(origem, 0)),
-      T = TINGIR.textura;
-    for (let e = 0; e < 3; e++) {
-      const k = alvo[e] / Math.max(1, origem[e]);
-      C[t * 3 + e] = Math.min(T.max, Math.max(kY / T.desvio, Math.min(kY * T.desvio, k)));
-    }
+      origem = base?.length === 3 ? base : [255, 255, 255];
+    for (let e = 0; e < 3; e++) C[t * 3 + e] = Math.min(4, alvo[e] / Math.max(1, origem[e]));
   };
   if (pele) {
     const canal: number[][] = [[], [], []];
@@ -223,51 +201,23 @@ export function tingir(
     }
     for (let t = 0; t < nt; t++) if (mascara[t] === 3 && texturizado(t)) multiplicarTextura(t, pele, refs.pele);
   }
-  for (const [parte, cor, P, refCor] of [
-    [1, pele, TINGIR.pele, refs.pele],
-    [2, cabelo, TINGIR.cabelo, refs.cabelo],
+  for (const [parte, cor, k, refCor] of [
+    [1, pele, TINGIR.contraste.pele, refs.pele],
+    [2, cabelo, TINGIR.contraste.cabelo, refs.cabelo],
   ] as const) {
     if (!cor) continue;
-    // a mediana da parte em Lab (canal a canal); sem triângulos sem textura, a cor de referência do modelo
-    const labs: number[][] = [],
-      canais: number[][] = [[], [], []];
-    for (let t = 0; t < nt; t++) {
-      if (mascara[t] !== parte || texturizado(t)) continue;
-      const q = paraLab(A.C[t * 3], A.C[t * 3 + 1], A.C[t * 3 + 2]);
-      labs[t] = q;
-      for (let e = 0; e < 3; e++) canais[e].push(q[e]);
-    }
-    const med = canais[0].length
-      ? canais.map((l) => l.sort((a, b) => a - b)[l.length >> 1])
-      : refCor?.length === 3
-        ? paraLab(refCor[0] / 255, refCor[1] / 255, refCor[2] / 255)
-        : null;
-    const alvo = hexRgb(cor).map((v) => v / 255),
-      para = paraLab(alvo[0], alvo[1], alvo[2]);
-    // a variação de luz cresce/encolhe com a razão das luzes (como multiplicar); a do matiz, com a do croma
-    const luz = med ? Math.max(P.luz[0], Math.min(P.luz[1], para[0] / Math.max(1, med[0]))) : 1,
-      croma = med
-        ? Math.max(P.croma[0], Math.min(P.croma[1], Math.hypot(para[1], para[2]) / Math.max(1, Math.hypot(med[1], med[2]))))
-        : 1;
+    const ls: number[] = [];
+    for (let t = 0; t < nt; t++) if (mascara[t] === parte && !texturizado(t)) ls.push(lum(A.C, t * 3));
+    const ref = ls.sort((a, b) => a - b)[ls.length >> 1] || 1,
+      alvo = hexRgb(cor);
     for (let t = 0; t < nt; t++) {
       if (mascara[t] !== parte) continue;
       if (texturizado(t)) {
         multiplicarTextura(t, cor, refCor ?? undefined);
         continue;
       }
-      const q = labs[t];
-      if (!med || !q) {
-        C.set(alvo, t * 3);
-        continue;
-      }
-      C.set(
-        deLab(
-          Math.max(0, Math.min(100, para[0] + (q[0] - med[0]) * luz)),
-          para[1] + (q[1] - med[1]) * croma,
-          para[2] + (q[2] - med[2]) * croma,
-        ),
-        t * 3,
-      );
+      const f = Math.max(TINGIR.luz[0], Math.min(TINGIR.luz[1], 1 + (lum(A.C, t * 3) / ref - 1) * k));
+      for (let e = 0; e < 3; e++) C[t * 3 + e] = Math.min(1, (alvo[e] * f) / 255);
     }
   }
   return { ...A, C };
@@ -336,7 +286,7 @@ export function comporPele(corpo: Anim, cab: CabecaDados, enc: Encaixe): Anim {
     ez /= en;
   }
   const u = enc.u,
-    uT = (enc.uTroca ?? u) * (cab.escala ?? 1),
+    uT = enc.uTroca ?? u,
     baseX = enc.nariz + ez * u,
     baseZ = enc.meio - ex * u;
   for (let v = 0; v < nvH; v++) {

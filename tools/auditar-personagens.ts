@@ -11,18 +11,12 @@ import {
   type Anim,
 } from "../src/render/gl/esqueleto.ts";
 import { peleDaAparencia, cabeNoCorpo, type AparenciasDados } from "../src/render/gl/aparencias.ts";
+import { roupaDaAparencia } from "../src/render/gl/vestidos.ts";
 import { SMOOTH_COS } from "../src/render/gl/geometria.ts";
 import { ORCAMENTO_PERSONAGEM } from "./lib/orcamento-personagem.ts";
 
 const pacote = JSON.parse(readFileSync("src/assets/models/vestidos.json", "utf8")) as {
-  modelos: {
-    nome: string;
-    rotulo: string;
-    interno?: boolean;
-    anim?: DadosAnim;
-    proprio?: boolean;
-    partes?: Record<string, DadosAnim>;
-  }[];
+  modelos: { nome: string; rotulo: string; interno?: boolean; anim?: DadosAnim; proprio?: boolean; partes?: Record<string, DadosAnim> }[];
   texturas?: Record<string, string>;
 };
 const aparencias = JSON.parse(readFileSync("src/assets/models/aparencias.json", "utf8")) as AparenciasDados;
@@ -35,10 +29,7 @@ const problemas: string[] = [],
   linhas: object[] = [];
 const validar = (nome: string, dados: DadosAnim | Anim) => {
   const bruto = "P" in dados ? null : dados;
-  const A =
-      "P" in dados
-        ? dados
-        : decodificarAnim(dados.texDe ? { ...dados, tex: pacote.texturas?.[dados.texDe] ?? dados.tex } : dados),
+  const A = "P" in dados ? dados : decodificarAnim(dados.texDe ? { ...dados, tex: pacote.texturas?.[dados.texDe] ?? dados.tex } : dados),
     nv = A.P.length / 3,
     nt = A.I.length / 3;
   if (nt > ORCAMENTO_PERSONAGEM.total) problemas.push(`${nome}: ${nt} triângulos`);
@@ -89,8 +80,7 @@ const equipamento = armaMax + trisArma("eq_escudo") + trisArma("eq_arco_longo");
 for (const v of pacote.modelos) {
   if (!v.anim || v.proprio) continue;
   const total = Buffer.from(v.anim.malha.i, "base64").length / 6 + equipamento;
-  if (total > ORCAMENTO_PERSONAGEM.total)
-    problemas.push(`${v.nome}: modelo vestido com armas excede o teto (${total})`);
+  if (total > ORCAMENTO_PERSONAGEM.total) problemas.push(`${v.nome}: modelo vestido com armas excede o teto (${total})`);
 }
 const combinacoes = [];
 for (const c of aparencias.corpos ?? []) {
@@ -100,30 +90,19 @@ for (const c of aparencias.corpos ?? []) {
     if (!cabeNoCorpo(c, h)) continue;
     const visual = { corpo: c.nome, cabeca: h.nome };
     const pele = peleDaAparencia(visual, () => null, { aparencias, bustos });
-    if (!pele) {
-      problemas.push(`${c.nome}/${h.nome}: montagem ausente`);
-      continue;
-    }
+    if (!pele) { problemas.push(`${c.nome}/${h.nome}: montagem ausente`); continue; }
     const A = validar(`${c.nome}/${h.nome}`, pele);
     const roupa = { peito: 0, pernas: 0, pes: 0 };
     for (const estilo of ["aventureira", "deserto", "patrulheira", "placa"]) {
-      const especifica = pacote.modelos.find((v) => v.nome === `${c.nome}__${h.nome}__${estilo}`);
-      const v = especifica?.partes ? especifica : pacote.modelos.find((v) => v.nome === `${c.nome}__${estilo}`);
+      const v = roupaDaAparencia(visual, estilo, (nome) => pacote.modelos.find((v) => v.nome === nome) ?? null);
       for (const p of ["peito", "pernas", "pes"] as const)
         if (v?.partes?.[p]) roupa[p] = Math.max(roupa[p], Buffer.from(v.partes[p].malha.i, "base64").length / 6);
     }
-    combinacoesCorpo.push({
-      cabeca: h.nome,
-      corpoECabeca: A.I.length / 3,
-      roupa,
-      maximoCompleto: A.I.length / 3 + roupa.peito + roupa.pernas + roupa.pes + equipamento,
-    });
+    combinacoesCorpo.push({ cabeca: h.nome, corpoECabeca: A.I.length / 3, roupa,
+      maximoCompleto: A.I.length / 3 + roupa.peito + roupa.pernas + roupa.pes + equipamento });
   }
   const propria = combinacoesCorpo.find((v) => v.cabeca === c.cabecaPadrao);
-  if (!propria) {
-    problemas.push(`${c.nome}: cabeça padrão ausente`);
-    continue;
-  }
+  if (!propria) { problemas.push(`${c.nome}: cabeça padrão ausente`); continue; }
   const { roupa, maximoCompleto: total } = propria;
   const qualquerCabeca = Math.max(...combinacoesCorpo.map((v) => v.maximoCompleto));
   combinacoes.push({
@@ -137,8 +116,7 @@ for (const c of aparencias.corpos ?? []) {
     detalhes: combinacoesCorpo,
   });
   if (total > ORCAMENTO_PERSONAGEM.total) problemas.push(`${c.nome}: combinação máxima ${total} triângulos`);
-  if (qualquerCabeca > ORCAMENTO_PERSONAGEM.total)
-    problemas.push(`${c.nome}: cabeça alternativa excede o orçamento (${qualquerCabeca})`);
+  if (qualquerCabeca > ORCAMENTO_PERSONAGEM.total) problemas.push(`${c.nome}: cabeça alternativa excede o orçamento (${qualquerCabeca})`);
 }
 function medir(A: Anim, clips: Anim) {
   let def: ReturnType<typeof deformarMalha> | undefined;

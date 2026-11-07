@@ -12,7 +12,6 @@ plano.tamanhoTextura = 2048;
 plano.qualidadeTextura = 92;
 plano.alisar.voltas = 2;
 plano.alisar.voltasCor = 0;
-const calibradas = new Map<string, Record<string, unknown>>(plano.cabecas.map((c: { nome: string }) => [c.nome, c]));
 plano.cabecas = plano.cabecas.filter((c: { nome: string }) => !c.nome.startsWith("busto_"));
 const folhas = [
   {
@@ -42,9 +41,8 @@ for (const [f, folha] of folhas.entries()) {
     const coluna = k % folha.colunas,
       linha = Math.floor(k / folha.colunas);
     plano.cabecas.push({
-      ...calibradas.get(`busto_${String(n).padStart(2, "0")}`),
       nome: `busto_${String(n).padStart(2, "0")}`,
-      rotulo: `F${n}`,
+      rotulo: `Busto F${String(n).padStart(2, "0")}`,
       peso: 1,
       busto: true,
       olhos: folha.olhos[k],
@@ -60,17 +58,6 @@ for (const [f, folha] of folhas.entries()) {
     });
   }
 }
-const bustos = plano.cabecas.filter((c: { nome: string }) => c.nome.startsWith("busto_"));
-const femininas = plano.cabecas.filter(
-  (c: { nome: string; sexo?: string }) => !c.nome.startsWith("busto_") && c.sexo !== "m",
-);
-const masculinas = plano.cabecas.filter((c: { sexo?: string }) => c.sexo === "m");
-for (const [i, c] of [...bustos, ...femininas].entries()) c.rotulo = `F${i + 1}`;
-plano.cabecas = [...bustos, ...femininas, ...masculinas];
-for (const c of plano.corpos)
-  if (/^corpo_f0[1-6]$/.test(c.nome)) {
-    c.cabecaPadrao = "busto_" + c.nome.slice(-2);
-    c.rotulo = c.rotulo.replace(/F0([1-6])/, "F$1");
-  }
+for (const c of plano.corpos) if (/^corpo_f0[1-6]$/.test(c.nome)) c.cabecaPadrao = "busto_" + c.nome.slice(-2);
 writeFileSync(arq, JSON.stringify(plano, null, 2) + "\n");
 console.log(`${n} bustos registrados; gerar as aparências depois dos corpos.`);

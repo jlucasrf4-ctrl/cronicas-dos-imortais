@@ -257,8 +257,7 @@ export function unirBustoIntegral(corpo: Anim, busto: Anim, ajuste: AjusteUniaoB
       if (origem === 0) {
         const centroY = pol.reduce((s, c) => s + P[c.v * 3 + 1], 0) / 3;
         const centroZ = pol.reduce((s, c) => s + P[c.v * 3 + 2], 0) / 3;
-        const noBraco =
-          Math.abs(centroZ) > ajuste.bracoCorpo * 0.7 && centroY > (ajuste.alturaMinBracos ?? ajuste.cinturaCorpo + 2);
+        const noBraco = Math.abs(centroZ) > ajuste.bracoCorpo * 0.7 && centroY > (ajuste.alturaMinBracos ?? ajuste.cinturaCorpo + 2);
         pol = cortar(pol, noBraco ? planosCorpo[centroZ < 0 ? 1 : 2] : planosCorpo[0], origem);
       } else if (!ajuste.preservarTriangulosBusto?.[t]) {
         for (const p of planosBusto) {
@@ -443,9 +442,9 @@ export function unirBustoIntegral(corpo: Anim, busto: Anim, ajuste: AjusteUniaoB
       pa = perfil(la),
       pb = perfil(lb),
       aneis = [la];
-    const passos = Math.max(3, Math.min(16, Math.ceil(Math.abs(par.planoB.valor - par.planoA.valor) / 0.65)));
-    for (let passo = 1; passo < passos; passo++) {
-      const t = passo / passos;
+    const passos = Math.max(3, Math.min(16, Math.ceil(Math.abs(par.planoB.valor-par.planoA.valor)/.65)));
+    for (let passo=1; passo<passos; passo++) {
+      const t=passo/passos;
       const anel: number[] = [],
         f = t * t * (3 - 2 * t);
       for (let i = 0; i < N; i++) {

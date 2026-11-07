@@ -38,7 +38,6 @@ import {
   tickCombateHumano,
   adrenalinaCusto,
   adrenalinaRecuperacao,
-  atkSpeedMult,
 } from "./combate.ts";
 import { isArrowIt } from "../items/aljava.ts";
 import { mapFloat, meatShrinkAll } from "../map/caca.ts";
@@ -102,8 +101,6 @@ import {
   updateDungeonMonster,
   parryTouches,
   swingBasic,
-  puxarBasico,
-  bowRange,
 } from "./acertos.ts";
 import { pushEvent } from "../sim/eventos.ts";
 import { angDiff, clamp } from "../core/util.ts";
@@ -131,7 +128,7 @@ import {
   d3Near,
 } from "./projecao.ts";
 import { fatorCorrida } from "./folego.ts";
-import { WEAPONS, FOL_HEROI, ARCO_FOL, PARRY, COMBO, FACA2, ATAQUE_AUTO, ARCO_BASICO } from "../data/combate.ts";
+import { WEAPONS, FOL_HEROI, ARCO_FOL, PARRY, COMBO, FACA2 } from "../data/combate.ts";
 import { STAT } from "../data/atributos.ts";
 import { MOUNT } from "../data/sobrevivencia.ts";
 import { glFrame } from "../render/gl/renderer.ts";
@@ -972,95 +969,6 @@ export function sfx(kind: string) {
     if (kind === "perfect") setTimeout(() => sfx("near"), 70);
   } catch (e) {}
 }
-/** v8.1 — a corda sendo puxada no básico do arco, por `dur` s: um chiado de couro no começo, a madeira rangendo
-    (ruído em banda subindo de tom, picotado cada vez mais rápido) e a tensão da corda (tom baixo subindo). Devolve
-    a função que corta o som quando a puxada acaba antes (alvo morreu, cancelou). */
-export function somPuxarCorda(dur: number): () => void {
-  try {
-    const ac = (SOM._ac = SOM._ac || new (window.AudioContext || window.webkitAudioContext)()),
-      t0 = ac.currentTime,
-      fim = t0 + dur,
-      saida = ac.createGain();
-    saida.connect(_out());
-    const ruido = (seg: number) => {
-      const n = Math.max(1, Math.floor(ac.sampleRate * seg)),
-        b = ac.createBuffer(1, n, ac.sampleRate),
-        dd = b.getChannelData(0);
-      for (let i = 0; i < n; i++) dd[i] = Math.random() * 2 - 1;
-      const s = ac.createBufferSource();
-      s.buffer = b;
-      return s;
-    };
-    // couro e penas: a flecha encaixando
-    const chiado = ruido(0.08),
-      hp = ac.createBiquadFilter(),
-      cg = ac.createGain();
-    hp.type = "highpass";
-    hp.frequency.value = 2800;
-    cg.gain.setValueAtTime(0.12, t0);
-    cg.gain.exponentialRampToValueAtTime(0.001, t0 + 0.08);
-    chiado.connect(hp);
-    hp.connect(cg);
-    cg.connect(saida);
-    // a madeira rangendo
-    const range = ruido(dur),
-      bp = ac.createBiquadFilter(),
-      pico = ac.createGain(),
-      env = ac.createGain(),
-      lfo = ac.createOscillator(),
-      lfoG = ac.createGain();
-    bp.type = "bandpass";
-    bp.Q.value = 7;
-    bp.frequency.setValueAtTime(240, t0);
-    bp.frequency.exponentialRampToValueAtTime(820, fim);
-    pico.gain.value = 0.55;
-    lfo.type = "square";
-    lfo.frequency.setValueAtTime(20, t0);
-    lfo.frequency.linearRampToValueAtTime(46, fim);
-    lfoG.gain.value = 0.45;
-    lfo.connect(lfoG);
-    lfoG.connect(pico.gain);
-    env.gain.setValueAtTime(0.0001, t0);
-    env.gain.exponentialRampToValueAtTime(0.16, t0 + 0.12);
-    env.gain.linearRampToValueAtTime(0.07, t0 + dur * 0.5);
-    env.gain.linearRampToValueAtTime(0.12, t0 + dur * 0.95);
-    env.gain.linearRampToValueAtTime(0.0001, fim);
-    range.connect(bp);
-    bp.connect(pico);
-    pico.connect(env);
-    env.connect(saida);
-    // a tensão da corda
-    const o = ac.createOscillator(),
-      lp = ac.createBiquadFilter(),
-      og = ac.createGain();
-    o.type = "triangle";
-    o.frequency.setValueAtTime(150, t0);
-    o.frequency.exponentialRampToValueAtTime(310, fim);
-    lp.type = "lowpass";
-    lp.frequency.value = 900;
-    og.gain.setValueAtTime(0.0001, t0);
-    og.gain.exponentialRampToValueAtTime(0.025, t0 + 0.3);
-    og.gain.linearRampToValueAtTime(0.04, t0 + dur * 0.95);
-    og.gain.linearRampToValueAtTime(0.0001, fim);
-    o.connect(lp);
-    lp.connect(og);
-    og.connect(saida);
-    const fontes = [chiado, range, lfo, o];
-    for (const f of fontes) f.start(t0);
-    for (const f of fontes) f.stop(fim + 0.05);
-    return () => {
-      try {
-        const t = ac.currentTime;
-        saida.gain.cancelScheduledValues(t);
-        saida.gain.setValueAtTime(saida.gain.value, t);
-        saida.gain.linearRampToValueAtTime(0, t + 0.08);
-        for (const f of fontes) f.stop(t + 0.1);
-      } catch (_) {}
-    };
-  } catch (e) {
-    return () => {};
-  }
-}
 
 export function spawnLoot(x: number, y: number, drop: boolean, boss?: boolean) {
   /* v6.8 — criatura do Campo: o saque vem da tabela dela */
@@ -1439,45 +1347,9 @@ function updateGuardBase(dt: number) {
   } else if (d.gint! > 25) d._cansadoAvisado = false;
   if (d.runLock && (d.gstam >= 25 || d.gint! >= 25)) d.runLock = false;
 }
-/** Alcance do básico da arma na mão, em tiles (do corpo do alvo): o golpe `step` do combo, faca, clava ou arco. */
-function alcanceBasico(step = 0) {
-  const d = dungeon;
-  if (d.weapon === "bow") return ARCO_BASICO.alcance;
-  return knifeMode() ? FACA2.reach : hvKind("L") === "clubL" ? 0.85 : COMBO[step].reach * wpnProf(d.hero!).reach;
-}
-/** Segurar Alt: o alcance do básico num anel fino no chão (e, no arco, o do tiro carregado mais apagado). Só o 2D aqui;
- *  no 3D o renderer desenha os anéis no chão (render/gl/renderer.ts). */
-export function anelAlcance(): { basico: number; carregado: number } | null {
-  const d = dungeon;
-  if (!d.active || d.dead || !d.hero || !(d.keys?.AltLeft || d.keys?.AltRight)) return null;
-  if (d.weapon !== "melee" && d.weapon !== "bow") return null;
-  const T = d.tile;
-  return { basico: T * alcanceBasico(0), carregado: d.weapon === "bow" ? bowRange(1) : 0 };
-}
-function drawAlcance() {
-  const A = anelAlcance();
-  if (!A || D3.gl) return;
-  const c = TELAS.dCtx,
-    d = dungeon;
-  c.save();
-  c.lineWidth = 1;
-  c.strokeStyle = "rgba(239,233,221,.45)";
-  c.beginPath();
-  c.arc(d.px, d.py, A.basico, 0, 6.283);
-  c.stroke();
-  if (A.carregado) {
-    c.setLineDash([3, 5]);
-    c.strokeStyle = "rgba(239,233,221,.22)";
-    c.beginPath();
-    c.arc(d.px, d.py, A.carregado, 0, 6.283);
-    c.stroke();
-  }
-  c.restore();
-}
-function autoAttack(dt: number) {
+function autoAttack() {
   const d = dungeon,
     m = d.alvoAutomatico;
-  if (d.autoCd! > 0) d.autoCd = Math.max(0, d.autoCd! - dt);
   if (!m) return;
   if (!OPT.ataqueAutomatico || !d.active || d.dead || !m.alive || !d.monsters.includes(m)) {
     d.alvoAutomatico = null;
@@ -1490,7 +1362,7 @@ function autoAttack(dt: number) {
     d.modalOpen ||
     ED.on ||
     !d.hero ||
-    (d.weapon !== "melee" && d.weapon !== "bow") ||
+    d.weapon !== "melee" ||
     d.especialPressionado ||
     d.charging ||
     d.spCh ||
@@ -1500,18 +1372,14 @@ function autoAttack(dt: number) {
     d.down! > 0 ||
     d.guard ||
     d.cd! > 0 ||
-    d.autoCd! > 0 ||
     d.parryVis! > 0 ||
     m.kind === "bird"
   )
     return;
   const q = bodyDist(wolfBody(m), d.px, d.py),
-    step = d.comboT! > 0 ? (d.combo || 0) % 3 : 0;
-  if (q.d - wolfBody(m).r > d.tile * alcanceBasico(step)) return;
-  if (d.weapon === "bow") {
-    puxarBasico(m); // v8.1: puxa a corda (ARCO_BASICO.puxada s) e solta sozinha em updateCharge
-    return;
-  }
+    step = d.comboT! > 0 ? (d.combo || 0) % 3 : 0,
+    alcance = knifeMode() ? FACA2.reach : hvKind("L") === "clubL" ? 0.85 : COMBO[step].reach * wpnProf(d.hero).reach;
+  if (q.d - wolfBody(m).r > d.tile * alcance) return;
   // Reutiliza o golpe completo: combo, recarga, dano, avanço e efeitos da arma.
   const mouse = d.mouse;
   d.mouse = { x: q.x, y: q.y };
@@ -1520,7 +1388,6 @@ function autoAttack(dt: number) {
   } finally {
     d.mouse = mouse;
   }
-  d.autoCd = atkSpeedMult() / ATAQUE_AUTO.porSeg;
 }
 function combatFx(dt: number) {
   const d = dungeon,
@@ -1554,7 +1421,7 @@ function combatFx(dt: number) {
     }
   }
   updateGuard(dt);
-  if (dt > 0) autoAttack(dt);
+  if (dt > 0) autoAttack();
   if (Math.abs(d.pkx!) + Math.abs(d.pky!) > 4) {
     // deslocamento do jogador
     const T0 = d.tile;
@@ -1833,7 +1700,6 @@ function drawDungeonExtras(dt: number) {
   updateFocusHud();
   rastreioTick(); // v7.7
   updateCharge(dt);
-  drawAlcance();
   drawAim();
   spearAimDraw();
   drawMeleeBar();

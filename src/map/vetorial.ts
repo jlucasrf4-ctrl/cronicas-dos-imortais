@@ -9,9 +9,6 @@ import { ARQ } from "../data/mapa.ts";
 import { mapZoomLimit } from "../ui/modos.ts";
 import { quadOf, quadRect, QUAD, quadKey, quadName } from "./quadrantes.ts";
 import { ED } from "../editor/estado.ts";
-import { NAV } from "./navegacao.ts";
-import { refazerNav } from "./agua.ts";
-import { imagemMonte } from "../render/gl/montanhas.ts";
 
 /* =====================================================================
    v3.18 — MUNDO 4x MAIOR + MAPA VETORIAL PROCEDURAL + QUADRANTES
@@ -262,7 +259,6 @@ export function mapArtInit() {
     MAPART.ready = true;
     MAPART.dirty = true;
     HUD.mmBase = null;
-    if (NAV.ready) refazerNav(); // v8.1: a densidade diz onde está o paredão da montanha (map/terreno.ts)
     maApplyMode();
   };
   MAPART.land = new Image();
@@ -339,16 +335,15 @@ function maGenSymbols(x0: number, y0: number, x1: number, y1: number, r: number)
       out.push({ t: pine ? "pine" : "tree", x, y, s: ts * (0.75 + 0.45 * maH2(i, j, 9) + f * 0.2), h: maH2(i, j, 11) });
     }
   // picos: camada grande (cordilheira) + camada pequena (contrafortes) de perto
-  // (um pico de tamanho S ocupa de 0,74·S à esquerda a 1,19·S à direita, com a sombra, e de 0,88·S acima a 0,32·S abaixo;
-  // v8.1: a imagem do modelo, maPicoModelo, até ~1,0·S de cada lado, ~1,0·S acima e ~0,7·S abaixo)
+  // (um pico de tamanho S ocupa de 0,74·S à esquerda a 1,19·S à direita, com a sombra, e de 0,88·S acima a 0,32·S abaixo)
   const layers = [
     [44, 1, 0, K * (6.5 + 26) * 1.15],
     [20, 0.5, 0.45, K * (3 + 12 * 0.35) * 1.15],
   ];
   for (const [cell, kSz, minR, S] of layers) {
     if (r < minR) continue;
-    for (let i = Math.floor((x0 - 1.25 * S) / cell); i <= Math.floor((x1 + 1.1 * S) / cell); i++)
-      for (let j = Math.floor((y0 - 0.8 * S) / cell); j <= Math.floor((y1 + 1.1 * S) / cell); j++) {
+    for (let i = Math.floor((x0 - 1.25 * S) / cell); i <= Math.floor((x1 + 0.8 * S) / cell); i++)
+      for (let j = Math.floor((y0 - 0.4 * S) / cell); j <= Math.floor((y1 + 0.95 * S) / cell); j++) {
         const x = (i + 0.1 + 0.8 * maH2(i, j, 21 + cell)) * cell,
           y = (j + 0.1 + 0.8 * maH2(i, j, 22 + cell)) * cell;
         maDensEm(x, y, d);
@@ -541,9 +536,8 @@ function* maRenderPassos(
   for (const o of list) {
     if (o.t === "tree") maTree(c, o, L);
     else if (o.t === "pine") maPine(c, o, L);
-    else if (o.t === "peak") {
-      if (!maPicoModelo(c, o)) maPeak(c, o, L);
-    } else if (o.t === "hill") maHill(c, o, L);
+    else if (o.t === "peak") maPeak(c, o, L);
+    else if (o.t === "hill") maHill(c, o, L);
     else if (o.t === "rock") maRock(c, o, L);
     else {
       c.save();
@@ -646,24 +640,6 @@ function maPine(c: CanvasRenderingContext2D, o: Simbolo, L: (w: number) => numbe
     c.lineWidth = Math.max(L(0.7), 0.25);
     c.stroke();
   }
-}
-/** v8.1 — o pico do mapa com a imagem do modelo do campo (render/gl/montanhas.ts imagemMonte): os grandes (o miolo
- *  da cordilheira) viram o pico nevado, os menores (beira e contrafortes) as colinas. Largura = MA_MONTE.larg × o
- *  tamanho do símbolo, a base onde ficava a do triângulo, com uma sombra mole à direita. False sem os modelos. */
-const MA_MONTE = { pico: 12, larg: 1.35, sombra: "rgba(60,40,20,.2)" };
-function maPicoModelo(c: CanvasRenderingContext2D, o: Simbolo) {
-  const s = o.s!,
-    im = imagemMonte(s >= MA_MONTE.pico * WORLD_K ? "pico" : "colina", o.h);
-  if (!im) return false;
-  const k = (s * MA_MONTE.larg) / im.esc,
-    x = o.x,
-    y = o.y + s * 0.22;
-  c.fillStyle = MA_MONTE.sombra;
-  c.beginPath();
-  c.ellipse(x + s * 0.25, y + s * 0.02, s * 0.75, s * 0.2, 0, 0, Math.PI * 2);
-  c.fill();
-  c.drawImage(im.cv, x - im.ax * k, y - im.ay * k, im.cv.width * k, im.cv.height * k);
-  return true;
 }
 function maPeak(c: CanvasRenderingContext2D, o: Simbolo, L: (w: number) => number) {
   const s = o.s!,

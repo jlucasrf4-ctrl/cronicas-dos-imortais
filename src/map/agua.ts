@@ -3,8 +3,6 @@ import { CONFIG } from "../core/config.ts";
 import { world, MEMO } from "../core/state.ts";
 import { navBuild, NAV } from "./navegacao.ts";
 import { MAPART, WORLD_K } from "./vetorial.ts";
-import { foraDaMontanha, montanhaEm } from "./terreno.ts";
-import { limparAreaReservada } from "./recursos.ts";
 
 /* ---------------------------------------------------------------------
    3. WATER SYSTEM — lê os próprios pixels do mapa pra achar água de verdade
@@ -58,24 +56,14 @@ export function buildWaterGrid(img: HTMLImageElement) {
     }
   world.waterGrid = grid;
   world.waterPoints = points;
-  refazerNav(); /* v6.2 */
-}
-/** Refaz a grade de navegação (água e, v8.1, o paredão da montanha) e esquece as rotas guardadas. v8.1: também quando
- *  a densidade do mapa termina de carregar (map/vetorial.ts), que é o que diz onde está a montanha; e quem está no
- *  paredão (save de antes da montanha barrar) vai para o pé dela. */
-export function refazerNav() {
+  /* v6.2 */
   try {
     navBuild();
     for (const a of world.animals || []) {
       a.nav = null;
       a.ign = null;
-      if (montanhaEm(a.x, a.y)) Object.assign(a, foraDaMontanha(a.x, a.y));
     }
-    for (const h of world.heroes || []) {
-      h.nav = null;
-      if (h.state !== "indungeon" && montanhaEm(h.x, h.y)) Object.assign(h, foraDaMontanha(h.x, h.y));
-    }
-    limparAreaReservada(); // v8.1: árvores e pedras do mapa que tinham nascido no paredão
+    for (const h of world.heroes || []) h.nav = null;
   } catch (e) {
     console.warn("nav", e);
     NAV.ready = false;

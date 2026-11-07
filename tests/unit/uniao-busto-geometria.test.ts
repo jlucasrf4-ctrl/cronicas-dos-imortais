@@ -2,81 +2,28 @@ import assert from "node:assert/strict";
 import { unirBustoIntegral, ErroUniaoBusto } from "../../tools/lib/uniao-busto.ts";
 import { it } from "vitest";
 import type { Anim } from "../../src/render/gl/esqueleto.ts";
-it("fecha transições longas sem confundir a altura da cintura com o corte dos braços", () => {
-  const corpo = caixas([
-    [-1, 1, 0, 8, -2, 2],
-    [-0.5, 0.5, 6, 7, 2, 6],
-    [-0.5, 0.5, 6, 7, -6, -2],
-  ]);
-  const busto = caixas([
-    [-1.1, 1.1, 2, 10, -2, 2],
-    [-0.55, 0.55, 6.1, 7.1, 2, 5],
-    [-0.55, 0.55, 6.1, 7.1, -5, -2],
-  ]);
-  const r = unirBustoIntegral(corpo, busto, {
-    cinturaCorpo: 3,
-    cinturaBusto: 5,
-    bracoCorpo: 4,
-    bracoBusto: 3.8,
-    alturaMinBracos: 5.9,
-    branco: [0.5, 0.5],
-  });
-  const arestas = new Map<string, number>();
-  for (let t = 0; t < r.malha.I.length; t += 3)
-    for (let k = 0; k < 3; k++) {
-      const a = r.malha.I[t + k],
-        b = r.malha.I[t + ((k + 1) % 3)],
-        key = a < b ? `${a},${b}` : `${b},${a}`;
-      arestas.set(key, (arestas.get(key) ?? 0) + 1);
-    }
-  assert.ok([...arestas.values()].every((n) => n === 2));
-  assert.ok(r.relatorio.contornos.every((c) => c.componentes === 1 && !c.verticesAbertos));
+it("fecha transições longas sem confundir a altura da cintura com o corte dos braços",()=>{
+  const corpo=caixas([[-1,1,0,8,-2,2],[-.5,.5,6,7,2,6],[-.5,.5,6,7,-6,-2]]);
+  const busto=caixas([[-1.1,1.1,2,10,-2,2],[-.55,.55,6.1,7.1,2,5],[-.55,.55,6.1,7.1,-5,-2]]);
+  const r=unirBustoIntegral(corpo,busto,{cinturaCorpo:3,cinturaBusto:5,bracoCorpo:4,bracoBusto:3.8,alturaMinBracos:5.9,branco:[.5,.5]});
+  const arestas=new Map<string,number>();
+  for(let t=0;t<r.malha.I.length;t+=3)for(let k=0;k<3;k++){const a=r.malha.I[t+k],b=r.malha.I[t+(k+1)%3],key=a<b?`${a},${b}`:`${b},${a}`;arestas.set(key,(arestas.get(key)??0)+1);}
+  assert.ok([...arestas.values()].every(n=>n===2));
+  assert.ok(r.relatorio.contornos.every(c=>c.componentes===1&&!c.verticesAbertos));
 });
 
 it("preserva cabelo que cruza planos de cintura e braço sem usá-lo como encaixe", () => {
-  const corpo = caixas([
-    [-1, 1, 0, 8, -2, 2],
-    [-0.5, 0.5, 6, 7, 2, 6],
-    [-0.5, 0.5, 6, 7, -6, -2],
-  ]);
-  const busto = caixas([
-    [-1.1, 1.1, 2, 10, -2, 2],
-    [-0.55, 0.55, 6.1, 7.1, 2, 5],
-    [-0.55, 0.55, 6.1, 7.1, -5, -2],
-    [2, 2.2, 2, 9, 3.5, 4.5],
-  ]);
-  const preservar = Uint8Array.from({ length: busto.I.length / 3 }, (_, t) => (t >= 36 ? 1 : 0));
-  const r = unirBustoIntegral(corpo, busto, {
-    cinturaCorpo: 3,
-    cinturaBusto: 3.3,
-    bracoCorpo: 4,
-    bracoBusto: 3.8,
-    branco: [0.5, 0.5],
-    preservarTriangulosBusto: preservar,
-  });
-  assert.equal(r.relatorio.contornos.length, 6);
-  assert.ok(r.relatorio.contornos.every((c) => c.componentes === 1 && c.verticesAbertos === 0));
-  for (let v = 24; v < 32; v++) {
-    const p = busto.P.subarray(v * 3, v * 3 + 3);
-    assert.ok(
-      Array.from({ length: r.malha.P.length / 3 }, (_, i) => i).some(
-        (i) => Math.hypot(...[0, 1, 2].map((e) => r.malha.P[i * 3 + e] - p[e])) < 1e-6,
-      ),
-      "Cabelo deve manter os vértices, inclusive abaixo da cintura e fora do braço",
-    );
+  const corpo = caixas([[-1,1,0,8,-2,2],[-.5,.5,6,7,2,6],[-.5,.5,6,7,-6,-2]]);
+  const busto = caixas([[-1.1,1.1,2,10,-2,2],[-.55,.55,6.1,7.1,2,5],[-.55,.55,6.1,7.1,-5,-2],[2,2.2,2,9,3.5,4.5]]);
+  const preservar = Uint8Array.from({length:busto.I.length/3},(_,t)=>t>=36?1:0);
+  const r = unirBustoIntegral(corpo,busto,{cinturaCorpo:3,cinturaBusto:3.3,bracoCorpo:4,bracoBusto:3.8,branco:[.5,.5],preservarTriangulosBusto:preservar});
+  assert.equal(r.relatorio.contornos.length,6);
+  assert.ok(r.relatorio.contornos.every(c=>c.componentes===1&&c.verticesAbertos===0));
+  for(let v=24;v<32;v++) {
+    const p=busto.P.subarray(v*3,v*3+3);
+    assert.ok(Array.from({length:r.malha.P.length/3},(_,i)=>i).some(i=>Math.hypot(...[0,1,2].map(e=>r.malha.P[i*3+e]-p[e]))<1e-6),"Cabelo deve manter os vértices, inclusive abaixo da cintura e fora do braço");
   }
-  assert.throws(
-    () =>
-      unirBustoIntegral(corpo, busto, {
-        cinturaCorpo: 3,
-        cinturaBusto: 3.3,
-        bracoCorpo: 4,
-        bracoBusto: 3.8,
-        branco: [0.5, 0.5],
-        preservarTriangulosBusto: new Uint8Array(1),
-      }),
-    /Máscara/,
-  );
+  assert.throws(()=>unirBustoIntegral(corpo,busto,{cinturaCorpo:3,cinturaBusto:3.3,bracoCorpo:4,bracoBusto:3.8,branco:[.5,.5],preservarTriangulosBusto:new Uint8Array(1)}),/Máscara/);
 });
 function caixas(boxes: number[][]): Anim {
   const P: number[] = [],

@@ -1,5 +1,5 @@
 /* ==== v8.1 — prévia dos personagens e criaturas na sala de teste, com animação e câmera ==== */
-import { modelosTeste, clipsModeloTeste, peleDoVisual } from "../render/gl/vestidos.ts";
+import { modelosTeste, clipsModeloTeste } from "../render/gl/vestidos.ts";
 import { RETRATO_PAINEL } from "../render/retrato.ts";
 import { opcoesAparencia, cabeNoCorpo } from "../render/gl/aparencias.ts";
 
@@ -40,11 +40,6 @@ export function abrirModelosTeste() {
   };
   const escolherCabeca = () => {
     P.visual = /^corpo_/.test(modelo.value) ? { corpo: modelo.value, cabeca: cabeca.value || "propria" } : undefined;
-    const m = modelosTeste().find((m) => m.nome === modelo.value);
-    const pele = (P.visual && peleDoVisual(P.visual)) || m?.anim;
-    const tris = pele ? ("I" in pele ? pele.I.length / 3 : atob(pele.malha.i).length / 6) : 0;
-    el.querySelector("#mt-info")!.textContent =
-      `${tris.toLocaleString("pt-BR")} triângulos no modelo exibido · ${clip.options.length} movimentos`;
   };
   const atualizar = () => {
     P.cv = cv;
@@ -67,6 +62,10 @@ export function abrirModelosTeste() {
       cabeca.add(new Option(c.rotulo, c.nome));
     cabeca.disabled = !corpo;
     escolherCabeca();
+    const m = modelosTeste().find((m) => m.nome === modelo.value);
+    const tris = m?.anim ? atob(m.anim.malha.i).length / 6 : 0;
+    el.querySelector("#mt-info")!.textContent =
+      `${tris.toLocaleString("pt-BR")} triângulos na malha-base · ${clip.options.length} movimentos`;
     el.querySelector<HTMLButtonElement>('[data-mt="pausa"]')!.textContent = "Pausar";
   };
   modelo.onchange = atualizar;

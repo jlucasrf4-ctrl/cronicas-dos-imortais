@@ -65,12 +65,11 @@ describe("busto integral por combinação", () => {
     );
     if (!pele || !("I" in pele)) throw Error("O candidato deveria estar decodificado para tingir");
     const rgb = (t: number) => Array.from(pele.C.slice(t * 3, t * 3 + 3));
-    // a pele sem textura passa por CIELAB (ida e volta): 4 casas
-    [94 / 255, 58 / 255, 38 / 255].forEach((c, e) => expect(rgb(0)[e]).toBeCloseTo(c, 4));
+    [94 / 255, 58 / 255, 38 / 255].forEach((c, e) => expect(rgb(0)[e]).toBeCloseTo(c, 5));
     [94 / 220, 58 / 140, 38 / 100].forEach((c, e) => expect(rgb(1)[e]).toBeCloseTo(c, 5));
     [216 / 80, 176 / 40, 106 / 20].forEach((c, e) => expect(rgb(2)[e]).toBeCloseTo(Math.min(4, c), 5));
     expect(rgb(3)).toEqual([1, 1, 1]); // olhos na textura preservados
-    [94 / 255, 58 / 255, 38 / 255].forEach((c, e) => expect(rgb(4)[e]).toBeCloseTo(c, 4)); // união
+    [94 / 255, 58 / 255, 38 / 255].forEach((c, e) => expect(rgb(4)[e]).toBeCloseTo(c, 5)); // união
     expect(rgb(5)).toEqual(Array.from(decodificarAnim(anim).C.slice(15, 18)));
     expect(pele.P).toEqual(decodificarAnim(anim).P);
     expect(pele.W).toEqual(decodificarAnim(anim).W);

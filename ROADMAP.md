@@ -14,22 +14,6 @@ clareiras; os bandidos à noite. Depois o ciclo da campanha (a pista até o vale
 
 ## Pedido do mantenedor (2026-11-03) — personagens e modelos novos
 
-### Stamina progressiva — 2026-11-05
-
-**Status:** regras implementadas; animação específica de ferido pendente (não existe nos clips atuais).
-Ginga, puxada/tensão do arco e madeira usam consumo externo centralizado, com perda de 20 pontos internos
-por transição positiva para zero. Mantidos o mínimo externo da Ginga e a perda de mira do arco sem fôlego;
-o corte continua mesmo com ambas as barras vazias. Corrida interpola a curva configurável da reserva.
-Inimigos perdem 25% internos por quebra, com chances progressivas, fuga final e proteção ao levantar.
-Tempos de chão e taxas/esperas de recuperação preservados; a reserva de combate deixa de limitar o teto externo,
-permitindo recuperar mesmo com reserva zero. Laço mantém seu teto próprio.
-
-- [x] Centralizar consumo das atividades e parâmetros, sem penalidade repetida enquanto vazio.
-- [x] Separar quebras de resistência das quedas e aplicar exaustão progressiva.
-- [x] Preservar corte vazio e cobrar 3% externos uma vez no contato válido com a árvore.
-- [x] Suavizar a velocidade de corrida pela stamina interna.
-- [ ] Adicionar/selecionar clip específico de ferido quando houver recurso disponível.
-
 ### Ataque básico automático — 2026-11-05
 
 **Status:** opção experimental “Ataque básico automático (teste)” nas Opções, desligada por padrão
@@ -42,21 +26,6 @@ Tipos, lint, build e regressão no navegador aprovados.
 
 - [x] Repetir básicos no inimigo clicado, preservando as mecânicas de cada arma.
 - [x] Respeitar alcance, pausa, especiais e cancelamento; manter a carga básica da clava após soltar o clique.
-
-### Ajustes de 2026-11-06 (referência LoL)
-
-- [x] Básico automático limitado a 1,5 por segundo (`ATAQUE_AUTO`, acelerado pelo atributo velocidade).
-- [x] Básico do arco no automático: tiro sem carga no inimigo clicado, 5 tiles, 0,6× o dano base, 1 flecha (`ARCO_BASICO`).
-      Refeito no mesmo dia ("rajadão", alcance grande): o clique puxa a corda por 3 s com som de corda, mirando no alvo
-      e mostrando o percurso no chão, e solta sozinha com a força da carga cheia (1,5×); 3,5 tiles; 0,4 s até a próxima
-      puxada; fora do alcance ela segura a corda; o botão direito no meio assume como tiro carregado.
-      Depois, a pedido: puxada 50% mais rápida (3 s → 2 s).
-- [x] Segurar Alt: anel fino do alcance do básico (no arco, também o do tiro carregado, mais apagado).
-- [x] Quebra de fôlego sem queda: a próxima barra do inimigo já vem cheia (cada quebra custa o mesmo esforço).
-- [x] Primeiro personagem escolhe rosto e cores de pele/cabelo depois de nascer (corpo segue sorteado); os seguintes
-      nascem sorteados. Corpos das deusas fora do sorteio (as cabeças continuam).
-- [x] Aura das deusas: fitas que enrolam o corpo só em corpo de deusa e mais transparentes; véus soltos mais leves.
-- [ ] Ataque automático andar até o alvo fora do alcance (decidir) · marca própria do alvo automático.
 
 ### Sorteio feminino completo — 2026-11-04
 
@@ -158,9 +127,7 @@ de navegador (cinemática completa e botão dentro do acampamento) passaram.
 
 **Status:** personagens e prévia entregues; detalhes em `docs/personagens-2026-11-03.md`.
 Cópia anterior em `backups/personagens-2026-11-03/`.
-Teto atualizado pelo mantenedor em 2026-11-05: cerca de 25 mil triângulos no personagem completo, priorizando a definição do rosto.
-
-Revisão de 2026-11-05: F01–F06 usam montagens integrais individuais, com cabeça, pescoço, ombros e busto da fonte. Abdômen e braços são unidos por contornos fechados no mesmo esqueleto, sem alongar o peito para alcançar a cintura. Quatro conjuntos de roupa por montagem (24 no total) foram ajustados; cós e alças respeitam as alturas de cada corpo. Cabeças regeneradas com prioridade geométrica para a face. Auditoria usa as combinações reais e o teto de 25 mil; referências e instruções em `docs/modelos-modulares-2026-11-05.md`. A conferência de todas as cabeças alternativas, roupas misturadas e movimentos extremos continua pendente.
+Teto acordado: 20 mil triângulos no personagem completo; detalhe concentrado no rosto e nas articulações.
 
 - [ ] Reconstruir os corpos e os personagens existentes, preservando as animações e corrigindo os pesos dos ombros.
 - [ ] Preparar os 16 bustos texturizados e seus encaixes; seis rostos correspondentes como padrão dos corpos femininos.

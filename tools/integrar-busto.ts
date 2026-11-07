@@ -1,4 +1,4 @@
-﻿/** Busto integral no rig de um corpo: conserva pescoço/ombros originais e costura abdômen e braços.
+/** Busto integral no rig de um corpo: conserva pescoço/ombros originais e costura abdômen e braços.
  * node tools/integrar-busto.ts [plano] [--corpo=corpo_f02] [--cabeca=busto_02] [--publicar]
  * O padrão só gera em build/modelos. Publicar é uma etapa explícita após revisão das capturas. */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -12,7 +12,6 @@ import { caixa, recortar, subMalha, type Regiao } from "./lib/glb.ts";
 import { reduzirPecaUV, type PecaBaixa } from "./lib/peca.ts";
 import { reduzirComPrioridadeRosto } from "./lib/reduzir-rosto.ts";
 import { segmentarCabeca } from "./lib/mascara_aparencias.ts";
-import { substituirCabeloBusto, fragmentosCabelo, type OrigemCabelo } from "./lib/cabelo-busto.ts";
 import { reposicionarJuntas, transferirPesosBusto } from "./lib/rig-busto.ts";
 import { ErroUniaoBusto, unirBustoIntegral } from "./lib/uniao-busto.ts";
 import {
@@ -30,15 +29,7 @@ interface Combinacao {
   tris: number;
   proporcaoRosto: number;
   abaixoQueixoRosto: number;
-  fonte: {
-    eixoX: number;
-    eixoXBase?: number;
-    eixoXBaseY?: [number, number];
-    bracoY: number;
-    bracoZ: number;
-    narizZ: number;
-    pescocoZ: number;
-  };
+  fonte: { eixoX: number; bracoY: number; bracoZ: number; narizZ: number; pescocoZ: number };
   destino: { bracoX: number; bracoY: number; eixoZ: number };
   esticarBase: { distancia: number; inicio: number; fim: number };
   cortes: { corpoY: number; bustoY: number; corpoBraco: number; bustoBraco: number; fimAjusteBase: number };
@@ -46,13 +37,6 @@ interface Combinacao {
   harmonizarPele?: HarmonizacaoBusto;
   suavizar?: SuavizacaoBusto;
   preservarCabelo?: boolean;
-  /** Completa pequenas falhas da máscara nas bordas do cabelo comprido, antes de recortar. */
-  margemCabelo?: number;
-  /** A paleta clara da F16 confunde sombras do peito/braços com cabelo; protege essas regiões anatômicas. */
-  protegerPeleBusto?: boolean;
-  /** Desliga o ajuste horizontal da base quando a fonte termina logo abaixo dos seios. */
-  ajustarBase?: boolean;
-  cabeloDaCabeca?: OrigemCabelo;
 }
 interface Plano {
   aparencias: string;
@@ -182,10 +166,7 @@ async function integrar(c: Combinacao, corpo: CorpoDados, cab: CabecaDados, font
       (y >= limite ? cima : baixoTris).push(t);
     }
     const cabeca = await reduzirComPrioridadeRosto(subMalha(fonte, cima), Math.round(c.tris * c.proporcaoRosto), {
-      queixo: qRaw,
-      olhos: olhoRaw,
-      eixoX: c.fonte.eixoX,
-      narizZ: c.fonte.narizZ,
+      queixo:qRaw,olhos:olhoRaw,eixoX:c.fonte.eixoX,narizZ:c.fonte.narizZ,
     });
     const tronco = await reduzirPecaUV(subMalha(fonte, baixoTris), Math.round(c.tris * (1 - c.proporcaoRosto)), true);
     baixo = { p: [...cabeca.p, ...tronco.p], c: [...cabeca.c, ...tronco.c], uv: [...cabeca.uv, ...tronco.uv] };
@@ -225,11 +206,6 @@ async function integrar(c: Combinacao, corpo: CorpoDados, cab: CabecaDados, font
     P: number[] = [],
     I: number[] = [],
     chaves = new Map<string, number>();
-  // Algumas fontes deslocam o tórax em relação ao rosto. Centraliza a base sem estreitar os seios.
-  const eixoFonte = (y: number) =>
-    c.fonte.eixoX +
-    ((c.fonte.eixoXBase ?? c.fonte.eixoX) - c.fonte.eixoX) *
-      (1 - suave(c.fonte.eixoXBaseY?.[0] ?? c.fonte.bracoY + 0.02, c.fonte.eixoXBaseY?.[1] ?? qRaw - 0.01, y));
   for (let k = 0; k < baixo.p.length; k += 3) {
     const raw = baixo.p.slice(k, k + 3),
       chave = raw.map((v) => Math.round(v * 1e7)).join(",");
@@ -242,15 +218,13 @@ async function integrar(c: Combinacao, corpo: CorpoDados, cab: CabecaDados, font
       P.push(
         TX + raw[2] * escala,
         y - c.esticarBase.distancia * (1 - suave(c.esticarBase.inicio, c.esticarBase.fim, y)),
-        c.destino.eixoZ - (raw[0] - eixoFonte(raw[1])) * escala,
+        c.destino.eixoZ - (raw[0] - c.fonte.eixoX) * escala,
       );
     }
     I.push(v);
   }
   const normalizadas = Int16Array.from(pRaw, (p, i) =>
-    Math.round(
-      ((i % 3 === 0 ? p - eixoFonte(pRaw[i + 1]) : i % 3 === 1 ? p - qRaw : p - c.fonte.narizZ) / uRaw) * 1000,
-    ),
+    Math.round(((i % 3 === 0 ? p - c.fonte.eixoX : i % 3 === 1 ? p - qRaw : p - c.fonte.narizZ) / uRaw) * 1000),
   );
   const mascaraBusto = segmentarCabeca(
     normalizadas,
@@ -259,41 +233,6 @@ async function integrar(c: Combinacao, corpo: CorpoDados, cab: CabecaDados, font
     cab,
     fonteCab.manter,
   );
-  const perfilCostas = new Map<string, number>();
-  if (c.protegerPeleBusto)
-    for (let v = 0; v < A.P.length / 3; v++) {
-      const key = [1, 2].map((e) => Math.round(A.P[v * 3 + e] * 2)).join(",");
-      perfilCostas.set(key, Math.min(perfilCostas.get(key) ?? Infinity, A.P[v * 3]));
-    }
-  if (c.protegerPeleBusto)
-    for (let t = 0; t < I.length / 3; t++) {
-      const q = [0, 1, 2].map((e) => [0, 1, 2].reduce((s, k) => s + normalizadas[I[t * 3 + k] * 3 + e], 0) / 3000);
-      const torax = q[1] < -0.3 && q[2] > -2.0;
-      const braco = q[1] < -0.6 && q[1] > -3 && Math.abs(q[0]) > 2.6 && q[2] > -3.8;
-      if (torax || braco) mascaraBusto[t] = 1;
-      // Reflexos do tom da pele continuam sendo cabelo quando ficam atrás da superfície do corpo.
-      const centro = [0, 1, 2].map((e) => [0, 1, 2].reduce((s, k) => s + P[I[t * 3 + k] * 3 + e], 0) / 3);
-      let costas = Infinity;
-      for (let dy = -1; dy <= 1; dy++)
-        for (let dz = -1; dz <= 1; dz++)
-          costas = Math.min(
-            costas,
-            perfilCostas.get([Math.round(centro[1] * 2) + dy, Math.round(centro[2] * 2) + dz].join(",")) ?? Infinity,
-          );
-      if (centro[1] < queixoY - 0.5 && Number.isFinite(costas) && centro[0] < costas - 0.45) mascaraBusto[t] = 2;
-    }
-  for (let passo = 0; passo < (c.margemCabelo ?? 0); passo++) {
-    const verticesCabelo = new Uint8Array(P.length / 3);
-    for (let t = 0; t < I.length / 3; t++)
-      if (mascaraBusto[t] === 2) for (let k = 0; k < 3; k++) verticesCabelo[I[t * 3 + k]] = 1;
-    for (let t = 0; t < I.length / 3; t++) {
-      if (mascaraBusto[t] !== 0) continue;
-      const vs = I.slice(t * 3, t * 3 + 3);
-      const y = vs.reduce((s, v) => s + normalizadas[v * 3 + 1], 0) / 3000;
-      const z = vs.reduce((s, v) => s + normalizadas[v * 3 + 2], 0) / 3000;
-      if (y < 0 && z < -1.5 && vs.filter((v) => verticesCabelo[v]).length >= 2) mascaraBusto[t] = 2;
-    }
-  }
   // A máscara de cabeça não semeia todo o peito. Fora da região facial, só completa cores próximas à pele.
   // Olhos, delineado, enfeites e os demais zeros continuam intactos.
   if (cab.refPele)
@@ -307,14 +246,14 @@ async function integrar(c: Combinacao, corpo: CorpoDados, cab: CabecaDados, font
   for (let t = 0; t < I.length / 3; t++)
     for (let k = 0; k < 3; k++) partes[I[t * 3 + k]] |= mascaraBusto[t] === 2 ? 2 : 1;
   // O alongamento da base pertence à pele. Cabelo comprido mantém a altura original.
-  for (let v = 0; v < P.length / 3; v++) if (partes[v] & 2) P[v * 3 + 1] = TY + pRaw[v * 3 + 1] * escala;
+  for (let v = 0; v < P.length / 3; v++)
+    if (partes[v] & 2) P[v * 3 + 1] = TY + pRaw[v * 3 + 1] * escala;
   const indicesPele: number[] = [];
   for (let t = 0; t < I.length / 3; t++)
     if (mascaraBusto[t] !== 2) indicesPele.push(I[t * 3], I[t * 3 + 1], I[t * 3 + 2]);
   const bb = limitesCorte(A.P, A.I, c.cortes.corpoY),
     nb = limitesCorte(P, indicesPele, c.cortes.bustoY);
   for (let v = 0; v < P.length / 3; v++) {
-    if (c.ajustarBase === false) continue;
     if (partes[v] & 2) continue;
     const f = 1 - suave(c.cortes.bustoY, c.cortes.fimAjusteBase, P[v * 3 + 1]);
     for (const [i, e] of [0, 2].entries()) {
@@ -326,7 +265,7 @@ async function integrar(c: Combinacao, corpo: CorpoDados, cab: CabecaDados, font
     A,
     P,
     { queixoY, basePescocoY: neck[1], eixoZ: c.destino.eixoZ },
-    Uint8Array.from(partes, (p) => (c.protegerPeleBusto ? (p & 2 ? 1 : 0) : p === 2 ? 1 : 0)),
+    Uint8Array.from(partes, (p) => (p === 2 ? 1 : 0)),
   );
   const lado = plano.tamanhoTextura,
     altura = lado + plano.rodapeTextura,
@@ -366,39 +305,19 @@ async function integrar(c: Combinacao, corpo: CorpoDados, cab: CabecaDados, font
     corBusto: cab.refPele?.map((v) => v / 255) as V3 | undefined,
     amostrasAnel: c.amostrasAnel,
     alturaMinBracos: c.destino.bracoY - 3.5,
-    preservarTriangulosBusto:
-      c.preservarCabelo === false ? undefined : Uint8Array.from(mascaraBusto, (p) => (p === 2 ? 1 : 0)),
+    preservarTriangulosBusto: c.preservarCabelo === false ? undefined : Uint8Array.from(mascaraBusto, (p) => (p === 2 ? 1 : 0)),
   });
   const mascaraCorpo = corpo.mascara ? Buffer.from(corpo.mascara, "base64") : new Uint8Array(A.I.length / 3);
-  let mascara = Uint8Array.from(uniao.origemTriangulos, (origem, t) =>
+  const mascara = Uint8Array.from(uniao.origemTriangulos, (origem, t) =>
     origem === 0 ? mascaraCorpo[uniao.triangulosFonte[t]] : origem === 1 ? mascaraBusto[uniao.triangulosFonte[t]] : 1,
   );
-  let malha = c.suavizar ? suavizarTransicoes(uniao.malha, c.suavizar) : uniao.malha;
-  let regioes = uniao.origemTriangulos;
-  if (c.cabeloDaCabeca) {
-    const fragmentos = fragmentosCabelo(cab, c.cabeloDaCabeca, pRaw, I);
-    for (let t = 0; t < mascara.length; t++)
-      if (uniao.origemTriangulos[t] === 1 && fragmentos[uniao.triangulosFonte[t]]) mascara[t] = 2;
-    const novo = substituirCabeloBusto(malha, mascara, regioes, cab, c.cabeloDaCabeca, {
-      escala,
-      TX,
-      TY,
-      eixoX: c.fonte.eixoX,
-      eixoZ: c.destino.eixoZ,
-      fatorV: (lado + 8) / altura,
-    });
-    malha = novo.malha;
-    mascara = novo.mascara;
-    regioes = novo.regioes;
-    uniao.relatorio.triangulos = malha.I.length / 3;
-    uniao.relatorio.vertices = malha.P.length / 3;
-  }
+  const malha = c.suavizar ? suavizarTransicoes(uniao.malha, c.suavizar) : uniao.malha;
   return {
     corpo: c.corpo,
     cabeca: c.cabeca,
     anim: serializar(malha, rig),
     mascara: b64(mascara),
-    regiaoPele: b64(regioes),
+    regiaoPele: b64(uniao.origemTriangulos),
     refPele: cab.refPele,
     refPeleInferior: c.harmonizarPele ? cab.refPele : (corpo.refPeleCorpo ?? corpo.refPele),
     refCabelo: cab.refCabelo,
@@ -411,7 +330,7 @@ const selecionadas = plano.combinacoes.filter(
   (c) => (!opcao("corpo") || c.corpo === opcao("corpo")) && (!opcao("cabeca") || c.cabeca === opcao("cabeca")),
 );
 if (!selecionadas.length) throw new Error("Nenhuma combinação do plano corresponde à seleção.");
-if (new Set(selecionadas.map((c) => c.corpo + "|" + c.cabeca)).size !== selecionadas.length)
+if (new Set(selecionadas.map(c=>c.corpo+"|"+c.cabeca)).size !== selecionadas.length)
   throw new Error("O plano contém combinações duplicadas.");
 mkdirSync(plano.saida, { recursive: true });
 for (const c of selecionadas) {

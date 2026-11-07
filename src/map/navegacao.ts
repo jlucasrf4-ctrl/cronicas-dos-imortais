@@ -6,7 +6,6 @@ import { CONFIG } from "../core/config.ts";
 import { world } from "../core/state.ts";
 import { NAV_DIRS } from "../data/mapa.ts";
 import { isWaterCell } from "./agua.ts";
-import { montanhaEm } from "./terreno.ts";
 import { clampX, clampY } from "../sim/animais.ts";
 import { findNearestFood } from "../sim/vegetacao.ts";
 import type { Andante, Animal, CaminhoNav, Hero, Planta, Ponto } from "../core/tipos.ts";
@@ -48,10 +47,6 @@ export function navBuild() {
       j = Math.round((p.y - oy) / step);
     if (i >= 0 && j >= 0 && i < w && j < h) NAV.blocked[j * w + i] = 1;
   }
-  // v8.1 — o paredão da montanha (map/terreno.ts) também barra: 2 (isWaterCell só vê o 1, a água de pescar e beber)
-  for (let j = 0; j < h; j++)
-    for (let i = 0; i < w; i++)
-      if (!NAV.blocked[j * w + i] && montanhaEm(ox + i * step, oy + j * step)) NAV.blocked[j * w + i] = 2;
   const q = new Int32Array(w * h);
   NAV.compSize = [];
   for (let s = 0; s < w * h; s++) {
@@ -84,7 +79,7 @@ export function navBuild() {
   const spots = []; // margens: par (água, terra vizinha) para beber sem entrar na água
   for (let j = 0; j < h; j++)
     for (let i = 0; i < w; i++) {
-      if (NAV.blocked[j * w + i] !== 1) continue; // v8.1: só água (o paredão da montanha não dá de beber)
+      if (!NAV.blocked[j * w + i]) continue;
       let got = -2;
       for (const [dx, dy] of NAV_DIRS) {
         const nx = i + dx,
@@ -187,7 +182,7 @@ export function compAt(x: number, y: number) {
   if (!NAV.ready) return 0;
   let idx = navIdx(x, y);
   if (NAV.blocked![idx]) {
-    idx = nearestLand(idx, NAV.blocked![idx] === 2 ? 60 : 3, -1); // v8.1: o paredão é largo
+    idx = nearestLand(idx, 3, -1);
     if (idx < 0) return -1;
   }
   return NAV.comp![idx];
@@ -310,14 +305,13 @@ export function findPath(sx: number, sy: number, tx: number, ty: number, maxLen:
   if (!NAV.ready) return null;
   let si = navIdx(sx, sy),
     gi = navIdx(tx, ty);
-  // v8.1: dentro do paredão da montanha (2) a terra livre pode estar bem mais longe que na beira d'água
   if (NAV.blocked![si]) {
-    si = nearestLand(si, NAV.blocked![si] === 2 ? 60 : 4, -1);
+    si = nearestLand(si, 4, -1);
     if (si < 0) return null;
   }
   const c = NAV.comp![si];
   if (NAV.blocked![gi]) {
-    gi = nearestLand(gi, NAV.blocked![gi] === 2 ? 60 : 6, c);
+    gi = nearestLand(gi, 6, c);
     if (gi < 0) return null;
   } else if (NAV.comp![gi] !== c) return null; // outra ilha: sem rota por terra
   const maxCost = isFinite(maxLen) ? (maxLen / NAV.step) * 1.35 + 2 : Infinity;

@@ -143,7 +143,7 @@ function partesVestidas(visual: Aparencia | undefined, equip?: Equip) {
   return partesDaArmadura(visual, equip);
 }
 /** A pele de uma aparência (null = a heroína de sempre), com a cabeça própria da líder vinda dos manequins. */
-export function peleDoVisual(visual: Aparencia | undefined) {
+function peleDoVisual(visual: Aparencia | undefined) {
   return peleDaAparencia(visual, (corpo) => {
     if (/^corpo_f0[1-6]$/.test(corpo)) return vestidoPorNome(corpo)?.anim ?? null;
     return corpo === "heroina" ? dadosHeroina() : (vestidoPorNome(PROPRIA[corpo] ?? corpo)?.anim ?? null);

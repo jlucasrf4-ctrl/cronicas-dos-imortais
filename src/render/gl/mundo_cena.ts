@@ -14,8 +14,7 @@ import { mbCenario, mbCenarioItem } from "./cenario.ts";
 import { mbPedraMinerio, tipoPedraPorPeso } from "./pedras_minerio.ts";
 import { PEDRA_MINERIO } from "../../data/pedras.ts";
 import { MUNDO, cantoCampo, registrarObstaculos } from "../../map/mundo.ts";
-import { MONTANHA, aguaEm, arvoresEm, corTerra, densEm, terrenoPronto } from "../../map/terreno.ts";
-import { MONTES, mbMontanhas, temMontanhas } from "./montanhas.ts";
+import { aguaEm, arvoresEm, corTerra, densEm, terrenoPronto } from "../../map/terreno.ts";
 import { D3 } from "../../field/projecao.ts";
 import { alturaRelevo, brilhoFace, hashRelevo, tremorVertice } from "./relevo.ts";
 import { AGUA, aguaPush, malhaAgua } from "./agua.ts";
@@ -261,16 +260,8 @@ function chao(b: MalhaCrua, ag: MalhaCrua, ax0: number, az0: number, B: number, 
         fz = az0 + j * s + tz,
         mx = fx * e,
         my = fz * e,
-        { w, anel } = medirAgua(fx, fz, s, T),
-        dm = densEm(mx, my);
-      let terra = corChao(fx, fz, dm[0] / 255, corTerra(mx, my));
-      // v8.1: da borda da montanha para dentro, o chão vira rocha (não aparece grama entre as colinas)
-      if (temMontanhas() && dm[1] > MONTANHA.borda)
-        terra = misturar(
-          terra,
-          MONTES.rocha,
-          0.85 * suave(Math.min(1, (dm[1] - MONTANHA.borda) / (MONTANHA.parede + 8 - MONTANHA.borda))),
-        );
+        { w, anel } = medirAgua(fx, fz, s, T);
+      let terra = corChao(fx, fz, densEm(mx, my)[0] / 255, corTerra(mx, my));
       terra = misturar(corEstacao(terra, "chao", 1, 0), CENA.areia, Math.min(1, anel * 2 + w)); // v8.1: a estação
       const leito = misturar(CENA.leito, CENA.leitoFundo, anel * anel);
       cor.push(misturar(terra, leito, suave(w)));
@@ -499,10 +490,9 @@ function construir(bi: number, bj: number): Omit<BlocoCenario, "usado"> {
         fz = (j + 0.2 + 0.6 * hash(i, j, 3)) * T,
         d = densEm(fx * e, fz * e),
         f = d[0] / 255,
-        monte = d[1] >= MONTANHA.borda,
+        monte = d[1] >= 10,
         p = monte ? 0.22 : CENA.mato[0] + (CENA.mato[1] - CENA.mato[0]) * f;
       if (hash(i, j, 4) > p || !seco(fx, fz, T * 0.3) || naClareira(fx, fz)) continue;
-      if (temMontanhas() && d[1] >= MONTANHA.parede - 6) continue; // v8.1: no paredão só as colinas e os picos
       let perto = false;
       for (let k = 0; k < postas.length && !perto; k += 2)
         perto = Math.hypot(postas[k] - fx, postas[k + 1] - fz) < T * 0.7;
@@ -599,10 +589,8 @@ function construir(bi: number, bj: number): Omit<BlocoCenario, "usado"> {
   const C = CENA.capim;
   for (let i = n0; i < n0 + MUNDO.bloco; i++)
     for (let j = m0; j < m0 + MUNDO.bloco; j++) {
-      const dc = densEm((i + 0.5) * T * e, (j + 0.5) * T * e),
-        f = dc[0] / 255,
+      const f = densEm((i + 0.5) * T * e, (j + 0.5) * T * e)[0] / 255,
         q = C.tufos[0] + (C.tufos[1] - C.tufos[0]) * f;
-      if (temMontanhas() && dc[1] >= MONTANHA.parede - 10) continue; // v8.1: capim não na rocha da montanha
       for (let k = 0; k < Math.ceil(q); k++) {
         const sem = i * 7919 + j * 104729 + k * 31,
           fx = (i + hash(sem, 1, 30)) * T,
@@ -620,8 +608,6 @@ function construir(bi: number, bj: number): Omit<BlocoCenario, "usado"> {
         erguer(n0, fx, fz);
       }
     }
-  // v8.1 — a cordilheira (render/gl/montanhas.ts): os morrotes do pé barram; o paredão barra pelo contorno do mapa
-  obst.push(...mbMontanhas(b, ax0, az0, B, T, e, alturaChao));
   registrarObstaculos(bloco, obst);
   const agua = malhaAgua(ag);
   if (agua) agua.relevo = true;

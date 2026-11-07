@@ -18,17 +18,6 @@ export const COMBO = [
 export const CLAVA_COMBO = [0.9, 1.05]; // clava: os 2 golpes do clique esquerdo (field/armas.ts: hvClubCombo)
 export const CLAVA_CD = 0.55; // intervalo depois do combo da clava
 export const COMBO_WINDOW = 0.75; // segundos para encadear o próximo clique
-/* Ataque básico automático (clique no inimigo): no máximo `porSeg` golpes por segundo, acelerado pelo atributo
-   velocidade como os demais golpes (mantenedor, 2026-11-06: "menos de 1,5 ataques por segundo", referência LoL). */
-export const ATAQUE_AUTO = { porSeg: 1.5 };
-/* Básico do arco (mesma opção do automático). Mantenedor, 2026-11-06: "o range tá muito grande… os tiros estão sendo
-   rajadão; o tiro deve demonstrar o percurso da flecha antes de atirar: clica, barulhinho de puxar a corda, 3 segundos,
-   atira". Clicar no inimigo puxa a corda por `puxada` s parada (andando demora mais, como no carregado; Força acelera),
-   mirando sozinha nele e mostrando no chão o percurso até ele; cheia, solta: `alcance` tiles, `dano` × o dano base do
-   arco (a força da carga cheia; o carregado vai de 0,45 a 1,5 ×, mas não empurra nem crava como o cheio manual), 1
-   flecha, sem fôlego, e `pausa` s até a próxima puxada. Se o alvo sai do alcance, ela segura a corda até ele voltar. */
-// 2026-11-06: "a puxada tá muito lenta, aumenta em 50% a velocidade" → 3 s ÷ 1,5 = 2 s.
-export const ARCO_BASICO = { alcance: 3.5, puxada: 2, dano: 1.5, pausa: 0.4, velocidade: 420 };
 export const POUNCE_LOCK = 0.35; // tempo em que a área do bote fica visível (e travada) antes do salto
 
 interface Arma {
@@ -188,7 +177,17 @@ export const DANO = {
   CRAVAR: <Record<string, Cravada>>{
     // v8.0: a flecha tira uma FRAÇÃO do fôlego do bicho (era 5 fixos: 1 cravada sempre derrubava cervo e coelho)
     // v8.1 (mantenedor, 2026-10-30): a flecha fica cravada (1 de fôlego por segundo) e cada queda sangra 3 (1 por s)
-    flecha: { pago: "tick", dur: 5, folego: 5, folFrac: 0.25, folFracCheia: 0.45, vida: 3, max: 4, fica: 1, sangraQueda: 3 },
+    flecha: {
+      pago: "tick",
+      dur: 5,
+      folego: 5,
+      folFrac: 0.25,
+      folFracCheia: 0.45,
+      vida: 3,
+      max: 4,
+      fica: 1,
+      sangraQueda: 3,
+    },
     lanca_arremesso: { pago: "tick", dur: 6, folego: 9, vida: 4 },
     faca: { pago: "arranque", tempoMax: 3, inicial: 4, teto: 9, ganho: 1.5 },
     espada: { pago: "arranque", tempoMax: 4, inicial: 5, teto: 12, ganho: 1.5 },
@@ -200,7 +199,7 @@ export const DANO = {
     impacto: 0.4,
     regen: 0.5,
     espera: 2.5,
-    tetoMin: 0.25, // o mínimo do teto do fôlego (a perda por queda: EXAUSTAO.perdaInterna)
+    tetoMin: 0.25, // teto mínimo da recuperação no cabo de guerra do laço
     vel: [1, 0.85, 0.7, 0.55], // v7.7: velocidade por faixa de fôlego (100–75% · 75–50% · 50–25% · abaixo de 25%)
     koT: 8, // v7.7: o bicho caído levanta 50% mais rápido (era 12)
     koBoss: 4, // (era 6)
@@ -235,42 +234,37 @@ export const CRAV2 = {
   debate: [1.2, 2.2],
   debateStam: 12, // debatida: a cada x s tira stamina do jogador
   somSeg: 0.32, // som contínuo enquanto segura
-  pulso: 1, // empurrão a cada x s
-  fundo: 0.18, // o máximo da lâmina dentro do corpo (fração: CravadoNaHeroina.dep)
+  pulso: 1, // intervalo entre tiques: 1 de vida e 2 de fôlego do inimigo
+  fundo: 0.18, // penetração máxima: lança = 18% do comprimento; espada/faca = 18% da lâmina
 };
-/* v7.7 — fôlego interno do jogador (dungeon.gint, 0..100, o cinza do anel). Só volta com o fôlego de fora cheio.
-   v8.0 (mantenedor, 2026-10-24): o interno não é mais o teto do fôlego de fora (gstam, o verde) e o de fora não tira
-   mais do interno ao zerar; a única ligação é zerar o interno, que derruba o de fora (`queda`). */
+/* Reserva interna do jogador (0..100): recupera com a externa cheia. Ginga, arco e madeira gastam a externa;
+   seu esgotamento tira 20% do máximo interno. O dash do arco mantém seu custo interno próprio. */
 export const FOL_HEROI = {
-  perdaInterna: 0.2, // a barra de fôlego quebrou: o interno perde isso (field/folego.ts)
-  corrida: [0.65, 0.8, 0.9, 0.95, 1], // a velocidade da corrida por faixa do interno (field/folego.ts)
-  suavizarCorrida: 5, // quão rápido a velocidade da corrida acompanha a faixa (field/chao.ts)
+  perdaInterna: 0.2, // fração do máximo por esgotamento externo das atividades
+  corrida: [0.65, 0.8, 0.9, 0.95, 1], // reserva: 0, 25, 50, 75, 100%
+  suavizarCorrida: 5, // aproximação exponencial por segundo
   volta: 8, // quanto o interno volta por segundo (com o fôlego de fora cheio e parado de gastar)
   rolar: 25, // cada rolamento (dash do arco) tira isso do interno; sem interno acima do mínimo + isso, não rola
   min: 0, // o interno pode zerar (v7.7; era 25)
   minLaco: 25, // o cabo de guerra do laço tira do interno só até aqui (depois, do fôlego de fora)
   // o fôlego de fora volta 25 × isso por segundo. v7.7 era 0,5 a 2,5 conforme os quartos do interno cheio; v8.0 fixo
-  // no valor de interno cheio (o interno não mexe mais na corrida)
+  // no valor de interno cheio; a reserva afeta a velocidade, sem reduzir esta recuperação
   voltaFora: 2.5,
 };
-/* v8.0 — segurar o arco puxado ao máximo (mantenedor, 2026-10-24: "solta sozinho… não mostra quanto tempo eu ainda
-   tenho"): no lugar do limite fixo de 1,6 s, cada `passo` s cheio tira `gasto` do fôlego interno (o cinza do anel, o
-   mesmo do rolamento; mantenedor: "use a stamina interna"); sem interno para mais um passo, ela perde a mira (sem
-   atirar). O interno gasto assim volta `volta` × mais rápido (150% mais rápido). Clique esquerdo puxando = cancela. */
-/* A exaustão (field/folego.ts, field/tipos.ts): o interno perdido a cada quebra/queda, a chance de cair por etapa,
-   a velocidade e a defesa por etapa, a proteção ao levantar, a fuga e o impacto do machado no próprio fôlego.
-   (recuperado do build de 2026-11-06 19:50 depois da corrupção do disco; os comentários originais se perderam) */
+/* Quebras de resistência: parâmetros de balanceamento compartilhados. */
 export const EXAUSTAO = {
   perdaInterna: 0.25,
   chanceQueda: [0.2, 0.25, 0.5, 0.8],
-  velocidade: [1, 0.85, 0.65, 0.25],
+  velocidade: [1, 0.85, 0.65, 0.25], // 75%, 50%, 25%, 0% internos
   defesa: [1, 0.8, 0.55, 0.2],
-  protecaoLevantar: 3,
+  protecaoLevantar: 3, // segundos sem nova queda depois de levantar
   fuga: { duracao: 3, velocidade: 1.35 },
-  impactoMachado: 0.03,
-  impactoMachadoEm: 0.18,
+  impactoMachado: 0.03, // fração dos 100 pontos externos por árvore atingida
+  impactoMachadoEm: 0.18, // contato na descida existente de 0,46 s
 };
-export const ARCO_FOL ={ passo: 0.4, gasto: 10, volta: 2.5 };
+/* A puxada gasta a externa na taxa gasto/passo; cheio, mantém os pulsos existentes.
+   `volta` conserva a recuperação das dívidas internas antigas de arco (folArco). */
+export const ARCO_FOL = { passo: 0.4, gasto: 10, volta: 2.5 };
 /* v8.0 — parry como janela ativa (mantenedor, 2026-10-24: "acertando o tempo, outro bicho atacando junto… o parry só
    conta no primeiro"): o clique abre a janela; cada golpe de frente que CHEGA dentro dela é avaliado na hora em que
    chega (perfeito até PARRY_PERFECT s depois do clique, parcial até PARRY_NEAR). Antes era uma foto do clique: só valia

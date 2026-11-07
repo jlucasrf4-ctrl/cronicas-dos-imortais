@@ -770,9 +770,6 @@ export interface Dungeon {
   py: number;
   moveTarget: Ponto | null;
   alvoAutomatico?: Monster | null;
-  autoCd?: number; // s até o próximo básico automático (ATAQUE_AUTO)
-  tiroAuto?: boolean; // a corda puxada agora é o básico do arco (ARCO_BASICO): mira no alvo e solta sozinha
-  _pararPuxada?: (() => void) | null; // corta o som da corda se a puxada do básico acaba antes
   especialPressionado?: boolean;
   hp: number;
   hpMax: number;

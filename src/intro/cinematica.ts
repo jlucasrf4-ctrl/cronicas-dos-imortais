@@ -1426,10 +1426,6 @@ export function init() {
           dungeon.alvoAutomatico = _hit;
           dungeon.moveTarget = null;
         }
-      } else if (dungeon.weapon === "bow" && OPT.ataqueAutomatico) {
-        // básico do arco: marca (como antes) e atira sozinho ao alcance (field/chao.ts autoAttack)
-        dungeon.alvoAutomatico = _hit;
-        dungeon.moveTarget = null;
       }
       return;
     }
@@ -1670,11 +1666,7 @@ export function init() {
       return;
     }
     if (["KeyW", "KeyA", "KeyS", "KeyD", "ShiftLeft", "ShiftRight"].includes(e.code)) dungeon.keys![e.code] = true;
-    else if (e.code === "AltLeft" || e.code === "AltRight") {
-      // segurar Alt mostra o alcance (field/chao.ts anelAlcance); sem o menu do navegador
-      e.preventDefault();
-      dungeon.keys![e.code] = true;
-    } else if (e.code === "KeyQ") switchWeapon();
+    else if (e.code === "KeyQ") switchWeapon();
     else if (e.code === "KeyH") healHerb();
     else if (e.code === "Space") {
       e.preventDefault();
@@ -1691,7 +1683,6 @@ export function init() {
   });
   window.addEventListener("keyup", (e) => {
     if (dungeon.keys) dungeon.keys[e.code] = false;
-    if (dungeon.active && (e.code === "AltLeft" || e.code === "AltRight")) e.preventDefault();
     if (e.code === "Space") dungeon.guard = false;
     if (e.code === "KeyE") eSolto(); // v7.7
     if (e.code === "KeyC") cSolto(); // v8.1

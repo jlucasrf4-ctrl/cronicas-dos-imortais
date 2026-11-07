@@ -108,7 +108,12 @@ const REGIAO: Record<string, string> = {
 const regiaoDe = (A: Anim, v: number) => {
   let j = 0,
     w = -1;
-  for (let k = 0; k < 4; k++) if (A.W[v * 4 + k] > w) ((w = A.W[v * 4 + k]), (j = A.J[v * 4 + k]));
+  for (let k = 0; k < 4; k++) {
+    if (A.W[v * 4 + k] > w) {
+      w = A.W[v * 4 + k];
+      j = A.J[v * 4 + k];
+    }
+  }
   const nome = A.juntas[j].replace(/^mixamorig:?/, "");
   return REGIAO[nome] ?? nome;
 };
@@ -182,7 +187,10 @@ for (const visual of visuais) {
         tot = pp.reduce((s, p) => s + p.length, 0),
         P = new Float32Array(tot);
       let o = 0;
-      for (const p of pp) (P.set(p, o), (o += p.length));
+      for (const p of pp) {
+        P.set(p, o);
+        o += p.length;
+      }
       const g = grade(P, CEL);
       let vazados = 0,
         area = 0;

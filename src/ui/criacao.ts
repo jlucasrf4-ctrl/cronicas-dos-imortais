@@ -14,8 +14,6 @@ import { sfx } from "../field/chao.ts";
 import { PALCO, PORT, glPortrait, glRetratoCriacao, palcoAlternar, palcoIr } from "../render/retrato.ts";
 import { ACOES_CRIACAO } from "../data/retrato.ts";
 import { attrBarsHtml } from "./ficha.ts";
-import { cabeNoCorpo, cabecaNoJogo, opcoesAparencia } from "../render/gl/aparencias.ts";
-import { PALETA_PELE, PALETA_CABELO } from "../data/aparencias.ts";
 import type { Hero } from "../core/tipos.ts";
 
 /* ---------- criação: você só dá o nome; o resto nasce ---------- */
@@ -65,76 +63,10 @@ export function confirmCreateHero() {
     return;
   }
   payCost(cost);
-  // só o primeiro personagem escolhe rosto e cores (o corpo segue sorteado); os seguintes nascem sorteados
-  const primeiro = world.heroes.length === 0;
   const h = createHero(name, bornFromSeed(newSeed())); // a semente nasce AGORA, sem prévia: não dá pra escolher
   ensureEquip(h); // o retrato de nascimento já mostra o equipamento inicial que ela usará no campo
   updateHeroPanelUI();
   playBirth(h);
-  if (primeiro) escolhaAparencia(h);
-}
-
-/** Rosto e cores do primeiro personagem (mantenedor, 2026-11-06): o corpo continua sorteado; a cabeça (as que servem
- *  no corpo) e as cores de pele e cabelo das paletas, com a prévia ao vivo no palco. */
-function escolhaAparencia(h: Hero) {
-  const box = document.getElementById("cr-reveal");
-  if (!box || !h.visual) return;
-  const corpo = opcoesAparencia().corpos.find((c) => c.nome === h.visual!.corpo) ?? { sexo: undefined },
-    cabecas = opcoesAparencia().cabecas.filter((c) => cabeNoCorpo(corpo, c) && cabecaNoJogo(c)),
-    el = document.createElement("div");
-  el.id = "cr-escolha";
-  el.addEventListener("pointerdown", (e) => e.stopPropagation()); // não acelera a revelação
-  const amostras = (tipo: "pele" | "cabelo", paleta: { cor: string; nome: string }[]) =>
-    paleta
-      .map(
-        (p) =>
-          `<button type="button" class="cr-cor${p.cor ? "" : " orig"}" data-${tipo}="${p.cor}" title="${esc(p.nome)}"` +
-          (p.cor ? ` style="background:${p.cor}"` : "") +
-          "></button>",
-      )
-      .join("");
-  el.innerHTML =
-    '<div class="cr-tag">APARÊNCIA</div>' +
-    '<div class="cr-linha"><span>Rosto</span><button type="button" class="cr-seta" data-passo="-1" title="Anterior">◀</button>' +
-    '<b id="cr-cabeca"></b><button type="button" class="cr-seta" data-passo="1" title="Próximo">▶</button></div>' +
-    '<div class="cr-linha"><span>Pele</span><div class="cr-cores">' +
-    amostras("pele", PALETA_PELE) +
-    "</div></div>" +
-    '<div class="cr-linha"><span>Cabelo</span><div class="cr-cores">' +
-    amostras("cabelo", PALETA_CABELO) +
-    "</div></div>";
-  const marcar = () => {
-    const v = h.visual!,
-      cab = cabecas.find((c) => c.nome === v.cabeca);
-    el.querySelector("#cr-cabeca")!.textContent = cab ? (cab.nome === "propria" ? "Própria" : cab.rotulo) : v.cabeca;
-    for (const b of el.querySelectorAll<HTMLElement>("[data-pele]"))
-      b.classList.toggle("on", (v.pele ?? "") === b.dataset.pele);
-    for (const b of el.querySelectorAll<HTMLElement>("[data-cabelo]"))
-      b.classList.toggle("on", (v.cabelo ?? "") === b.dataset.cabelo);
-  };
-  el.addEventListener("click", (e) => {
-    const b = (e.target as HTMLElement).closest<HTMLElement>("button");
-    if (!b) return;
-    const v = { ...h.visual! };
-    if (b.dataset.passo) {
-      const i = Math.max(
-        0,
-        cabecas.findIndex((c) => c.nome === v.cabeca),
-      );
-      v.cabeca = cabecas[(i + Number(b.dataset.passo) + cabecas.length) % cabecas.length].nome;
-    } else if (b.dataset.pele != null) {
-      if (b.dataset.pele) v.pele = b.dataset.pele;
-      else delete v.pele;
-    } else if (b.dataset.cabelo != null) {
-      if (b.dataset.cabelo) v.cabelo = b.dataset.cabelo;
-      else delete v.cabelo;
-    } else return;
-    h.visual = v;
-    sfx("ping");
-    marcar();
-  });
-  marcar();
-  box.prepend(el);
 }
 export function playBirth(h: Hero) {
   /* v6.1 */

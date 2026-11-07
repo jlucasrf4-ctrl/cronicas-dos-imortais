@@ -99,9 +99,6 @@ interface Plano {
     alongarPescoco?: number;
     /** Busto com peito e braços: mantém só cabeça, cabelo e a união do pescoço. */
     busto?: boolean;
-    /** Conserva toda a seção do pescoço e separa o cabelo antes de recortar o busto. */
-    recorteIntegro?: boolean;
-    escala?: number;
     /** Remove só ilhas inteiramente abaixo do queixo, com calibração individual. */
     limparFragmentos?: LimpezaFragmentosCabeca;
     olhos: number;
@@ -509,30 +506,24 @@ async function lerDeusa(dz: { arquivo: string; xMin: number; xMax: number }): Pr
 /** v8.1 — uma cabeça de uma folha do Tripo com textura, reduzida guardando o UV (tools/lib/peca.ts reduzirPecaUV): os
  *  olhos, as sobrancelhas e a barba pintados ficam — pela cor por vértice (lerDeusa) viravam borrões. As cartas de cada
  *  cabeça se espalham pela textura inteira da folha: ela vai uma vez só no JSON (`texturas`) */
-async function lerTripo(
-  tr: {
-    arquivo: string;
-    xMin: number;
-    xMax: number;
-    yMin?: number;
-    yMax?: number;
-    textura: string;
-  },
-  marcos?: { busto?: boolean; queixo: number; olhos: number },
-): Promise<Solta> {
+async function lerTripo(tr: {
+  arquivo: string;
+  xMin: number;
+  xMax: number;
+  yMin?: number;
+  yMax?: number;
+  textura: string;
+}, marcos?: {busto?: boolean; queixo:number; olhos:number}): Promise<Solta> {
   const m = await recortar(
     tr.arquivo,
     { xMin: tr.xMin, xMax: tr.xMax, yMin: tr.yMin ?? -100, yMax: tr.yMax ?? 100 },
     2048,
     "build/modelos/cache",
   );
-  const [minY, maxY] = faixaY(Array.from(m.P));
-  const r = marcos?.busto
-      ? await reduzirComPrioridadeRosto(m, plano.trisCabeca, {
-          queixo: minY + marcos.queixo * (maxY - minY),
-          olhos: minY + marcos.olhos * (maxY - minY),
-        })
-      : await reduzirPecaUV(m, plano.trisCabeca),
+  const [minY,maxY]=faixaY(Array.from(m.P));
+  const r = marcos?.busto ? await reduzirComPrioridadeRosto(m,plano.trisCabeca,{
+      queixo:minY+marcos.queixo*(maxY-minY),olhos:minY+marcos.olhos*(maxY-minY),
+    }) : await reduzirPecaUV(m, plano.trisCabeca),
     C: number[][] = [],
     uv: number[][] = [];
   for (let t = 0; t < r.p.length / 9; t++) {
@@ -550,7 +541,7 @@ const folhas = new Map<string, { url: string; fv: number; branco: number[] }>();
 /** a cor por triângulo de cada cabeça antes de virar branca onde a textura manda (as prévias desenham com ela) */
 const coresPrevia = new Map<string, string>();
 for (const c of plano.cabecas) {
-  const m = c.glb ? await lerExportado(c.glb) : c.tripo ? await lerTripo(c.tripo, c) : await lerDeusa(c.deusa!);
+  const m = c.glb ? await lerExportado(c.glb) : c.tripo ? await lerTripo(c.tripo,c) : await lerDeusa(c.deusa!);
   if (GRADE) {
     gradesCab.push(m);
     continue;
@@ -583,48 +574,13 @@ for (const c of plano.cabecas) {
       z = ctr(m.P, t, 2);
     return y > yQ + 0.2 * u && y < yO - 0.1 * u && Math.abs(x - x0) < 0.3 * u && z > zN - 0.6 * u;
   });
-  const topoC = m.C.filter((_, t) => ctr(m.P, t, 1) > yO + 0.9 * u);
-  const refs = {
-    refPele: [0, 1, 2].map((e) => Math.round(mediana(amostrasPele.map((q) => q[e])))),
-    refCabelo: c.corCabelo ?? [0, 1, 2].map((e) => Math.round(mediana(topoC.map((q) => q[e])))),
-  };
-  const peleLab = lab(...(refs.refPele as [number, number, number]));
-  // A segmentação precisa da conectividade original. Recortar antes dela confundia mechas
-  // compridas com o peito e deixava o pescoço sem as faces laterais.
-  let cabeloOriginal: Uint8Array | undefined;
-  if (c.recorteIntegro) {
-    const vertices: number[] = [],
-      indices: number[] = [],
-      mapa = new Map<string, number>();
-    for (let k = 0; k < m.P.length; k += 3) {
-      const q = [(m.P[k] - x0) / u, (m.P[k + 1] - yQ) / u, (m.P[k + 2] - zN) / u].map((v) => Math.round(v * 1000));
-      const chave = q.join(",");
-      let v = mapa.get(chave);
-      if (v == null) {
-        v = mapa.size;
-        mapa.set(chave, v);
-        vertices.push(...q);
-      }
-      indices.push(v);
-    }
-    cabeloOriginal = segmentarCabeca(Int16Array.from(vertices), indices, m.C.flat(), refs, c.manter);
-  }
-  const cabeloProtegido: number[] = [];
+  const peleLab = lab(...([0, 1, 2].map((k) => mediana(amostrasPele.map((q) => q[k]))) as [number, number, number]));
   for (let t = 0; t < m.C.length; t++) {
     const y = (ctr(m.P, t, 1) - yQ) / u,
       x = (ctr(m.P, t, 0) - x0) / u;
-    const cabelo = cabeloOriginal?.[t] === PARTE.cabelo;
-    if (!cabelo) {
-      if (y < -(plano.pescoco ?? 0.5) && (c.recorteIntegro || Math.abs(x) < 0.9)) continue;
-      if (
-        c.busto &&
-        y < -0.15 &&
-        Math.abs(x) > (c.recorteIntegro ? 1.25 : 0.58) &&
-        dE(lab(...(m.C[t] as [number, number, number])), peleLab) < 36
-      )
-        continue;
-    }
-    cabeloProtegido.push(cabelo ? 1 : 0);
+    if (y < -(plano.pescoco ?? 0.5) && Math.abs(x) < 0.9) continue;
+    if (c.busto && y < -0.15 && Math.abs(x) > 0.58 && dE(lab(...(m.C[t] as [number, number, number])), peleLab) < 36)
+      continue;
     uvT.push(m.uv?.[t] ?? null);
     for (let k = 0; k < 3; k++) {
       const q = [
@@ -669,18 +625,13 @@ for (const c of plano.cabecas) {
     const maior = Math.max(...[...grupos.values()].map((g) => g.tris.length));
     const manter = new Set<number>();
     for (const g of grupos.values()) {
-      if (
-        !g.tris.some((t) => cabeloProtegido[t]) &&
-        (g.tris.length < Math.max(6, maior * 0.003) || (g.topo < 0 && (g.x0 > 1600 || g.x1 < -1600)))
-      )
-        continue;
+      if (g.tris.length < Math.max(6, maior * 0.003) || (g.topo < 0 && (g.x0 > 1600 || g.x1 < -1600))) continue;
       for (const t of g.tris) manter.add(t);
     }
     const novosP: number[] = [],
       novosI: number[] = [],
       novasC: number[] = [],
-      novosUV: (number[] | null)[] = [],
-      novosCabelos: number[] = [];
+      novosUV: (number[] | null)[] = [];
     const mapa = new Map<number, number>();
     for (let t = 0; t < I.length / 3; t++)
       if (manter.has(t)) {
@@ -696,33 +647,41 @@ for (const c of plano.cabecas) {
         }
         novasC.push(C[t * 3], C[t * 3 + 1], C[t * 3 + 2]);
         novosUV.push(uvT[t]);
-        novosCabelos.push(cabeloProtegido[t]);
       }
     console.log(`${c.nome}: ${I.length / 3 - novosI.length / 3} triângulos soltos removidos do busto`);
     p.splice(0, p.length, ...novosP);
     I.splice(0, I.length, ...novosI);
     C.splice(0, C.length, ...novasC);
     uvT.splice(0, uvT.length, ...novosUV);
-    cabeloProtegido.splice(0, cabeloProtegido.length, ...novosCabelos);
   }
   if (c.limparFragmentos) {
     const limpo = limparFragmentosCabeca(p, I, c.limparFragmentos);
     if (limpo.removidos.length) {
-      const conservar = [...limpo.tris, ...limpo.removidos.filter((t) => cabeloProtegido[t])].sort((a, b) => a - b);
-      const indices = conservar.flatMap((t) => [I[t * 3], I[t * 3 + 1], I[t * 3 + 2]]);
-      const cores = conservar.flatMap((t) => C.slice(t * 3, t * 3 + 3));
-      const uvs = conservar.map((t) => uvT[t]);
-      const cabelos = conservar.map((t) => cabeloProtegido[t]);
+      const indices = limpo.tris.flatMap((t) => [I[t * 3], I[t * 3 + 1], I[t * 3 + 2]]);
+      const cores = limpo.tris.flatMap((t) => C.slice(t * 3, t * 3 + 3));
+      const uvs = limpo.tris.map((t) => uvT[t]);
       I.splice(0, I.length, ...indices);
       C.splice(0, C.length, ...cores);
       uvT.splice(0, uvT.length, ...uvs);
-      cabeloProtegido.splice(0, cabeloProtegido.length, ...cabelos);
     }
     console.log(c.nome + ": " + limpo.removidos.length + " fragmentos inferiores removidos individualmente");
   }
+  // as cores de referência (pele no meio do rosto, cabelo no topo da cabeça)
+  const rostoC: number[][] = [],
+    topoC: number[][] = [];
+  for (let t = 0; t < m.C.length; t++) {
+    const y = ctr(m.P, t, 1),
+      x = ctr(m.P, t, 0),
+      z = ctr(m.P, t, 2);
+    if (y > yQ + 0.2 * u && y < yO - 0.1 * u && Math.abs(x - x0) < 0.3 * u && z > zN - 0.6 * u) rostoC.push(m.C[t]);
+    if (y > yO + 0.9 * u) topoC.push(m.C[t]);
+  }
+  const refs = {
+    refPele: [0, 1, 2].map((e) => Math.round(mediana(rostoC.map((q) => q[e])))),
+    refCabelo: c.corCabelo ?? [0, 1, 2].map((e) => Math.round(mediana(topoC.map((q) => q[e])))),
+  };
   // v8.1 — a máscara pele/cabelo (o cabelo fixo vira "outro": não troca de cor)
   const mascara = segmentarCabeca(Int16Array.from(p), I, C, refs, c.manter);
-  for (let t = 0; t < mascara.length; t++) if (cabeloProtegido[t]) mascara[t] = PARTE.cabelo;
   if (c.cabeloFixo) for (let t = 0; t < mascara.length; t++) if (mascara[t] === PARTE.cabelo) mascara[t] = PARTE.outro;
   // v8.1 — a pele do rosto alisada (forma e cor; tools/lib/mascara.ts alisarPele)
   const pF = Float32Array.from(p, (v) => v / 1000),
@@ -783,7 +742,6 @@ for (const c of plano.cabecas) {
     nome: c.nome,
     rotulo: c.rotulo,
     peso: c.peso,
-    ...(c.escala ? { escala: c.escala } : {}),
     ...(c.sexo ? { sexo: c.sexo } : {}),
     ...refs,
     p: b64(p16),

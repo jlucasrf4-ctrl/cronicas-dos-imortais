@@ -6,10 +6,6 @@ __pycache__/
 node_modules/
 dist/
 tests/browser/resultados/
-# pesados: ficam na cópia do pendrive, não no git (2026-11-07)
+# arquivos brutos pesados (~2,6 GB, ficam no OneDrive) e cópias antigas
 arquivos de transferência/
 backups/
-*.glb
-*.fbx
-*.zip
-*.rar

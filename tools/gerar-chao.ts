@@ -31,11 +31,6 @@ interface PlanoChao {
       tris: number;
       deitar?: boolean;
       corte?: Required<Regiao>;
-      /** v8.1 — meia largura da caixa em volta do centro (padrão 0,012): uma peça grande (as colinas, a montanha)
-       *  precisa de caixa maior que 1/1,6 da ilha, senão recortar() corta a ilha triângulo a triângulo */
-      r?: number;
-      /** v8.1 — as folhas laranja (árvores de outono coladas na peça) viram verde: a estação pinta por cima no jogo */
-      verdear?: boolean;
     }
   >;
   itens: Record<string, { peca: string; tam: number; tom?: [number, number, number, number] }>;
@@ -150,19 +145,6 @@ function cortar(m: MalhaTex, c: Required<Regiao>) {
   return subMalha(m, tris);
 }
 
-/** v8.1 — folha laranja/vermelha/amarela (a mesma regra de "laranja" de src/render/gl/estacao_cor.ts, com o amarelo
- *  do outono) vira o verde do pinheiro da mesma peça, com o brilho dela. */
-function verdear(c: number[]) {
-  for (let t = 0; t < c.length; t += 3) {
-    const [r, g, b] = [c[t], c[t + 1], c[t + 2]];
-    if (!(r > 0.4 && r > g * 1.18 && r > b * 1.6)) continue;
-    const l = (r + g + b) / 3;
-    c[t] = l * 0.55;
-    c[t + 1] = l * 1.05;
-    c[t + 2] = l * 0.45;
-  }
-}
-
 async function main() {
   const args = process.argv.slice(2);
   const plano = JSON.parse(
@@ -170,7 +152,7 @@ async function main() {
   ) as PlanoChao;
   const pecas: Record<string, PecaBaixa> = {};
   for (const [id, pc] of Object.entries(plano.pecas)) {
-    const r = pc.r ?? 0.012;
+    const r = 0.012;
     let m = await recortar(
       plano.folhas[pc.folha],
       pc.cima
@@ -181,7 +163,6 @@ async function main() {
     );
     if (pc.corte) m = cortar(m, pc.corte);
     pecas[id] = normalizar(await reduzirPeca(m, pc.tris), !!pc.deitar);
-    if (pc.verdear) verdear(pecas[id].c);
     console.log(`${id}: ${m.I.length / 3} → ${pecas[id].c.length / 3} triângulos`);
   }
   // prévia: cada item no ângulo da câmera do jogo (de cima, ~50°), todos na mesma escala

@@ -28,11 +28,10 @@ if (estilos.some((e) => !["aventureira", "deserto", "patrulheira", "placa"].incl
   throw Error("Estilo desconhecido");
 const pacote = JSON.parse(readFileSync("build/modelos/busto_integral_" + par + ".json", "utf8")) as { anim: DadosAnim };
 const corpoAnim = decodificarAnim(pacote.anim);
-const alturaJunta = (nome: string) =>
-  new Matrix4().fromArray(pacote.anim.ibm[pacote.anim.juntas.indexOf(nome)]).invert().elements[13];
-const deltaQuadril = alturaJunta("Hips") - 23.904958859506312;
-const deltaOmbro = (alturaJunta("LeftArm") + alturaJunta("RightArm")) / 2 - 34.6;
-const limites = orcamentoRoupa(par, { peito: 1700, pernas: 1800, pes: 400 });
+const alturaJunta = (nome:string) => new Matrix4().fromArray(pacote.anim.ibm[pacote.anim.juntas.indexOf(nome)]).invert().elements[13];
+const deltaQuadril=alturaJunta("Hips")-23.904958859506312;
+const deltaOmbro=(alturaJunta("LeftArm")+alturaJunta("RightArm"))/2-34.6;
+const limites=orcamentoRoupa(par,{peito:1700,pernas:1800,pes:400});
 const pasta = "build/modelos/bustos-integrais";
 mkdirSync(pasta, { recursive: true });
 const arqAnim = join(pasta, par + "_anim.json");
@@ -60,8 +59,8 @@ for (const estilo of estilos) {
       const meta = await sharp(Buffer.from(anim.tex.split(",")[1], "base64")).metadata();
       if (!meta.height) throw Error("Atlas sem altura");
       anim = elevarCos(anim, decodificarAnim(pacote.anim), {
-        alturaBaixa: 24 + deltaQuadril,
-        alturaAlta: 28.4 + deltaQuadril,
+        alturaBaixa: 24+deltaQuadril,
+        alturaAlta: 28.4+deltaQuadril,
         folga: 0.14,
         cor: [0.27, 0.17, 0.115],
         branco: [0.5, (meta.height - 8) / meta.height],
@@ -69,19 +68,14 @@ for (const estilo of estilos) {
       writeFileSync(p, JSON.stringify(anim));
     }
     if (parte === "peito" && estilo === "aventureira") {
-      anim = refinarPeitoral(anim, corpoAnim, {
-        inicioY: 32 + deltaOmbro,
-        plenoY: 34 + deltaOmbro,
-        corpoMaxY: 37 + deltaOmbro,
-        limiteAlcaY: 35.6 + deltaOmbro,
-      });
+      anim = refinarPeitoral(anim, corpoAnim, {inicioY:32+deltaOmbro,plenoY:34+deltaOmbro,corpoMaxY:37+deltaOmbro,limiteAlcaY:35.6+deltaOmbro});
       writeFileSync(p, JSON.stringify(anim));
     }
     // Cós e alças acrescentam ou deslocam geometria depois da primeira redução.
-    const antesReducao = anim;
-    anim = await reduzirAnimado(anim, limites[parte]);
-    if (anim !== antesReducao || parte === "pernas")
-      anim.coberturaCorpo = coberturaPorPeca(corpoAnim, decodificarAnim(anim), 1.8, parte === "pes");
+    const antesReducao=anim;
+    anim = await reduzirAnimado(anim,limites[parte]);
+    if(anim!==antesReducao || parte==="pernas")
+      anim.coberturaCorpo = coberturaPorPeca(corpoAnim,decodificarAnim(anim),1.8,parte==="pes");
     writeFileSync(p, JSON.stringify(anim));
     anim.clips = {};
     partes[parte] = anim;
