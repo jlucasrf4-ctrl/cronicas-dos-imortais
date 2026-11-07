@@ -1,0 +1,39 @@
+/* ==== v7.7 — alvo prioritário em laranja (#focus-hud) e o painel de rastreio (#rastreio, field/rastreio.ts): canto superior direito, carvão e bronze ==== */
+#focus-hud{border-color:#ff9a3c;background:rgba(24,19,15,.9)}
+#focus-hud.human{width:258px;padding:12px 14px;background:linear-gradient(145deg,rgba(38,25,22,.97),rgba(19,17,17,.96));border:1px solid #c77f43;border-radius:12px;box-shadow:0 8px 26px rgba(0,0,0,.42),inset 0 1px rgba(255,220,170,.12);backdrop-filter:blur(8px);font-size:.76rem}
+#focus-hud.human #fh-name{display:flex;align-items:center;gap:7px;margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid rgba(232,174,102,.25);font:700 .9rem Cinzel,serif;letter-spacing:.035em;color:#ffe0b0}
+#focus-hud.human #fh-name::before{content:"";width:4px;height:20px;border-radius:4px;background:linear-gradient(#ffd274,#b95a37);box-shadow:0 0 9px #e58c4b66}
+#focus-hud.human>div:first-of-type{display:flex;justify-content:space-between;align-items:center;color:#d7c5b3;font-size:.7rem}
+#focus-hud.human #fh-hpt{color:#fff0df;font-variant-numeric:tabular-nums;font-weight:700}
+#focus-hud.human #fh-hp{height:10px;margin:5px 0 9px;border:1px solid rgba(255,210,175,.16);background:rgba(0,0,0,.48);border-radius:6px}
+#focus-hud.human #fh-hp i{background:linear-gradient(90deg,#9e2f38,#e25742 72%,#ff9c5a);border-radius:5px;transition:width .18s ease}
+#focus-hud .fh-stam-row,#focus-hud #fh-stamina{display:none}
+#focus-hud.human .fh-stam-row{display:flex;justify-content:space-between;align-items:center;margin:2px 0 0;color:#bcae9d;font-size:.64rem}
+#focus-hud.human #fh-stamt{color:#e7d7bf;font-variant-numeric:tabular-nums}
+#focus-hud.human #fh-stamina{display:block;height:5px;margin:3px 0 9px;border:1px solid rgba(210,230,220,.12);background:rgba(0,0,0,.42);border-radius:4px}
+#focus-hud.human #fh-stamina i{background:linear-gradient(90deg,#497c75,#83c5a5);border-radius:3px;transition:width .18s ease}
+#focus-hud.human #fh-state{padding:6px 8px;border:1px solid rgba(201,147,99,.2);border-radius:7px;background:rgba(255,255,255,.045);color:#e9d6c2;font-size:.69rem;line-height:1.25}
+#focus-hud.human #fh-atk{position:relative;height:4px;margin:17px 0 8px;border-radius:4px;background:rgba(0,0,0,.48);overflow:visible}
+#focus-hud.human #fh-atk::before{content:"PREPARAÇÃO DO GOLPE";position:absolute;left:0;top:-13px;color:#bca995;font:600 .53rem Cinzel,serif;letter-spacing:.09em}
+#focus-hud.human #fh-atk i{background:linear-gradient(90deg,#da914b,#ff5750);border-radius:4px;transition:width .08s linear}
+#focus-hud.human #fh-extra{color:#b9a696!important;font-size:.65rem}
+#focus-hud.human.danger{border-color:#ed6d55;box-shadow:0 0 18px rgba(238,92,67,.22),0 8px 26px rgba(0,0,0,.42)}
+#focus-hud.human.vulnerable{border-color:#e8bd69;box-shadow:0 0 18px rgba(232,189,105,.2),0 8px 26px rgba(0,0,0,.42)}
+#focus-hud.human.vulnerable #fh-state{border-color:rgba(232,189,105,.48);background:rgba(111,77,32,.27);color:#ffe3a0;font-weight:700}
+#focus-hud.human.dying #fh-hp i{background:linear-gradient(90deg,#bb6c30,#ffc76a);animation:fhb .5s infinite alternate}
+html.mob #focus-hud.human{width:202px;padding:9px 10px;font-size:.68rem}
+#rastreio{position:fixed;right:12px;top:64px;width:190px;padding:6px 8px 7px;background:rgba(24,19,15,.88);border:1px solid rgba(176,132,74,.7);border-radius:6px;color:#efe3c8;font:500 .72rem Lora,serif;z-index:5;display:none}
+#rastreio .rs-tit{font:700 .68rem Cinzel,serif;letter-spacing:.06em;text-transform:uppercase;color:#d9a35a;margin-bottom:3px;display:flex;justify-content:space-between}
+#rastreio .rs-tit span{color:#bfae8e}
+#rastreio .rs-l{position:relative;padding:3px 18px 4px 7px;margin-top:3px;border-left:3px solid #ff9a3c;background:rgba(255,255,255,.03)}
+#rastreio .rs-l.alvo{background:rgba(255,154,60,.14)}
+#rastreio .rs-l.foco b::after{content:" ◎";color:rgba(255,255,255,.75)}
+#rastreio .rs-l.perigo{border-left-color:#ff4646}
+#rastreio .rs-l b{display:block;font-weight:700;font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rastreio .rs-l i{display:block;font-style:normal;color:#bfae8e;font-size:.66rem}
+#rastreio .rs-l button{position:absolute;right:2px;top:2px;width:16px;height:16px;padding:0;border:0;background:none;color:#bfae8e;font-size:.7rem;cursor:pointer}
+#rastreio .rs-l button:hover{color:#ffd27a}
+#rastreio .rs-v{height:4px;margin-top:2px;background:rgba(0,0,0,.5);border-radius:2px;overflow:hidden}
+#rastreio .rs-v u{display:block;height:100%;background:#d0583f;text-decoration:none}
+#rastreio .rs-vazio{color:#8f826a;font-style:italic;padding:2px 0}
+html.mob #rastreio{right:8px;width:150px;font-size:.66rem}

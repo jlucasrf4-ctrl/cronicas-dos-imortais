@@ -1,0 +1,34 @@
+{
+  // Fase 1 começou permissivo; a Fase 5 apertou (noImplicitAny -> strictNullChecks -> strict, 2026-10-11).
+  // Cobre as ferramentas Node, os testes e os módulos TS do jogo (src/**/*.ts). Desde a Fase 5.2 nenhum módulo tem
+  // `// @ts-nocheck`: todo src/ é checado. Desde a Fase 5.3 vale `strict` (inclui noImplicitAny e strictNullChecks).
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "allowJs": true,
+    "checkJs": false,
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "tools/**/*.ts",
+    "tests/unit/**/*.ts",
+    "tests/browser/e2e/**/*.ts",
+    "tests/browser/tools/**/*.ts",
+    "playwright.config.ts",
+    "src/**/*.ts",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "eslint.config.js"
+  ]
+}

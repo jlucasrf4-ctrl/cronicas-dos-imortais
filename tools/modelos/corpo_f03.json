@@ -1,0 +1,13 @@
+{
+  "nome": "corpo_f03",
+  "glb": "arquivos de transferência/corpos_tripo/F03_curvilinea.glb",
+  "altura": 1.7,
+  "triangulos": 12000,
+  "texturaSaida": 1536,
+  "cabeca": {
+    "y": 0.84,
+    "triangulos": 4000
+  },
+  "texW": 2048,
+  "pasta": "build/modelos/corpo_f03_tpose"
+}

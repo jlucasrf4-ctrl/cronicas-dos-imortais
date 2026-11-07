@@ -1,0 +1,9 @@
+{
+  "nome": "hidra",
+  "glb": "arquivos de transferência/3.11.2026/three-headed dragon 3d model.glb",
+  "altura": 1.7,
+  "triangulos": 18000,
+  "texW": 2048,
+  "texturaSaida": 1536,
+  "pasta": "build/modelos/hidra_tpose"
+}

@@ -1,0 +1,58 @@
+{
+  "arquivo": "arquivos de transferência/cacador_tpose animações.glb",
+  "saida": "src/assets/models/cacador_anim.json",
+  "previas": "build/modelos/cacador_anim",
+  "alturaJogo": 43.8,
+  "fps": 24,
+  "juntas": [
+    "Hips",
+    "Spine",
+    "Spine1",
+    "Spine2",
+    "Neck",
+    "Head",
+    "LeftShoulder",
+    "LeftArm",
+    "LeftForeArm",
+    "LeftHand",
+    "RightShoulder",
+    "RightArm",
+    "RightForeArm",
+    "RightHand",
+    "LeftUpLeg",
+    "LeftLeg",
+    "LeftFoot",
+    "LeftToeBase",
+    "RightUpLeg",
+    "RightLeg",
+    "RightFoot",
+    "RightToeBase"
+  ],
+  "bindMixamo": "arquivos de transferência/Locomotion Pack caçador.zip/cacador_tpose_mixamo.fbx",
+  "clips": {
+    "andar": {
+      "de": "walk",
+      "noLugar": true
+    },
+    "correr": {
+      "de": "run",
+      "noLugar": true
+    },
+    "coletar": {
+      "de": "dig",
+      "t0": 0,
+      "t1": 2
+    },
+    "morrer": {
+      "de": "fall",
+      "t0": 0,
+      "t1": 2.6
+    },
+    "parada": {
+      "fbx": "arquivos de transferência/Locomotion Pack caçador.zip/idle.fbx",
+      "noLugar": true
+    }
+  },
+  "vestir": "build/modelos/cacador_detalhado_tpose/cacador_tpose.glb",
+  "ombroMedido": true
+}

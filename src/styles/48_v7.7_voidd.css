@@ -1,0 +1,23 @@
+/* ==== v7.7 — abertura Voidd: capa de carregamento (só CSS, sem marcação) e a vinheta do Voodi (src/intro/voidd.ts) ==== */
+@font-face{font-family:"Voidd Montserrat";font-weight:500;font-display:block;src:url(/src/assets/fonts/montserrat-latin-500-normal.woff2) format("woff2")}
+/* capa: cobre o mapa cru enquanto o script carrega (a página aparece antes de o jogo rodar); iniciarVoidd põe
+   html.voidd-pronto. O portal só gira com transform: a animação roda mesmo com o processador ocupado carregando. */
+html:not(.voidd-pronto) body::before{content:"";position:fixed;inset:0;z-index:2147483000;background:radial-gradient(ellipse 80% 70% at 50% 45%,#150d3d,#06041a 72%);background-color:#06041a}
+html:not(.voidd-pronto) body::after{content:"";position:fixed;left:50%;top:50%;width:min(30vmin,240px);height:min(30vmin,240px);margin:calc(min(30vmin,240px) / -2) 0 0 calc(min(30vmin,240px) / -2);z-index:2147483001;border-radius:50%;background:conic-gradient(from 0deg,#6ff3ff,#8d6bff 22%,#efe8ff 38%,#7a4dff 58%,#c9a8ff 78%,#6ff3ff);-webkit-mask:radial-gradient(circle closest-side,transparent 74%,#000 78%,#000 92%,transparent 97%);mask:radial-gradient(circle closest-side,transparent 74%,#000 78%,#000 92%,transparent 97%);filter:drop-shadow(0 0 14px rgba(141,107,255,.85));animation:voidd-gira 1.4s linear infinite}
+@keyframes voidd-gira{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){html:not(.voidd-pronto) body::after{animation-duration:6s}}
+
+/* vinheta; enquanto toca, a tela de título (por baixo) não é desenhada */
+html.voidd-tocando #title-screen{visibility:hidden}
+#voidd{position:fixed;inset:0;z-index:2147482999;overflow:hidden;cursor:pointer;background:radial-gradient(ellipse 80% 70% at 62% 45%,#150d3d,#06041a 72%);background-color:#06041a;opacity:1;transition:opacity .8s ease;user-select:none;-webkit-user-select:none;touch-action:none}
+#voidd.saindo{opacity:0;pointer-events:none}
+#voidd canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#voidd-logo{position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center;pointer-events:none;will-change:transform;visibility:hidden;font-family:"Voidd Montserrat","Arial Black",system-ui,sans-serif}
+#voidd-marca{display:flex;align-items:center;line-height:1;white-space:nowrap}
+#voidd-v,#voidd-idd{display:block;flex:none;opacity:0;width:auto;max-width:none;position:relative;z-index:1}
+#voidd-oslot{flex:none}
+#voidd-mundo{display:flex;align-items:center;gap:1em;font-weight:500;line-height:1;white-space:nowrap;color:#ece6ff;opacity:0;text-shadow:0 0 .5em rgba(160,130,255,.7)}
+#voidd-mundo::before,#voidd-mundo::after{content:"";width:3.6em;height:1.5px;background:currentColor;opacity:.8;box-shadow:0 0 .4em rgba(160,130,255,.8)}
+#voidd-mundo span{margin-right:-.55em;letter-spacing:.55em}
+#voidd-pular{position:absolute;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));font:500 11px/1 "Voidd Montserrat",system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:rgba(236,230,255,.5);opacity:0;animation:voidd-dica .8s ease 1.6s forwards;pointer-events:none}
+@keyframes voidd-dica{to{opacity:1}}

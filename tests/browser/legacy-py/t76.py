@@ -1,0 +1,22 @@
+import pathlib; ROOT = pathlib.Path(__file__).resolve().parents[3]; BUILD_DIR = str(ROOT / "dist"); BUILD_URL = (ROOT / "dist").as_uri() + "/"  # caminhos do projeto
+from playwright.sync_api import sync_playwright
+with sync_playwright() as p:
+    b=p.chromium.launch(args=["--use-gl=swiftshader","--enable-webgl","--ignore-gpu-blocklist"]); pg=b.new_page(viewport={"width":1366,"height":860}); J=pg.evaluate; errs=[]; pg.on("pageerror",lambda e:errs.append(str(e)))
+    pg.goto(BUILD_URL + "vtest.html"); pg.wait_for_timeout(3500)
+    J("__t.enterGame(); window.__h=__t.createHero('A',__t.bornFromSeed(1)); __t.econ.introDone=true; __t.econ.campTut=3; __h.state='field'; __t.econ.gold=40; __t.econ.test=false;"); pg.wait_for_timeout(800)
+    print("musgo", J("JSON.stringify(__t.musgoCity())").__len__(), J("[__t.musgoCity().x,__t.musgoCity().y]"), "doca caça", J("JSON.stringify(__t.docaCaca())"), "header", J("document.getElementById('hud-region')&&document.getElementById('hud-region').textContent"))
+    print("calça", J("__t.ITEM_DEFS.eq_calca.name"), J("JSON.stringify(__t.EQ_BASE.eq_calca.mat)"))
+    J("__t.openCityInspector(__t.musgoCity())"); pg.wait_for_timeout(300); print("botões longe:", J("[...document.querySelectorAll('#insp-actions button')].map(b=>b.textContent)"))
+    J("(()=>{const c=__t.musgoCity(); __h.x=c.x+5; __h.y=c.y+5;})()"); J("__t.openCityInspector(__t.musgoCity())"); pg.wait_for_timeout(300); print("botões na vila:", J("[...document.querySelectorAll('#insp-actions button')].map(b=>b.textContent)"))
+    J("document.getElementById('inspector').classList.remove('open'); __t.empOpen(__h)"); pg.wait_for_timeout(300)
+    J("document.querySelector('#musgo-modal [data-k=corda]').click()"); J("document.querySelector('#musgo-modal [data-k=pele]').click()"); pg.wait_for_timeout(200)
+    print("comprou: ouro", J("__t.econ.gold"), "msg", J("document.querySelector('#musgo-modal .emp-msg').textContent"))
+    pg.screenshot(path="t76_a.png")
+    J("document.querySelector('#musgo-modal [data-t=venda]').click()"); pg.wait_for_timeout(200); n=J("document.querySelectorAll('#musgo-modal [data-mz=sell]').length")
+    J("document.querySelector('#musgo-modal [data-mz=sell]').click()"); pg.wait_for_timeout(200); print("venda: itens", n, "→", J("document.querySelectorAll('#musgo-modal [data-mz=sell]').length"), "ouro", J("__t.econ.gold"), J("document.querySelector('#musgo-modal .emp-msg').textContent"))
+    pg.screenshot(path="t76_b.png")
+    J("document.querySelector('#musgo-modal [data-mz=bote]').click()"); pg.wait_for_timeout(2200)
+    print("bote: herói em", J("[Math.round(__h.x),Math.round(__h.y)]"), "doca", J("JSON.stringify(__t.docaCaca())"), "camp", J("JSON.stringify(__h.camp)"))
+    pg.screenshot(path="t76_c.png")
+    J("__t.camZoomTo(__h.camp.x,__h.camp.y,__t.mapZoomLimit(),10)"); pg.wait_for_timeout(1500); pg.screenshot(path="t76_d.png")
+    print("errs", errs[:3]); b.close()

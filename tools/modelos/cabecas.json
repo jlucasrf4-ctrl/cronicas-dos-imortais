@@ -1,0 +1,199 @@
+{
+  "nome": "cabecas",
+  "glb": "arquivos de transferência/deusas/stylized character heads 3d model.glb",
+  "referencia": "arquivos de transferência/deusas/autoadjusted_37b7a376-6d0b-4054-a64f-81131cdb97e7.jpeg",
+  "fundo": "cinza",
+  "preencher": "superficie",
+  "pesoCor": 10,
+  "altura": 0.33,
+  "escala": 1.6,
+  "triangulos": 18000,
+  "separar": [
+    {
+      "nome": "loira_trancas",
+      "malhas": [
+        2,
+        12
+      ],
+      "refinar": 7000,
+      "textura": 512
+    },
+    {
+      "nome": "ruiva_rabo",
+      "malhas": [
+        1
+      ],
+      "refinar": 7000,
+      "textura": 512
+    },
+    {
+      "nome": "morena_argolas",
+      "malhas": [
+        3
+      ],
+      "refinar": 7000,
+      "textura": 512
+    },
+    {
+      "nome": "acobreada_coque",
+      "malhas": [
+        6
+      ],
+      "refinar": 7000,
+      "textura": 512
+    },
+    {
+      "nome": "marinho_coque",
+      "malhas": [
+        9
+      ],
+      "refinar": 7000,
+      "olhos": [
+        [
+          572,
+          438
+        ],
+        [
+          606,
+          438
+        ]
+      ],
+      "queixo": 0.31,
+      "nuca": 4,
+      "textura": 512
+    },
+    {
+      "nome": "rosa",
+      "malhas": [
+        8
+      ],
+      "refinar": 7000,
+      "olhos": [
+        [
+          686,
+          437
+        ],
+        [
+          723,
+          434
+        ]
+      ],
+      "textura": 512
+    },
+    {
+      "nome": "verde_trancas",
+      "malhas": [
+        10
+      ],
+      "refinar": 7000,
+      "olhos": [
+        [
+          807,
+          436
+        ],
+        [
+          843,
+          435
+        ]
+      ],
+      "textura": 512
+    },
+    {
+      "nome": "morena_tiara",
+      "malhas": [
+        0
+      ],
+      "refinar": 7000,
+      "olhos": [
+        [
+          926,
+          431
+        ],
+        [
+          962,
+          431
+        ]
+      ],
+      "textura": 512
+    },
+    {
+      "nome": "barbudo",
+      "malhas": [
+        7
+      ],
+      "refinar": 3000,
+      "olhos": [
+        [
+          265,
+          613
+        ],
+        [
+          296,
+          613
+        ]
+      ]
+    },
+    {
+      "nome": "anao_ruivo",
+      "malhas": [
+        5
+      ],
+      "refinar": 3000,
+      "olhos": [
+        [
+          412,
+          606
+        ],
+        [
+          445,
+          606
+        ]
+      ]
+    },
+    {
+      "nome": "velho_grisalho",
+      "malhas": [
+        4
+      ],
+      "refinar": 3000,
+      "olhos": [
+        [
+          567,
+          608
+        ],
+        [
+          599,
+          608
+        ]
+      ],
+      "nuca": 0.3
+    },
+    {
+      "nome": "careca_cicatriz",
+      "malhas": [
+        11
+      ],
+      "refinar": 3000,
+      "olhos": [
+        [
+          723,
+          611
+        ],
+        [
+          757,
+          611
+        ],
+        [
+          728,
+          590
+        ],
+        [
+          766,
+          628
+        ]
+      ]
+    }
+  ],
+  "pasta": "build/modelos/cabecas",
+  "denso": 70000
+}

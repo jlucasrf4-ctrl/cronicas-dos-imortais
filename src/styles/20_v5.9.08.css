@@ -1,0 +1,8 @@
+/* v5.9.08 */
+html.mob #zoom-controls{max-height:calc(100dvh - 150px - env(safe-area-inset-bottom,0px));flex-wrap:wrap-reverse;align-content:flex-end}
+#tj-base{background:radial-gradient(circle,transparent 22.5px,rgba(255,236,190,.32) 24px,transparent 25.5px,transparent 41.5px,rgba(255,190,90,.45) 43px,transparent 44.5px),radial-gradient(circle,rgba(255,236,190,.12),rgba(0,0,0,.25))}
+#tj-base[data-lv="2"]{border-color:rgba(255,226,140,.6)}
+#tj-base[data-lv="2"] #tj-knob{background:radial-gradient(circle at 40% 35%,#fff6c8,#e0b24a)}
+#tj-base[data-lv="3"] #tj-knob{background:radial-gradient(circle at 40% 35%,#ffe2b0,#e0782a);box-shadow:0 0 14px rgba(255,150,60,.75),0 3px 10px rgba(0,0,0,.6)}
+#tj-base::after{content:attr(data-lbl);position:absolute;left:50%;top:-22px;transform:translateX(-50%);font:600 11px Lora,serif;color:#ffe6b0;text-shadow:0 1px 2px #000;white-space:nowrap}
+

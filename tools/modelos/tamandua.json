@@ -1,0 +1,157 @@
+{
+  "folha": "arquivos de transferência/tamandua com mochilas (fantasy pack animal).glb",
+  "c": [-0.032, 0.451],
+  "tris": 3200,
+  "texW": 1024,
+  "cache": "build/modelos/cache",
+  "saida": "src/assets/models/tamandua_anim.json",
+  "previas": "build/modelos/tamandua",
+  "comprimento": 110,
+  "alturaHeroina": 43.8,
+  "fps": 24,
+  "lingua": {
+    "rMin": 80,
+    "rg": 1.6,
+    "rb": 1.4,
+    "frente": 2,
+    "alto": 0.6,
+    "chaoX": 2,
+    "chaoY": 0.22
+  },
+  "esqueleto": {
+    "pes": 0.05,
+    "pernaTopo": 0.62,
+    "pernaRaio": 0.1,
+    "pescoco": 0.1,
+    "rabo": 0.07,
+    "suave": 0.06
+  },
+  "clips": {
+    "parada": {
+      "dur": 2.6,
+      "ossos": [
+        {
+          "re": "^cabeca$",
+          "eixo": "lado",
+          "amp": 2
+        },
+        {
+          "re": "^cauda$",
+          "eixo": "cima",
+          "amp": 5,
+          "fase": 0.25
+        }
+      ],
+      "raizY": {
+        "amp": 0.002
+      }
+    },
+    "andar": {
+      "dur": 1.1,
+      "ossos": [
+        {
+          "re": "^perna_te$",
+          "eixo": "lado",
+          "amp": 18,
+          "fase": 0
+        },
+        {
+          "re": "^perna_fe$",
+          "eixo": "lado",
+          "amp": 18,
+          "fase": 0.25
+        },
+        {
+          "re": "^perna_td$",
+          "eixo": "lado",
+          "amp": 18,
+          "fase": 0.5
+        },
+        {
+          "re": "^perna_fd$",
+          "eixo": "lado",
+          "amp": 18,
+          "fase": 0.75
+        },
+        {
+          "re": "^cabeca$",
+          "eixo": "lado",
+          "amp": 3,
+          "freq": 2
+        },
+        {
+          "re": "^cauda$",
+          "eixo": "cima",
+          "amp": 7
+        }
+      ],
+      "raizY": {
+        "amp": 0.006,
+        "freq": 2
+      }
+    },
+    "correr": {
+      "dur": 0.62,
+      "ossos": [
+        {
+          "re": "^perna_fe$",
+          "eixo": "lado",
+          "amp": 32,
+          "fase": 0
+        },
+        {
+          "re": "^perna_fd$",
+          "eixo": "lado",
+          "amp": 32,
+          "fase": 0.1
+        },
+        {
+          "re": "^perna_te$",
+          "eixo": "lado",
+          "amp": 30,
+          "fase": 0.5
+        },
+        {
+          "re": "^perna_td$",
+          "eixo": "lado",
+          "amp": 30,
+          "fase": 0.6
+        },
+        {
+          "re": "^cabeca$",
+          "eixo": "lado",
+          "amp": 5,
+          "fase": 0.5
+        },
+        {
+          "re": "^cauda$",
+          "eixo": "lado",
+          "amp": 8,
+          "fase": 0.25
+        }
+      ],
+      "raizY": {
+        "amp": 0.015,
+        "freq": 2
+      }
+    },
+    "pastar": {
+      "dur": 1.6,
+      "ossos": [
+        {
+          "re": "^cabeca$",
+          "eixo": "lado",
+          "media": -22,
+          "amp": 4,
+          "freq": 2
+        },
+        {
+          "re": "^cauda$",
+          "eixo": "cima",
+          "amp": 4
+        }
+      ]
+    }
+  },
+  "temCarga": true
+}

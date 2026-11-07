@@ -1,0 +1,51 @@
+/* v8.0 — área útil e comandos de câmera para toque */
+html.mob,
+html.mob body {
+  height: 100%;
+  height: 100dvh;
+  min-height: 100svh;
+  padding: 0;
+  overscroll-behavior: none;
+}
+html.mob #app {
+  height: 100%;
+  height: 100dvh;
+}
+html.mob #dungeon-view {
+  padding: 0;
+  min-height: 0;
+}
+html.mob #dungeon-stage-wrap {
+  min-height: 0;
+  touch-action: none;
+}
+html.mob #dungeon-canvas {
+  touch-action: none;
+}
+html.mob #tb-zoom {
+  position: absolute;
+  left: 2px;
+  top: -60px;
+  display: flex;
+  gap: 8px;
+  pointer-events: none;
+}
+html.mob #tb-zoom .tb {
+  position: static;
+  pointer-events: auto;
+  font-size: 1.35rem;
+}
+html.mob #tb-fullscreen {
+  font-size: 1.35rem;
+}
+html.mob.tela-cheia,
+html.mob.tela-cheia body,
+html.mob.tela-cheia #app {
+  height: 100%;
+  height: 100dvh;
+  min-height: 100%;
+}
+html.mob.tela-cheia body,
+html.mob.tela-cheia #dungeon-view {
+  padding: 0;
+}

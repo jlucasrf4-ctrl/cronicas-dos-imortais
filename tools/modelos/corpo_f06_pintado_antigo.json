@@ -1,0 +1,15 @@
+{
+  "nome": "corpo_f06",
+  "glb": "arquivos de transferência/corpos_tripo/F06_voluptuosa.glb",
+  "referencia": "arquivos de transferência/corpos_tripo/F06_voluptuosa_ref.png",
+  "altura": 1.7,
+  "triangulos": 9000,
+  "preencher": "corpo",
+  "pernas": 1.12,
+  "virilha": 0.5,
+  "forma": {
+    "afinar": [{ "de": 0.3, "ate": 0.64, "fator": 0.87 }],
+    "busto": { "dy": 0.04, "raio": 0.045, "de": 0.64, "ate": 0.78 }
+  },
+  "pasta": "build/modelos/corpo_f06_tpose"
+}

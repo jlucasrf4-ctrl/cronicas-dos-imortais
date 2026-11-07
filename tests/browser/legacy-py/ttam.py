@@ -1,0 +1,26 @@
+import pathlib; ROOT = pathlib.Path(__file__).resolve().parents[3]; BUILD_DIR = str(ROOT / "dist"); BUILD_URL = (ROOT / "dist").as_uri() + "/"  # caminhos do projeto
+from playwright.sync_api import sync_playwright
+with sync_playwright() as p:
+    b=p.chromium.launch(args=["--use-gl=swiftshader","--enable-webgl","--ignore-gpu-blocklist"]); pg=b.new_page(viewport={"width":1366,"height":860}); J=pg.evaluate; errs=[]; pg.on("pageerror",lambda e:errs.append(str(e)))
+    pg.goto(BUILD_URL + "vtest.html"); pg.wait_for_timeout(3500)
+    J("__t.enterGame(); window.__h=__t.createHero('A',__t.bornFromSeed(1));"); pg.wait_for_timeout(1000)
+    print("wild", J("__t.wildAnteaters().length"))
+    J("const a=__t.wildAnteaters()[0], p=__t.wildPos(a); const s=__t.camera.minScale*10; __t.camera.scale=s; __t.camera.tx=683-p.x*s; __t.camera.ty=430-p.y*s;"); pg.wait_for_timeout(900); pg.screenshot(path="tam_map.png")
+    J("__t.tameStart(__t.wildAnteaters()[0])"); pg.wait_for_timeout(1500); J("__t.tameGo()"); pg.wait_for_timeout(1200); pg.screenshot(path="tam_tame.png")
+    # hold keys randomly to see it plays
+    print("g", J("JSON.stringify(__t.TAME.g && {pos:+__t.TAME.g.pos.toFixed(2),calm:+__t.TAME.g.calm.toFixed(1)})"))
+    J("__t.tameWin()"); pg.wait_for_timeout(200); J("__t.tameName()"); pg.wait_for_timeout(300)
+    print("mount", J("JSON.stringify(__t.mnt())"))
+    J("__t.mountPanel()"); pg.wait_for_timeout(500); pg.screenshot(path="tam_panel.png")
+    J("document.querySelector('[data-mt=bag]').click()"); pg.wait_for_timeout(500); pg.screenshot(path="tam_bag.png"); J("__t.mpClose()")
+    J("__t.mnt().with=__h.id; __t.openPrep(__h.id)"); pg.wait_for_timeout(600); print("prep chk", J("!!document.querySelector('#prep-mount input:checked')"))
+    J("document.getElementById('prep-go').click()"); pg.wait_for_timeout(3500)
+    print("dmount", J("JSON.stringify(__t.dungeon.mount)"))
+    J("const d=__t.dungeon; d.flow='x'; d.monsters.length=0; d.mount.x=d.px+30; d.mount.y=d.py; __t.mountToggle()"); pg.wait_for_timeout(300); print("mounted", J("__t.dungeon.mount.mounted"))
+    J("__t.dungeon.keys.KeyD=true"); pg.wait_for_timeout(1500); J("__t.dungeon.keys.KeyD=false"); pg.wait_for_timeout(200); pg.screenshot(path="tam_ride.png")
+    print("pos after ride", J("Math.round(__t.dungeon.px)"))
+    J("__t.mountToggle(); const d=__t.dungeon; d.px-=300;"); pg.wait_for_timeout(200); J("__t.mountToggle()"); pg.wait_for_timeout(1800); print("came", J("Math.round(Math.hypot(__t.dungeon.mount.x-__t.dungeon.px, __t.dungeon.mount.y-__t.dungeon.py))"))
+    pg.screenshot(path="tam_follow.png")
+    J("__t.toggleInv(true)"); pg.wait_for_timeout(600); pg.screenshot(path="tam_inv.png"); print("saddle grid", J("getComputedStyle(document.getElementById('ib-saddle')).display"))
+    J("__t.toggleInv(false)")
+    print(errs[:5]); b.close()

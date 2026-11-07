@@ -1,0 +1,10 @@
+/* ===== v4.7: menos texto ===== */
+#dungeon-hint{position:absolute;left:50%;bottom:12px;transform:translate(-50%,10px);max-width:min(920px,92vw);background:rgba(20,14,7,.88);border:1px solid rgba(224,179,95,.4);border-radius:12px;padding:8px 14px;opacity:0;pointer-events:none;transition:opacity .4s,transform .4s;z-index:6}
+#dungeon-hint.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#sword-hud,#bow-hud{width:auto!important;min-width:84px;padding:5px 9px!important;font-size:.72rem!important}
+#sword-hud .bb,#bow-hud .bb{margin:3px 0 0!important;height:5px!important}
+#sw-pts,#bh-pts{display:none}
+#dungeon-help{padding:4px 9px}
+#dungeon-hud kbd{font-family:Lora,serif;font-size:.62rem;margin-left:4px;padding:1px 4px;border-radius:4px;background:rgba(0,0,0,.35);border:1px solid rgba(224,179,95,.35);color:#e9d8b0}
+html:not(.mob) #dungeon-skill-label{display:none}
+

@@ -1,0 +1,15 @@
+{
+  "nome": "corpo_f04",
+  "glb": "arquivos de transferência/corpos_tripo/F04_delicada.glb",
+  "referencia": "arquivos de transferência/corpos_tripo/F04_delicada_ref.png",
+  "altura": 1.7,
+  "triangulos": 12000,
+  "preencher": "corpo",
+  "queixo": 0.15,
+  "pasta": "build/modelos/corpo_f04_tpose",
+  "cabeca": {
+    "y": 0.84,
+    "triangulos": 4000
+  },
+  "texturaSaida": 1536
+}

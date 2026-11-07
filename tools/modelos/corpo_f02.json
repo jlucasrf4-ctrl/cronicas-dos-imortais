@@ -1,0 +1,15 @@
+{
+  "nome": "corpo_f02",
+  "glb": "arquivos de transferência/FP.glb",
+  "referencia": "arquivos de transferência/corpos_tripo/F02_atletica_ref.png",
+  "altura": 1.7,
+  "triangulos": 12000,
+  "preencher": "corpo",
+  "queixo": 0.15,
+  "pasta": "build/modelos/corpo_f02_tpose",
+  "cabeca": {
+    "y": 0.84,
+    "triangulos": 4000
+  },
+  "texturaSaida": 1536
+}

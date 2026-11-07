@@ -1,0 +1,13 @@
+{
+  "fonte": "arquivos de transferência/Deusas das Quatro Estações em Eterno Ciclo.png",
+  "saida": "src/assets/art",
+  "previas": "build/emblemas",
+  "altura": 72,
+  "limiar": 10,
+  "pecas": {
+    "estacao_inverno": [22, 528, 210, 712],
+    "estacao_verao": [222, 528, 412, 712],
+    "estacao_outono": [428, 528, 618, 712],
+    "estacao_primavera": [634, 528, 830, 712]
+  }
+}

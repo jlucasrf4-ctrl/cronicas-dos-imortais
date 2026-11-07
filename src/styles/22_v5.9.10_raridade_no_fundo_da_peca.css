@@ -1,0 +1,10 @@
+/* v5.9.10 — raridade no fundo da peça */
+.inv-item.hasico .inv-cell{box-shadow:none!important}
+.inv-item.tier1{filter:drop-shadow(0 0 1.5px #9fe3ff) drop-shadow(0 0 1px rgba(159,227,255,.8))}
+.inv-item.tier2{filter:drop-shadow(0 0 2px #ffd24a) drop-shadow(0 0 1px rgba(255,210,74,.9))}
+.inv-item.ghost{opacity:.88!important}
+.inv-item.ghost .inv-emo{opacity:1!important}
+.inv-item.ghost.ok .inv-cell,.inv-item.ghost.bad .inv-cell,.inv-item.ok .inv-cell,.inv-item.bad .inv-cell{box-shadow:none!important;filter:none!important;outline:0!important}
+.inv-item.ghost.ok{filter:drop-shadow(0 0 2px #7dff9a) drop-shadow(0 0 1.5px #7dff9a)!important}
+.inv-item.ghost.bad{filter:drop-shadow(0 0 2px #ff5a5a) drop-shadow(0 0 1.5px #ff5a5a) !important}
+

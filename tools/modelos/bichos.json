@@ -1,0 +1,154 @@
+{
+  "previas": "build/modelos/bichos",
+  "fps": 24,
+  "textura": "arquivos de transferência/craftpix-net-636502-free-wild-animal-3d-low-poly-models.zip/texture/wild_animals_map.png",
+  "alturaHeroina": 43.8,
+  "conjuntos": {
+    "quadrupede": {
+      "parada": {
+        "dur": 2.4,
+        "ossos": [
+          { "re": "^Spine_1$", "eixo": "lado", "amp": 1.2 },
+          { "re": "^Neck$", "eixo": "lado", "amp": 2, "fase": 0.25 },
+          { "re": "^Tail_1$", "eixo": "cima", "amp": 8 }
+        ]
+      },
+      "andar": {
+        "dur": 1,
+        "ossos": [
+          { "re": "^Hind_Shoulder_L$", "eixo": "lado", "amp": 20, "fase": 0 },
+          { "re": "^Front_Shoulder_L$", "eixo": "lado", "amp": 20, "fase": 0.25 },
+          { "re": "^Hind_Shoulder_R$", "eixo": "lado", "amp": 20, "fase": 0.5 },
+          { "re": "^Front_Shoulder_R$", "eixo": "lado", "amp": 20, "fase": 0.75 },
+          { "re": "^Hind_Knee_L$", "eixo": "lado", "amp": 22, "fase": 0.25, "forma": "meia" },
+          { "re": "^Front_Knee_L$", "eixo": "lado", "amp": -26, "fase": 0.5, "forma": "meia" },
+          { "re": "^Hind_Knee_R$", "eixo": "lado", "amp": 22, "fase": 0.75, "forma": "meia" },
+          { "re": "^Front_Knee_R$", "eixo": "lado", "amp": -26, "fase": 0, "forma": "meia" },
+          { "re": "^Neck$", "eixo": "lado", "amp": 3, "freq": 2 },
+          { "re": "^Tail_1$", "eixo": "cima", "amp": 7 }
+        ],
+        "raizY": { "amp": 0.008, "freq": 2 }
+      },
+      "correr": {
+        "dur": 0.55,
+        "ossos": [
+          { "re": "^Front_Shoulder_L$", "eixo": "lado", "amp": 40, "fase": 0 },
+          { "re": "^Front_Shoulder_R$", "eixo": "lado", "amp": 40, "fase": 0.08 },
+          { "re": "^Hind_Shoulder_L$", "eixo": "lado", "amp": 36, "fase": 0.5 },
+          { "re": "^Hind_Shoulder_R$", "eixo": "lado", "amp": 36, "fase": 0.58 },
+          { "re": "^Front_Knee_L$", "eixo": "lado", "amp": -40, "fase": 0.25, "forma": "meia" },
+          { "re": "^Front_Knee_R$", "eixo": "lado", "amp": -40, "fase": 0.33, "forma": "meia" },
+          { "re": "^Hind_Knee_L$", "eixo": "lado", "amp": 34, "fase": 0.75, "forma": "meia" },
+          { "re": "^Hind_Knee_R$", "eixo": "lado", "amp": 34, "fase": 0.83, "forma": "meia" },
+          { "re": "^Spine_1$", "eixo": "lado", "amp": 6, "fase": 0.25 },
+          { "re": "^Neck$", "eixo": "lado", "amp": 6, "fase": 0.5 },
+          { "re": "^Tail_1$", "eixo": "lado", "amp": 10, "fase": 0.25 }
+        ],
+        "raizY": { "amp": 0.03, "fase": 0.1 }
+      },
+      "salto": {
+        "dur": 0,
+        "ossos": [
+          { "re": "^Front_Shoulder_[LR]$", "eixo": "lado", "media": 55 },
+          { "re": "^Front_Knee_[LR]$", "eixo": "lado", "media": -15 },
+          { "re": "^Hind_Shoulder_[LR]$", "eixo": "lado", "media": -50 },
+          { "re": "^Hind_Knee_[LR]$", "eixo": "lado", "media": 10 },
+          { "re": "^Neck$", "eixo": "lado", "media": 8 }
+        ]
+      }
+    },
+    "cervo": {
+      "pastar": {
+        "dur": 2,
+        "ossos": [
+          { "re": "^(Neck|Neck_1|joint10)$", "eixo": "lado", "media": -42 },
+          { "re": "^Head$", "eixo": "lado", "media": -30, "amp": 4, "freq": 3 },
+          { "re": "^Tail_1$", "eixo": "cima", "amp": 10, "freq": 2 }
+        ]
+      }
+    },
+    "coelho": {
+      "parada": {
+        "dur": 2.4,
+        "ossos": [
+          { "re": "^Spine_1$", "eixo": "lado", "amp": 1.5 },
+          { "re": "^Head$", "eixo": "lado", "amp": 3, "freq": 2 },
+          { "re": "^Ear_1_L$", "eixo": "lado", "amp": 6, "freq": 2 },
+          { "re": "^Ear_1_R$", "eixo": "lado", "amp": 6, "freq": 2, "fase": 0.2 }
+        ]
+      },
+      "andar": {
+        "dur": 0.5,
+        "ossos": [
+          { "re": "^Hind_Shoulder_[LR]$", "eixo": "lado", "amp": 35, "fase": 0.5 },
+          { "re": "^Hind_Knee_[LR]$", "eixo": "lado", "amp": 30, "fase": 0.75, "forma": "meia" },
+          { "re": "^Front_Shoulder_[LR]$", "eixo": "lado", "amp": 28, "fase": 0 },
+          { "re": "^Spine_1$", "eixo": "lado", "amp": 6, "fase": 0.25 },
+          { "re": "^Ear_1_[LR]$", "eixo": "lado", "amp": -12, "fase": 0.25 }
+        ],
+        "raizY": { "amp": 0.22, "forma": "meia" }
+      },
+      "correr": {
+        "dur": 0.38,
+        "ossos": [
+          { "re": "^Hind_Shoulder_[LR]$", "eixo": "lado", "amp": 45, "fase": 0.5 },
+          { "re": "^Hind_Knee_[LR]$", "eixo": "lado", "amp": 40, "fase": 0.75, "forma": "meia" },
+          { "re": "^Front_Shoulder_[LR]$", "eixo": "lado", "amp": 38, "fase": 0 },
+          { "re": "^Spine_1$", "eixo": "lado", "amp": 9, "fase": 0.25 },
+          { "re": "^Ear_1_[LR]$", "eixo": "lado", "media": -30, "amp": -8, "fase": 0.25 }
+        ],
+        "raizY": { "amp": 0.3, "forma": "meia" }
+      }
+    }
+  },
+  "bichos": {
+    "lobo": {
+      "fbx": "arquivos de transferência/craftpix-net-636502-free-wild-animal-3d-low-poly-models.zip/fbx/unity/wolf.fbx",
+      "saida": "src/assets/models/lobo_anim.json",
+      "comprimento": 34,
+      "cabeca": "Head",
+      "rabo": "Tail_1",
+      "clips": ["quadrupede"]
+    },
+    "javali": {
+      "fbx": "arquivos de transferência/craftpix-net-636502-free-wild-animal-3d-low-poly-models.zip/fbx/unity/boar.fbx",
+      "saida": "src/assets/models/javali_anim.json",
+      "comprimento": 32,
+      "cabeca": "Head",
+      "rabo": "Tail_1",
+      "clips": ["quadrupede"]
+    },
+    "cervo_m": {
+      "fbx": "arquivos de transferência/craftpix-net-636502-free-wild-animal-3d-low-poly-models.zip/fbx/unity/deer_1.fbx",
+      "saida": "src/assets/models/cervo_m_anim.json",
+      "comprimento": 42,
+      "cabeca": "Head",
+      "rabo": "Tail_1",
+      "clips": ["quadrupede", "cervo"]
+    },
+    "cervo_f": {
+      "fbx": "arquivos de transferência/craftpix-net-636502-free-wild-animal-3d-low-poly-models.zip/fbx/unity/deer_2.fbx",
+      "saida": "src/assets/models/cervo_f_anim.json",
+      "comprimento": 38,
+      "cabeca": "Head",
+      "rabo": "Tail_1",
+      "clips": ["quadrupede", "cervo"]
+    },
+    "coelho": {
+      "fbx": "arquivos de transferência/craftpix-net-636502-free-wild-animal-3d-low-poly-models.zip/fbx/unity/rabbit.fbx",
+      "saida": "src/assets/models/coelho_anim.json",
+      "comprimento": 13,
+      "cabeca": "Head",
+      "rabo": "Tail_1",
+      "clips": ["quadrupede", "coelho"]
+    },
+    "raposa": {
+      "fbx": "arquivos de transferência/craftpix-net-636502-free-wild-animal-3d-low-poly-models.zip/fbx/unity/fox.fbx",
+      "saida": "src/assets/models/raposa_anim.json",
+      "comprimento": 26,
+      "cabeca": "Head",
+      "rabo": "Tail_1",
+      "clips": ["quadrupede"]
+    }
+  }
+}

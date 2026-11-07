@@ -1,0 +1,6 @@
+/* ==== v7.7 — entrar e sair do campo pelo zoom (map/transicao.ts): o véu que escurece a tela e a dica da saída ==== */
+#zoom-veu{position:fixed;inset:0;z-index:94;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 50%,#2c2414 0%,#16110a 60%,#0b0805 100%)}
+#app{overflow:hidden}
+#saida-dica{position:absolute;left:50%;top:62%;transform:translateX(-50%);z-index:30;pointer-events:none;display:none;align-items:center;gap:8px;padding:5px 12px 5px 6px;border-radius:16px;background:rgba(20,12,4,.72);color:#f6efd8;font:600 12px Lora,serif;white-space:nowrap}
+#saida-dica.on{display:flex}
+#saida-dica i{width:22px;height:22px;border-radius:50%;background:conic-gradient(#9fe38a calc(var(--p)*1turn),rgba(255,255,255,.18) 0);-webkit-mask:radial-gradient(circle,transparent 6px,#000 7px);mask:radial-gradient(circle,transparent 6px,#000 7px)}

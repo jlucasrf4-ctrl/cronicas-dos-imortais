@@ -1,0 +1,3 @@
+/* ==== v7.7 — zoom do mapa sem quadriculado: sem will-change o navegador redesenha o mapa na escala de cada quadro
+   (com ele, esticava a imagem da escala antiga e só ficava nítida depois de parar) ==== */
+#stage{will-change:auto}

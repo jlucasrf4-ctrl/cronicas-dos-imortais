@@ -1,0 +1,103 @@
+/* v8.1 — HUD do campo "Traço solto" com destaque Brasa (direção Tinta e Cinza, mantenedor 2026-10-31): sem painel, só
+   linhas finas e sombra flutuando sobre a cena; vida como ferro em brasa, fôlego como cinza, os atalhos com um traço
+   embaixo (o ativo em brasa). Ligado nas Opções (OPT.hudTraco → html.hud-traco); o celular fica como está. */
+html.hud-traco:not(.mob) #dungeon-hud{background:none;border:0;box-shadow:none;padding:4px 10px 6px;gap:8px 10px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.9)) drop-shadow(0 0 8px rgba(0,0,0,.55));font-variant:small-caps;letter-spacing:.06em;color:#efe9dd}
+html.hud-traco:not(.mob) #dungeon-hud .btn{background:none!important;border:0!important;border-bottom:1px solid rgba(239,233,221,.35)!important;border-radius:0!important;box-shadow:none!important;color:#efe9dd;padding:2px 7px 3px 4px;min-height:28px}
+html.hud-traco:not(.mob) #dungeon-hud .btn:hover{border-bottom-color:#ff8a3a!important;color:#ffd9b8}
+html.hud-traco:not(.mob) #dungeon-hud .btn.on,html.hud-traco:not(.mob) #dungeon-hud .btn.ativo,html.hud-traco:not(.mob) #dungeon-weapon{border-bottom:2px solid #ff8a3a!important;color:#fff}
+html.hud-traco:not(.mob) #dungeon-hud .btn kbd{background:none;border:0;color:rgba(239,233,221,.6);font-size:.5rem;right:-4px;bottom:-5px}
+html.hud-traco:not(.mob) #dungeon-hud .btn .ic,html.hud-traco:not(.mob) #dungeon-hud .btn img{filter:drop-shadow(0 0 2px rgba(0,0,0,.8))}
+/* vida: ferro em brasa, com a ponta acesa; o rastro é cinza quente */
+html.hud-traco:not(.mob) #dungeon-hp-bg{height:5px!important;border-radius:0!important;background:rgba(239,233,221,.16)!important;border:0!important;box-shadow:none!important;overflow:visible!important}
+html.hud-traco:not(.mob) #dungeon-hp-fill{background:linear-gradient(90deg,#6d1406,#d23d14 65%,#ffae55)!important;box-shadow:0 0 10px rgba(255,90,31,.55);border-radius:0!important}
+html.hud-traco:not(.mob) #dungeon-hp-trail{background:rgba(255,138,58,.3)!important;opacity:1!important}
+/* fôlego: cinza */
+html.hud-traco:not(.mob) #dungeon-hp-wrap .dh-stbg{height:3px!important;border-radius:0;background:rgba(239,233,221,.14)}
+html.hud-traco:not(.mob) .dh-stbg i{background:linear-gradient(90deg,#5b5750,#d8d2c6)!important}
+html.hud-traco:not(.mob) #dungeon-hp-label{font-variant-numeric:tabular-nums;color:rgba(239,233,221,.85)}
+/* cartão do nome e as pílulas de fome/temperatura/peso: sem caixa, só o texto */
+html.hud-traco:not(.mob) #dh-card,html.hud-traco:not(.mob) #surv-hud,html.hud-traco:not(.mob) #surv-hud>*{background-color:transparent!important;border-color:rgba(239,233,221,.22)!important;box-shadow:none!important}
+html.hud-traco:not(.mob) #surv-hud>*{border:0!important;border-bottom:1px solid rgba(239,233,221,.3)!important;border-radius:0!important}
+html.hud-traco:not(.mob) #dh-lvl{color:#ff8a3a}
+html.hud-traco:not(.mob) .dh-xp{height:2px;background:rgba(239,233,221,.14)}
+html.hud-traco:not(.mob) .dh-xp i{background:#ff8a3a}
+html.hud-traco:not(.mob) #dungeon-wave-label{color:#ffb07a!important}
+html.hud-traco:not(.mob) #dungeon-exit{border-bottom-style:dashed!important}
+/* balão de fala (intro/cena.ts #isc-dlg): Carvão, linha em cima e embaixo, o nome de quem fala em brasa */
+html.hud-traco #isc-dlg{background:radial-gradient(ellipse 60% 70% at 0% 120%,rgba(255,106,42,.12),transparent 70%),rgba(27,25,24,.95);border:0;border-block:1px solid rgba(239,233,221,.22);border-radius:0;color:#ddd5c8;box-shadow:0 8px 26px rgba(0,0,0,.55)}
+html.hud-traco #isc-dlg .idl-who b{font-weight:500;font-variant:small-caps;letter-spacing:.14em;color:#ff8a3a;text-shadow:0 0 12px rgba(255,106,42,.35)}
+html.hud-traco #isc-dlg .idl-ava{background:#121110;box-shadow:0 0 0 1px #ff8a3a,0 0 10px rgba(255,106,42,.35)}
+html.hud-traco #isc-text{color:#efe9dd}
+html.hud-traco #isc-dlg .idl-foot small{color:#8f877b;opacity:1;font-variant:small-caps;letter-spacing:.08em}
+html.hud-traco #isc-dlg .idl-foot .btn{background:none!important;border:0!important;border-bottom:1px solid rgba(239,233,221,.35)!important;border-radius:0!important;box-shadow:none!important;color:#ddd5c8;font-variant:small-caps;letter-spacing:.08em}
+html.hud-traco #isc-dlg .idl-foot .btn:hover{border-bottom-color:#ff8a3a!important;color:#ffd9b8}
+/* progresso das habilidades no canto (field/progresso_hud.ts .wph-card): sem caixa, traço fino em brasa */
+html.hud-traco .wph-card{background:none;border:0;border-radius:0;box-shadow:none;padding:4px 6px;color:#efe9dd;filter:drop-shadow(0 1px 1px rgba(0,0,0,.9)) drop-shadow(0 0 6px rgba(0,0,0,.6))}
+html.hud-traco .wph-head b{font-weight:500;font-variant:small-caps;letter-spacing:.08em}
+html.hud-traco .wph-lvl{color:#ff8a3a}
+html.hud-traco .wph-card .bb{height:3px;border-radius:0;background:rgba(239,233,221,.16);overflow:visible}
+html.hud-traco .wph-card .bb i{background:linear-gradient(90deg,#6d1406,#d23d14 65%,#ffae55);box-shadow:0 0 8px rgba(255,90,31,.55)}
+html.hud-traco .wph-pts{color:rgba(239,233,221,.65);font-variant-numeric:tabular-nums}
+html.hud-traco .wph-card .win-x{background:none;border:0;box-shadow:none;color:rgba(239,233,221,.55)}
+html.hud-traco .wph-card .win-x:hover{color:#ff8a3a}
+/* criação do personagem (ui/criacao.ts, styles/53_v8.0_criacao.css): Carvão como no artefato — linha do tempo com
+   losangos (os já vistos cheios, o último em brasa), rótulos em versalete, atributos em traço fino, botões só com o
+   traço embaixo. O palco 3D fica como está; só a moldura e a luz mudam. */
+html.hud-traco #create-modal.scene #create-card{background:radial-gradient(ellipse 60% 40% at 70% 115%,rgba(255,106,42,.12),transparent 70%),#1b1918;border:0;border-block:1px solid rgba(239,233,221,.22);border-radius:0;color:#ddd5c8;box-shadow:0 24px 70px rgba(0,0,0,.65)}
+html.hud-traco #cr-palco{background:#141312;border-right-color:rgba(239,233,221,.14)}
+html.hud-traco #cr-misterio{background:radial-gradient(ellipse at 50% 60%,#2a2624 0%,#121110 75%)}
+html.hud-traco #cr-misterio span{color:#ff8a3a;text-shadow:0 0 24px rgba(255,106,42,.55),0 0 4px #000}
+html.hud-traco #cr-misterio small,html.hud-traco #cr-arrastar{color:#8f877b}
+html.hud-traco #create-modal.scene #create-card h2{font-weight:500;font-variant:small-caps;letter-spacing:.14em;color:#efe9dd;text-shadow:0 0 14px rgba(255,106,42,.3);text-align:center}
+html.hud-traco #create-card .create-note{color:#a39d92}
+html.hud-traco #create-card #create-name{background:none;border:0;border-bottom:1px solid rgba(239,233,221,.35);border-radius:0;color:#efe9dd;padding:8px 2px;font-weight:500;letter-spacing:.04em}
+html.hud-traco #create-card #create-name:focus{border-bottom-color:#ff8a3a;box-shadow:0 1px 0 #ff8a3a}
+html.hud-traco #create-card .btn{background:none!important;border:0!important;border-bottom:1px solid rgba(239,233,221,.4)!important;border-radius:0!important;box-shadow:none!important;color:#ddd5c8!important;font-variant:small-caps;letter-spacing:.1em}
+html.hud-traco #create-card .btn:hover:not(:disabled){border-bottom-color:#ff8a3a!important;color:#ffd9b8!important}
+html.hud-traco #create-card #create-confirm,html.hud-traco #create-card #cr-skip{color:#ffb07a!important;border-bottom:1px solid #ff8a3a!important;text-shadow:0 0 10px rgba(255,106,42,.35)}
+html.hud-traco #create-card .btn:disabled{opacity:.4}
+/* a linha do tempo */
+html.hud-traco #create-card #cr-reveal{position:relative}
+html.hud-traco #create-card .cr-tapfast{color:#5f5b55;font-variant:small-caps;letter-spacing:.08em;font-style:normal}
+html.hud-traco #create-card .cr-step{position:relative;margin:0;padding:0 0 14px 30px;border:0;border-radius:0;background:none;color:#ddd5c8}
+html.hud-traco #create-card .cr-step::after{content:"";position:absolute;left:8px;top:14px;bottom:0;width:1px;background:#4f4a44}
+html.hud-traco #create-card .cr-step::before{content:"";position:absolute;left:3px;top:4px;width:9px;height:9px;transform:rotate(45deg);background:#ddd5c8;border:1px solid #ddd5c8}
+html.hud-traco #create-card .cr-step.show:not(:has(~ .cr-step.show:not(.cr-fin))):not(.cr-fin)::before{background:#ff8a3a;border-color:#ff8a3a;box-shadow:0 0 10px #ff6a2a}
+html.hud-traco #create-card .cr-step.cr-fin{padding-left:0}
+html.hud-traco #create-card .cr-step.cr-fin::before,html.hud-traco #create-card .cr-step.cr-fin::after,html.hud-traco #create-card .cr-step:nth-last-child(2)::after{display:none}
+html.hud-traco #create-card .cr-tag{color:#8f877b!important;filter:none;font-size:.68rem;letter-spacing:.18em}
+html.hud-traco #create-card .cr-line{color:#a39d92;font-size:.82rem}
+html.hud-traco #create-card .cr-big{font-variant:small-caps;letter-spacing:.06em;font-weight:500}
+html.hud-traco #create-card .cr-step i{color:#8f877b}
+/* atributos: traço fino, número à direita */
+html.hud-traco #create-card .sh-attr{color:#ddd5c8;font-variant:small-caps;letter-spacing:.06em}
+html.hud-traco #create-card .sh-bar{height:3px;border-radius:0;background:rgba(239,233,221,.14);border:0;box-shadow:none}
+html.hud-traco #create-card .sh-bar i{border-radius:0;background:#ddd5c8;box-shadow:none}
+html.hud-traco #create-card .sh-attr b{color:#efe9dd}
+/* fazer flechas do tutorial (intro/cena.ts arrowCraftRender): cartão em Carvão, a barra vira o arco em meio círculo
+   (enche com --p, marcas em lascar/encaixar/amarrar). Vale também no celular: é uma janela, não o HUD. */
+#isc-craft .ich-arco,#isc-craft .ich-ico{display:none}
+html.hud-traco #isc-craft .ic-card{background:radial-gradient(ellipse 70% 50% at 50% 120%,rgba(255,106,42,.16),transparent 70%),#1b1918;border:0;border-block:1px solid rgba(239,233,221,.2);border-radius:0;color:#ddd5c8;text-align:center;padding:18px 20px}
+html.hud-traco #isc-craft .ic-h b{font:500 17px Cinzel,Lora,serif;font-variant:small-caps;letter-spacing:.14em;color:#efe9dd;text-shadow:0 0 14px rgba(255,106,42,.3)}
+html.hud-traco #isc-craft .ic-h small{display:block;margin:2px 0 0;color:#8f877b;font-variant:small-caps;letter-spacing:.1em;opacity:1}
+html.hud-traco #isc-craft .ic-rec{justify-content:center;gap:10px;color:#8f877b}
+html.hud-traco #isc-craft .ic-rec span{background:none;border:0;border-bottom:1px solid rgba(239,233,221,.3);border-radius:0;padding:2px 3px;color:#ddd5c8}
+html.hud-traco #isc-craft .ic-rec b{color:#ffb07a}
+html.hud-traco #isc-craft .ic-have{color:#8f877b;opacity:1}
+html.hud-traco #isc-craft .ich-stages{justify-content:center;gap:14px;font-variant:small-caps;letter-spacing:.08em;color:#4f4a44}
+html.hud-traco #isc-craft .ich-stages span{flex:none;background:none;padding:2px 0}
+html.hud-traco #isc-craft .ich-stages span.on{background:none;color:#ff8a3a}
+html.hud-traco #isc-craft .ich-bar{display:none}
+html.hud-traco #isc-craft .ich-hold{position:relative;width:210px;max-width:100%;margin:14px auto 0;padding:0 0 4px;background:none!important;border:0!important;box-shadow:none!important;color:#efe9dd;font-variant:small-caps;letter-spacing:.12em;cursor:pointer}
+html.hud-traco #isc-craft .ich-hold:disabled{opacity:.45;cursor:default}
+html.hud-traco #isc-craft .ich-arco{display:block;width:100%;overflow:visible}
+html.hud-traco #isc-craft .ich-arco path{fill:none;stroke-width:3}
+html.hud-traco #isc-craft .ich-arco .f{stroke:rgba(239,233,221,.14)}
+html.hud-traco #isc-craft .ich-arco .p{stroke:#ff8a3a;stroke-dasharray:100;stroke-dashoffset:calc(100 - 100 * var(--p,0));filter:drop-shadow(0 0 4px rgba(255,106,42,.8))}
+html.hud-traco #isc-craft .ich-arco line{stroke:#8f877b;stroke-width:1}
+html.hud-traco #isc-craft .ich-ico{display:block;position:absolute;left:50%;top:98px;transform:translate(-50%,-100%);font-size:38px;line-height:1}
+html.hud-traco #isc-craft .ich-hold:hover .ich-ico{filter:drop-shadow(0 0 8px rgba(255,106,42,.7))}
+html.hud-traco #isc-craft .ich-rot{display:block;margin-top:6px}
+html.hud-traco #isc-craft .ic-msg{color:#ff8a3a;background:none;border:0;box-shadow:none}
+html.hud-traco #isc-craft .ic-foot .btn{background:none!important;border:0!important;border-bottom:1px solid rgba(239,233,221,.4)!important;border-radius:0!important;box-shadow:none!important;color:#efe9dd;font-variant:small-caps;letter-spacing:.12em}
+html.hud-traco #isc-craft .ic-foot .btn:hover{border-bottom-color:#ff8a3a!important;color:#ffd9b8}

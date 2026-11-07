@@ -1,0 +1,24 @@
+/* v5.8 */
+#inv-eq{display:flex;align-items:center;gap:5px;margin:2px 0 8px;flex-wrap:wrap}
+#inv-eq .ieq{width:40px;height:40px;border:1px solid #7a6038;border-radius:7px;background:#2b2113;display:flex;align-items:center;justify-content:center;cursor:pointer}
+#inv-eq .ieq:hover{border-color:#ffe08a}
+#inv-eq .ieq .eqf{width:92%;height:92%}
+#inv-eq .ieq.empty{cursor:default}
+#inv-eq .ieq-l{font-size:.76rem;color:#f0d9a2;margin-right:4px}
+#inv-eq .ieq-h{font-size:.66rem;color:#a8977a;flex-basis:100%}
+#dungeon-attack{display:none!important}
+.ra-wtip{font-size:.78rem;color:#c9b88a}
+.ra-wet{position:relative;height:16px;margin:6px 0 2px;border-radius:8px;overflow:visible;border:1px solid #7a6038}
+.ra-wz{display:flex;height:100%;border-radius:8px;overflow:hidden}
+.ra-wz i{display:block;height:100%}
+.ra-wz .dry{width:28%;background:#5a3a1e}.ra-wz .ok{width:32%;background:#3f8a3a}.ra-wz .soak{flex:1;background:linear-gradient(90deg,#4a6a8a,#2a4a7a)}
+#ra-wmark{position:absolute;top:-4px;width:4px;height:24px;margin-left:-2px;background:#fff;border-radius:2px;box-shadow:0 0 6px #fff;transition:left .08s}
+#ra-wmark.dry{background:#ffb37a}#ra-wmark.soak{background:#9fd0ff}#ra-wmark.ok{background:#b9ff9a}
+.ra-wst{font-size:.78rem;margin:2px 0 6px;color:#f3e6c8;min-height:1.1em}
+.cam-ping{position:absolute;width:0;height:0;pointer-events:none;z-index:30;transform:scale(var(--k,1))}
+.cam-ping i{position:absolute;left:-28px;top:-28px;width:56px;height:56px;border-radius:50%;border:3px solid #ffe08a;box-shadow:0 0 12px #ffe08a;animation:camPing 1s ease-out infinite}
+.cam-ping b{position:absolute;left:-14px;top:-40px;font-size:28px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.6));animation:camDrop .5s ease-out}
+@keyframes camPing{0%{transform:scale(.3);opacity:1}100%{transform:scale(1.6);opacity:0}}
+@keyframes camDrop{0%{transform:translateY(-30px);opacity:0}100%{transform:none;opacity:1}}
+#map-ov-hint{position:absolute;left:50%;top:70px;transform:translateX(-50%);background:rgba(30,22,12,.85);color:#f3e6c8;border:1px solid #c9a25a;border-radius:10px;padding:6px 12px;font:13px Lora,serif;z-index:40;pointer-events:none;display:none}
+

@@ -1,0 +1,31 @@
+/* v5.9.03 — mochila contínua + boneco */
+#inv-bags{display:grid;grid-template-columns:auto auto;gap:6px 8px;align-items:start;justify-content:start}
+#inv-bags .ib-b{align-self:stretch}
+#inv-bags #inv-grid,#inv-bags #inv-qv,#inv-bags #inv-ground{margin:0!important}
+#inv-bags #inv-qv{box-shadow:inset 3px 0 0 #6b5432}
+#inv-bags .ib-c{border-top:2px dashed #5a4528;padding-top:4px}
+#inv-eq{display:none!important}
+#inv-foot{margin-top:8px;padding-top:6px;border-top:1px solid #3a2d1c;font-size:.7rem;color:#c9b88a;display:flex;flex-direction:column;gap:3px;max-width:560px}
+#inv-foot #inv-labels{display:flex;flex-wrap:wrap;gap:4px 12px;color:#e9dcc0}
+#inv-foot .qv-head,#inv-foot .qv-mat,#inv-foot p{margin:0;font-size:.68rem}
+#inv-foot .inv-org{align-self:flex-start}
+#inv-doll{display:flex;gap:6px;align-items:flex-start;padding:2px 2px 0}
+#inv-doll .dset{display:flex;flex-direction:column;gap:4px;align-items:center;padding:3px;border-radius:8px;border:1px solid transparent;opacity:.7}
+#inv-doll .dset.on{border-color:#e0b35f;background:rgba(224,179,95,.08);opacity:1}
+#inv-doll .dset>b{font-size:.6rem;color:#e0b35f;white-space:nowrap}
+#inv-doll .dbody{position:relative;width:64px;height:166px}
+#inv-doll .dfig{position:absolute;left:2px;top:6px;width:60px;height:150px}
+#inv-doll .darm{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:2px 0}
+.dslot{position:relative;width:36px;height:36px;border:1.5px solid #6b5432;border-radius:7px;background:rgba(20,14,8,.78);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.dslot:hover{border-color:#ffe08a;box-shadow:0 0 6px rgba(255,224,138,.5)}
+.dslot.empty{border-style:dashed;cursor:default}
+.dslot .dz{opacity:.3;font-size:16px}
+.dslot .ico,.dslot .ic{width:28px;height:28px}
+.dslot small{position:absolute;bottom:-1px;left:0;right:0;text-align:center;font-size:7px;color:#c9b88a;line-height:1;pointer-events:none;opacity:.8}
+.dslot .eq-dur{position:absolute;left:3px;right:3px;bottom:9px;height:2px;background:rgba(0,0,0,.6)}
+.dslot .eq-dur i{display:block;height:100%}
+#prep-alt{display:flex;gap:6px;align-items:center;justify-content:center;margin:6px 0 4px}
+#prep-alt .set-lab{font-size:.68rem;color:#8a6a3a;display:flex;flex-direction:column;line-height:1.1;text-align:right}
+#prep-alt .set-lab small{font-weight:400;font-size:.58rem;opacity:.8}
+html.mob #inv-bags{grid-template-columns:auto}
+

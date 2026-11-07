@@ -1,0 +1,62 @@
+{
+  "nome": "cacador",
+  "altura": 1.8,
+  "saida": "build/modelos/cacador.json",
+  "previas": "build/modelos/cacador",
+  "cache": "build/modelos/cache",
+  "texW": 2048,
+  "corpo": {
+    "arquivo": "arquivos de transferência/adventurer character 3d model male.glb",
+    "regiao": {
+      "xMax": -0.05,
+      "yMax": 0.36
+    }
+  },
+  "cabeca": {
+    "arquivo": "arquivos de transferência/male head 3d model.glb",
+    "regiao": {
+      "xMin": -0.15,
+      "xMax": 0.02
+    }
+  },
+  "marcos": {
+    "pe": 0,
+    "escala": 109,
+    "cx": -0.275,
+    "pescoco": 0.285,
+    "bracoY": 0.215,
+    "virilha": 0.1,
+    "queixoCorpo": 0.278,
+    "queixoCabeca": 0.032,
+    "corteCabeca": 0.008,
+    "narizCabecaX": -0.058,
+    "narizCabecaY": [
+      0.08,
+      0.11
+    ],
+    "rostoY": [
+      0,
+      0.02,
+      0.14,
+      0.16
+    ],
+    "czFaixa": [
+      0.12,
+      0.22
+    ]
+  },
+  "orcamento": {
+    "cabeca": 4000,
+    "tronco": 4500,
+    "bracoD": 1500,
+    "bracoE": 1500,
+    "pernaD": 1750,
+    "pernaE": 1750
+  },
+  "ajustes": {
+    "rosto": 50,
+    "sig": 0.2,
+    "tor": 1.46,
+    "perna": 1.05
+  }
+}

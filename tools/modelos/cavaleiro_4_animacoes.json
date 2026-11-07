@@ -1,0 +1,69 @@
+{
+  "arquivo": "arquivos de transferência/animações heorina.glb",
+  "vestir": "build/modelos/cavaleiro_4_tpose/cavaleiro_4_tpose.glb",
+  "panoEntrePernas": true,
+  "saida": "build/modelos/cavaleiro_4_anim.json",
+  "previas": "build/modelos/cavaleiro_4_anim",
+  "alturaJogo": 46,
+  "fps": 24,
+  "juntas": [
+    "Hips",
+    "Spine",
+    "Spine1",
+    "Spine2",
+    "Neck",
+    "Head",
+    "LeftShoulder",
+    "LeftArm",
+    "LeftForeArm",
+    "LeftHand",
+    "RightShoulder",
+    "RightArm",
+    "RightForeArm",
+    "RightHand",
+    "LeftUpLeg",
+    "LeftLeg",
+    "LeftFoot",
+    "LeftToeBase",
+    "RightUpLeg",
+    "RightLeg",
+    "RightFoot",
+    "RightToeBase"
+  ],
+  "bindMixamo": "arquivos de transferência/Longbow Aiming Pack.zip/heroina_tpose_mixamo.fbx",
+  "clips": {
+    "andar": {
+      "de": "walk",
+      "noLugar": true
+    },
+    "correr": {
+      "de": "run",
+      "noLugar": true
+    },
+    "morrer": {
+      "de": "fall",
+      "t0": 0,
+      "t1": 2.6
+    },
+    "parada": {
+      "fbx": "arquivos de transferência/Sword and Shield Pack heroina.zip/sword and shield block idle.fbx",
+      "noLugar": true
+    },
+    "espada_0": {
+      "fbx": "arquivos de transferência/Sword and Shield Pack heroina.zip/sword and shield slash.fbx",
+      "t0": 0,
+      "t1": 1.2,
+      "noLugar": true
+    },
+    "espada_1": {
+      "fbx": "arquivos de transferência/Sword and Shield Pack heroina.zip/sword and shield attack (2).fbx",
+      "t0": 0,
+      "t1": 1.2,
+      "noLugar": true
+    },
+    "atingido": {
+      "fbx": "arquivos de transferência/Sword and Shield Pack heroina.zip/sword and shield impact (3).fbx",
+      "noLugar": true
+    }
+  }
+}

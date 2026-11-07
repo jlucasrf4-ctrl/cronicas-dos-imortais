@@ -1,0 +1,97 @@
+{
+  "origem": "arquivos de transferência/icones pedras",
+  "saida": "build/icones_pedras",
+  "icones": "src/assets/icons",
+  "css": "src/styles/icones-pintados.css",
+  "folhas": [
+    {
+      "arquivo": "pedras_1.png",
+      "modo": "grade",
+      "colunas": 3,
+      "linhas": 2,
+      "nomes": ["citrino", "lapis", "pedra", "malaquita", "jaspe", "ametista"],
+      "fundo": 22,
+      "erosao": 2,
+      "desfoque": 0.8,
+      "limparAlfa": 0.08,
+      "aparar": 0.04,
+      "quadrado": 128
+    },
+    {
+      "arquivo": "pedras_2.png",
+      "modo": "componentes",
+      "limiar": 28,
+      "areaMin": 20000,
+      "ladoMin": 150,
+      "folgaLinha": 200,
+      "nomes": ["l1", "l2"],
+      "fundo": 16,
+      "erosao": 2,
+      "desfoque": 0.8,
+      "limparAlfa": 0.08,
+      "aparar": 0.04,
+      "quadrado": 128,
+      "margem": 10
+    },
+    {
+      "arquivo": "olho_tigre.png",
+      "modo": "componentes",
+      "limiar": 28,
+      "areaMin": 20000,
+      "ladoMin": 150,
+      "nomes": ["olho_tigre"],
+      "fundo": 16,
+      "erosao": 2,
+      "desfoque": 0.8,
+      "aparar": 0.04,
+      "quadrado": 128,
+      "margem": 10
+    }
+  ],
+  "apelidos": {
+    "l1_1": "obsidiana",
+    "l1_2": "quartzo",
+    "l1_3": "quartzo_rosa",
+    "l2_1": "agata",
+    "l2_2": "serpentina",
+    "olho_tigre_1": "olho_tigre"
+  },
+  "pedras": {
+    "lado": 64,
+    "tipos": [
+      "pedra",
+      "quartzo",
+      "ametista",
+      "jaspe",
+      "citrino",
+      "lapis",
+      "quartzo_rosa",
+      "malaquita",
+      "agata",
+      "serpentina",
+      "obsidiana"
+    ],
+    "giro": 7,
+    "matiz": 4,
+    "luz": 0.04
+  },
+  "runas": {
+    "lado": 48,
+    "elementos": {
+      "fogo": [{ "de": "gx_rubi_1_1" }, { "de": "gx_rubi_2_6" }, { "de": "gx_rubi_3_3" }],
+      "energia": [
+        { "de": "gx_topazio_1_5", "matiz": 14, "luz": 1.08 },
+        { "de": "gx_topazio_2_7", "matiz": 14, "luz": 1.08 },
+        { "de": "gx_topazio_5_5", "matiz": 14, "luz": 1.08 }
+      ],
+      "agua": [{ "de": "gx_safira_1_3" }, { "de": "gx_safira_2_6" }, { "de": "gx_safira_5_2" }],
+      "ar": [{ "de": "gx_esmeralda_1_5" }, { "de": "gx_esmeralda_2_8" }, { "de": "gx_esmeralda_5_5" }],
+      "terra": [
+        { "de": "gx_topazio_1_1", "matiz": -10, "luz": 0.72, "sat": 0.75 },
+        { "de": "gx_topazio_2_5", "matiz": -10, "luz": 0.72, "sat": 0.75 },
+        { "fatia": "olho_tigre", "matiz": -10, "luz": 0.72, "sat": 0.75 }
+      ],
+      "nularis": [{ "de": "gx_diamante_1_5" }, { "de": "gx_diamante_2_2" }, { "de": "gx_diamante_3_1" }]
+    }
+  }
+}

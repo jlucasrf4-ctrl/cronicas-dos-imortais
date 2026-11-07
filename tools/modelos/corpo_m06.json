@@ -1,0 +1,29 @@
+{
+  "nome": "corpo_m06",
+  "glb": "arquivos de transferência/corpos_tripo/par_M04_M06.glb",
+  "regiao": {
+    "xMin": -0.028
+  },
+  "altura": 1.7,
+  "triangulos": 12000,
+  "centrarPernas": true,
+  "espelhar": {
+    "manter": 1
+  },
+  "alongarBracos": {
+    "fator": 1.85,
+    "de": 0.26,
+    "ate": 0.32
+  },
+  "texturaSaida": 1536,
+  "separarPernas": {
+    "de": 0,
+    "ate": 0.46
+  },
+  "cabeca": {
+    "y": 0.84,
+    "triangulos": 4000
+  },
+  "texW": 2048,
+  "pasta": "build/modelos/corpo_m06_tpose"
+}

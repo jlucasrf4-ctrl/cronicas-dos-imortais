@@ -1,0 +1,27 @@
+/* v8.0 — controles explícitos entre o mapa e o campo no celular */
+#zoom-world {
+  display: none;
+}
+html.mob #zoom-world {
+  display: flex;
+  width: auto;
+  min-width: 116px;
+  min-height: 40px;
+  padding: 4px 8px;
+  white-space: nowrap;
+  font-size: 0.72rem;
+}
+html.mob.mob-campo #zoom-controls {
+  right: 10px;
+  bottom: calc(232px + env(safe-area-inset-bottom, 0px));
+  z-index: 20;
+}
+html.mob.mob-campo #zoom-controls .zoom-btn:not(#zoom-world) {
+  display: none;
+}
+html.mob.mob-campo #zoom-world {
+  min-width: 96px;
+  background: linear-gradient(135deg, rgba(68, 91, 47, 0.98), rgba(27, 40, 20, 0.98));
+  border-color: rgba(196, 224, 139, 0.65);
+  color: #f1ffd4;
+}

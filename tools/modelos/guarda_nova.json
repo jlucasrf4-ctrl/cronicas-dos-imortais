@@ -1,0 +1,13 @@
+{
+  "nome": "guarda_nova",
+  "glb": "arquivos de transferência/3.11.2026/medieval armor character 3d model.glb",
+  "altura": 1.7,
+  "triangulos": 15500,
+  "cabeca": {
+    "y": 0.84,
+    "triangulos": 4500
+  },
+  "texturaSaida": 1536,
+  "texW": 2048,
+  "pasta": "build/modelos/guarda_nova_tpose"
+}

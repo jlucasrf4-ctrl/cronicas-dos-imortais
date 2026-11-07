@@ -1,0 +1,56 @@
+{
+  "nome": "heroina_dreads",
+  "saida": "src/assets/models/heroina_dreads.json",
+  "previas": "build/modelos/heroina_dreads",
+  "cache": "build/modelos/cache",
+  "variante": {
+    "base": "tools/modelos/heroina.json",
+    "anim": "src/assets/models/heroina_anim.json",
+    "saidaAnim": "src/assets/models/heroina_dreads_anim.json"
+  },
+  "texW": 2048,
+  "corpo": {
+    "arquivo": "arquivos de transferência/adventurer character 3d model famele.glb",
+    "regiao": { "xMax": -0.05, "yMin": 0.371 }
+  },
+  "cabeca": {
+    "arquivo": "arquivos de transferência/cabeça personagem feminino.glb",
+    "regiao": { "xMax": -0.27, "yMax": 0.32 }
+  },
+  "marcos": {
+    "pe": 0.376,
+    "escala": 109,
+    "cx": -0.2925,
+    "pescoco": 0.652,
+    "bracoY": 0.585,
+    "virilha": 0.47,
+    "queixoCorpo": 0.658,
+    "queixoCabeca": 0.072,
+    "corteCabeca": 0.042,
+    "narizCabecaX": -0.389,
+    "narizCabecaY": [0.11, 0.14],
+    "rostoY": [0.045, 0.065, 0.19, 0.21]
+  },
+  "orcamento": { "cabeca": 2200, "tronco": 1400, "bracoD": 260, "bracoE": 260, "pernaD": 340, "pernaE": 340 },
+  "ajustes": {
+    "manga": 0.75,
+    "ombro": 0.61,
+    "peito": 1.2,
+    "p0": 0.556,
+    "p1": 0.575,
+    "p2": 0.606,
+    "p3": 0.632,
+    "px": 0.052,
+    "py": -0.004,
+    "ini": 0.03,
+    "fim": 0.03,
+    "abre": 12,
+    "alisa": 25,
+    "corLisa": 15,
+    "rosto": 50,
+    "sig": 0.2,
+    "tor": 1.35,
+    "cabEsc": 0.919,
+    "pele": 1
+  }
+}

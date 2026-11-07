@@ -1,0 +1,22 @@
+{
+  "nome": "aldeao_6",
+  "glb": "arquivos de transferência/3.11.2026/medieval fantasy character 3d model.glb",
+  "regiao": {
+    "xMin": 0,
+    "yMin": 0.490264892578125
+  },
+  "altura": 1.7,
+  "triangulos": 15000,
+  "cabeca": {
+    "y": 0.84,
+    "triangulos": 4000
+  },
+  "texturaSaida": 1536,
+  "texW": 2048,
+  "cor": [
+    0.98,
+    1,
+    1.06
+  ],
+  "pasta": "build/modelos/aldeao_6_tpose"
+}

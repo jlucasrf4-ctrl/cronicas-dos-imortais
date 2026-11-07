@@ -1,0 +1,14 @@
+/* v7.7 — grade A2 (items/grade_a2.ts, renderInvGrid): pontinhos no lugar das linhas; cada peça com fundo uniforme e uma moldura dourada que segue o contorno, com as quinas de fora arredondadas */
+.grade-a2{background-color:#1c140b!important;background-image:radial-gradient(circle,#4a3a24 1px,transparent 1.2px)!important}
+.grade-a2 .inv-item .inv-cell{box-shadow:none!important}
+.grade-a2 .inv-item .inv-cell.a2-t{border-top:2px solid rgba(240,210,150,.55)!important}
+.grade-a2 .inv-item .inv-cell.a2-b{border-bottom:2px solid rgba(240,210,150,.55)!important}
+.grade-a2 .inv-item .inv-cell.a2-l{border-left:2px solid rgba(240,210,150,.55)!important}
+.grade-a2 .inv-item .inv-cell.a2-r{border-right:2px solid rgba(240,210,150,.55)!important}
+.grade-a2 .inv-item .inv-cell.a2-tl{border-top-left-radius:7px}
+.grade-a2 .inv-item .inv-cell.a2-tr{border-top-right-radius:7px}
+.grade-a2 .inv-item .inv-cell.a2-bl{border-bottom-left-radius:7px}
+.grade-a2 .inv-item .inv-cell.a2-br{border-bottom-right-radius:7px}
+.grade-a2 .inv-item.fix .inv-cell{border:0!important}
+.grade-a2 .inv-item.inv-sel .inv-cell{box-shadow:inset 0 0 0 40px rgba(255,210,122,.16)!important}
+.grade-a2 .inv-item.inv-sel .inv-cell.a2-t,.grade-a2 .inv-item.inv-sel .inv-cell.a2-b,.grade-a2 .inv-item.inv-sel .inv-cell.a2-l,.grade-a2 .inv-item.inv-sel .inv-cell.a2-r{border-color:#ffd27a!important}

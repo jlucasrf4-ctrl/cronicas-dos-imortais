@@ -1,0 +1,18 @@
+{
+  "fundos": {
+    "cidadela": "arquivos de transferência/Cidadela Cósmica sobre o Lago Encantado-2.png",
+    "torre": "arquivos de transferência/Torre Celestial Sob o Vórtice Cósmico-1.png"
+  },
+  "logo": "arquivos de transferência/Crônicas dos Imortais em Ouro Místico.png",
+  "letras": "src/assets/art/voidd_letras.json",
+  "arte": {
+    "o": "src/assets/art/voidd_o.webp",
+    "v": "src/assets/art/voidd_v.webp",
+    "idd": "src/assets/art/voidd_idd.webp"
+  },
+  "saida": "src/assets/art",
+  "previas": "build/modelos/titulo",
+  "qualidade": { "fundo": 86, "logo": 90 },
+  "logoLargura": 1600,
+  "selo": { "cap": 96, "capO": 0.74, "slotO": 0.9, "espacoIdd": 0.03, "espacoV": 0.02 }
+}

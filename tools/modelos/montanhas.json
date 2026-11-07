@@ -1,0 +1,40 @@
+{
+  "saida": "src/assets/models/montanhas.json",
+  "previas": "build/modelos/montanhas",
+  "cache": "build/modelos/cache",
+  "texW": 1024,
+  "colunas": 4,
+  "caixa": { "mn": [-60, -20, -60], "mx": [60, 80, 60] },
+  "folhas": {
+    "montanha": "arquivos de transferência/3.11.2026/low-poly mountains 3d model.glb",
+    "colinas": "arquivos de transferência/3.11.2026/rocky hill cluster 3d model.glb"
+  },
+  "pecas": {
+    "PICO": { "folha": "montanha", "c": [0, 0.337], "r": 0.35, "tris": 6000, "verdear": true },
+    "G1": { "folha": "colinas", "c": [-0.312, 0.535], "r": 0.12, "tris": 2600 },
+    "G2": { "folha": "colinas", "c": [0.039, 0.502], "r": 0.12, "tris": 2600 },
+    "G3": { "folha": "colinas", "c": [0.352, 0.524], "r": 0.12, "tris": 2600 },
+    "M1": { "folha": "colinas", "c": [-0.314, 0.253], "r": 0.12, "tris": 1800 },
+    "M2": { "folha": "colinas", "c": [0.033, 0.257], "r": 0.12, "tris": 1800 },
+    "M3": { "folha": "colinas", "c": [0.336, 0.222], "r": 0.12, "tris": 1800 },
+    "P1": { "folha": "colinas", "c": [-0.399, 0.057], "r": 0.07, "tris": 1000 },
+    "P2": { "folha": "colinas", "c": [-0.214, 0.052], "r": 0.07, "tris": 1000 },
+    "P3": { "folha": "colinas", "c": [-0.018, 0.054], "r": 0.07, "tris": 1000 },
+    "P4": { "folha": "colinas", "c": [0.174, 0.054], "r": 0.07, "tris": 1000 },
+    "P5": { "folha": "colinas", "c": [0.374, 0.054], "r": 0.07, "tris": 1000 }
+  },
+  "itens": {
+    "pico_1": { "peca": "PICO", "tam": 100 },
+    "colina_1": { "peca": "G1", "tam": 100 },
+    "colina_2": { "peca": "G2", "tam": 100 },
+    "colina_3": { "peca": "G3", "tam": 100 },
+    "colina_4": { "peca": "M1", "tam": 100 },
+    "colina_5": { "peca": "M2", "tam": 100 },
+    "colina_6": { "peca": "M3", "tam": 100 },
+    "morrote_1": { "peca": "P1", "tam": 100 },
+    "morrote_2": { "peca": "P2", "tam": 100 },
+    "morrote_3": { "peca": "P3", "tam": 100 },
+    "morrote_4": { "peca": "P4", "tam": 100 },
+    "morrote_5": { "peca": "P5", "tam": 100 }
+  }
+}

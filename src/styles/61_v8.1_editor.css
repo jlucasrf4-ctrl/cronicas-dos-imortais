@@ -1,0 +1,136 @@
+/* v8.1 — Modo Editor (src/editor/editor.ts): painéis de madeira escura e dourado por cima do campo */
+#ed-raiz{position:fixed;inset:0;z-index:60;pointer-events:none;font-family:Lora,Georgia,serif;color:#f3e6c4;font-size:13px}
+#ed-raiz[hidden],#ed-tela[hidden]{display:none}
+#ed-tela{position:fixed;inset:0;width:100vw;height:100vh;z-index:59;pointer-events:none}
+.ed-painel{pointer-events:auto;background:linear-gradient(180deg,rgba(43,31,18,.96),rgba(28,20,11,.96));border:1px solid #8a6a32;box-shadow:0 6px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,220,150,.12);border-radius:10px}
+#ed-raiz button{font:inherit;color:#f3e6c4;background:linear-gradient(180deg,#4a3720,#33251480);border:1px solid #6e5328;border-radius:7px;padding:4px 8px;cursor:pointer;white-space:nowrap;line-height:1.2}
+#ed-raiz button:hover{border-color:#d9ae5c;background:#5a4426}
+#ed-raiz button.on{background:linear-gradient(180deg,#d9a84e,#a8782e);color:#1c140b;border-color:#ffd27a;font-weight:700}
+#ed-raiz button:disabled{opacity:.4;cursor:default}
+#ed-raiz input[type=range]{accent-color:#e0b25c;vertical-align:middle}
+#ed-raiz input[type=search],#ed-raiz textarea,#ed-raiz select,#ed-raiz #ed-conj-nome input{font:inherit;color:#f3e6c4;background:#1a120a;border:1px solid #6e5328;border-radius:6px;padding:4px 6px}
+#ed-raiz code{background:#1a120a;padding:0 4px;border-radius:4px;color:#ffd27a}
+/* barra de cima */
+#ed-topo{position:absolute;left:8px;right:8px;top:8px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:6px 10px}
+.ed-titulo{color:#ffd27a;font-size:15px;letter-spacing:.3px}
+.ed-cena{color:#c9b88a;font-style:italic;margin-right:4px}
+.ed-grupo{display:flex;gap:4px;align-items:center;padding-left:10px;border-left:1px solid rgba(138,106,50,.5)}
+.ed-dir{margin-left:auto}
+#ed-hora{width:90px}
+#ed-hora-txt{min-width:38px;color:#c9b88a;font-variant-numeric:tabular-nums}
+.ed-pav-label{display:inline-flex;align-items:center;gap:4px;color:#c9b88a;font-size:12px}
+#ed-pavimento{font:inherit;color:#f3e6c4;background:#1a120a;border:1px solid #6e5328;border-radius:6px;padding:3px}
+#ed-salvar{border-color:#d9ae5c}
+/* biblioteca */
+#ed-bib{position:absolute;left:8px;top:var(--ed-topo,64px);bottom:44px;width:248px;display:flex;flex-direction:column;padding:8px;gap:6px}
+.ed-bib-topo{display:flex;align-items:center;gap:6px}
+.ed-bib-topo b{color:#ffd27a}
+#ed-busca{flex:1;min-width:0}
+#ed-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+#ed-cats button{display:flex;flex-direction:column;align-items:center;padding:3px 2px;font-size:16px}
+#ed-cats button small{font-size:9.5px;white-space:normal;line-height:1.05;margin-top:1px}
+#ed-cards{flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:5px;align-content:start;padding-right:2px}
+.ed-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 3px;border:1px solid #5a4424;border-radius:8px;background:rgba(0,0,0,.25);cursor:grab;user-select:none;text-align:center}
+.ed-card:hover{border-color:#d9ae5c;background:rgba(255,210,122,.08)}
+.ed-card.on{border-color:#ffd27a;background:rgba(255,210,122,.18);box-shadow:0 0 0 1px #ffd27a inset}
+.ed-card img{width:64px;height:64px;object-fit:contain;pointer-events:none}
+.ed-card .ed-ico{font-style:normal;font-size:30px;height:64px;display:flex;align-items:center}
+.ed-card span{font-size:10.5px;line-height:1.1;color:#e8d9b4;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.ed-card .ed-x{position:absolute;top:1px;right:5px;color:#e08a6a;cursor:pointer}
+.ed-vazio,.ed-leve{color:#b5a37a;font-size:12px;line-height:1.35}
+#ed-dica-pasta{font-size:11.5px;color:#c9b88a;line-height:1.35}
+#ed-dica-pasta:empty{display:none}
+#ed-pincel-op label{display:flex;align-items:center;gap:6px}
+#ed-pincel-op input{flex:1}
+/* direita */
+#ed-lado{position:absolute;right:8px;top:var(--ed-topo,64px);bottom:44px;width:272px;box-sizing:border-box;overflow-y:auto;padding:8px 10px}
+#ed-lado h4{margin:2px 0 8px;color:#ffd27a;font-size:14px}
+#ed-insp label{display:grid;grid-template-columns:58px minmax(0,1fr) 40px;align-items:center;gap:6px;margin:5px 0}
+#ed-insp input[type=range]{width:100%;min-width:0;margin:0}
+#ed-insp label.ed-linha{grid-template-columns:58px auto minmax(0,1fr) auto}
+#ed-insp output{color:#c9b88a;font-size:11.5px;text-align:right;font-variant-numeric:tabular-nums}
+#ed-insp input[type=color]{width:34px;height:24px;padding:0;border:1px solid #6e5328;border-radius:5px;background:none}
+#ed-insp select{grid-column:2/4}
+.ed-botoes{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+#ed-conj-nome{display:flex;gap:5px;margin-top:6px}
+#ed-conj-nome input{flex:1;min-width:0}
+#ed-lado details{margin-top:10px;border-top:1px solid rgba(138,106,50,.5);padding-top:6px}
+#ed-lado summary{cursor:pointer;color:#ffd27a;font-weight:700}
+.ed-camada{display:flex;align-items:center;gap:4px;margin:4px 0}
+.ed-camada button{padding:1px 5px!important}
+.ed-camada span{flex:1}
+.ed-camada small{color:#b5a37a}
+.ed-camada.oculta span{opacity:.45;text-decoration:line-through}
+.ed-rec{display:flex;gap:6px;align-items:center;margin:4px 0;padding:4px 6px;border-radius:6px;background:rgba(0,0,0,.25);cursor:pointer}
+.ed-rec span{flex:1;font-size:12px;line-height:1.25}
+.ed-rec.feito span{opacity:.55}
+/* balão do recado */
+.ed-balao{position:absolute;width:280px;padding:8px}
+.ed-balao textarea{width:100%;min-height:70px;resize:vertical;box-sizing:border-box}
+/* barra de baixo */
+#ed-status{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:12px;align-items:center;padding:5px 12px;font-size:12px}
+#ed-dica{flex:1;color:#d8c79c;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#ed-dica.aviso{color:#ffe39a;font-weight:700}
+#ed-salvo{color:#9fd88a;white-space:nowrap}
+#ed-salvo.sujo{color:#f0c060}
+#ed-salvo.erro{color:#ff8a70}
+/* antes/depois */
+#ed-faixa-antes{display:none;position:absolute;top:var(--ed-topo,70px);left:50%;transform:translateX(-50%);background:#c0392b;color:#fff;font-weight:700;padding:6px 16px;border-radius:20px;box-shadow:0 4px 14px rgba(0,0,0,.5)}
+#ed-raiz.ed-vendo-antes #ed-faixa-antes{display:block}
+/* janelas */
+#ed-modal{position:absolute;inset:0;pointer-events:auto;background:rgba(10,7,4,.55);display:flex;align-items:center;justify-content:center}
+#ed-modal[hidden]{display:none}
+.ed-janela{width:min(560px,92vw);max-height:80vh;overflow-y:auto;padding:14px 16px}
+.ed-janela h4{margin:0 0 10px;color:#ffd27a}
+.ed-janela h4 small{color:#b5a37a;font-weight:400;font-size:11px}
+.ed-hrow{display:flex;gap:8px;align-items:center;padding:5px 0;border-bottom:1px solid rgba(138,106,50,.3)}
+.ed-hrow b{min-width:92px}
+.ed-hrow span{flex:1;color:#c9b88a;font-size:12px}
+/* esconder painéis (H) e o HUD do jogo enquanto edita */
+#ed-raiz.ed-sem-paineis #ed-bib,#ed-raiz.ed-sem-paineis #ed-lado{display:none}
+body.ed-on #perigo,body.ed-on #perigo-hud,body.ed-on #dungeon-hud,body.ed-on #dungeon-hint,body.ed-on #missao,body.ed-on #missao-abrir,body.ed-on #acoes,body.ed-on #dica,body.ed-on #est-fita,body.ed-on #est-painel,body.ed-on #acamp-marca,body.ed-on #rastreio,body.ed-on #tr-hud,body.ed-on #perc-hud,body.ed-on #dungeon-help,body.ed-on #touch-ui,body.ed-on #tbl-bar,body.ed-on #sword-hud,body.ed-on #bow-hud,body.ed-on #focus-hud,body.ed-on #weapon-progress-hud,body.ed-on #ed-entrar{visibility:hidden}
+#ed-raiz[data-ferramenta=pincel]~#ed-tela,#ed-raiz[data-ferramenta=recado]~#ed-tela{cursor:crosshair}
+body.ed-on #dungeon-stage-wrap{cursor:default}
+/* botão de entrar (modo ao vivo) */
+#ed-entrar{position:fixed;left:50%;transform:translateX(-50%);top:6px;z-index:58;font-size:12px;opacity:.85}
+#ed-entrar:hover{opacity:1}
+@media (max-width:900px){#ed-bib{width:200px}#ed-lado{width:210px}#ed-cards{grid-template-columns:repeat(2,1fr)}}
+.ed-ajuda{display:grid;grid-template-columns:110px 1fr;gap:6px 12px;font-size:12.5px;line-height:1.35}
+.ed-ajuda b{color:#ffd27a}
+/* mini mapa (M) e o pincel de terreno */
+#ed-mini{position:absolute;left:264px;bottom:44px;padding:6px;display:flex;flex-direction:column;gap:4px}
+#ed-mini[hidden]{display:none}
+.ed-mini-topo{display:flex;align-items:center;justify-content:space-between;color:#ffd27a;font-size:12px}
+.ed-mini-topo button{padding:0 6px!important}
+#ed-mini-cv{display:block;border-radius:6px;cursor:crosshair;box-shadow:inset 0 0 0 1px #6e5328}
+#ed-terreno-op{display:flex;gap:5px;margin-bottom:6px}
+#ed-terreno-op[hidden]{display:none}
+#ed-terreno-op button{flex:1}
+#ed-raiz.ed-sem-paineis #ed-mini{left:8px}
+/* v8.1 — 👤 Aparências (editor/aparencias_qc.ts): ao lado do painel da direita */
+#ed-ap{position:absolute;right:290px;top:var(--ed-topo,64px);width:300px;max-height:calc(100vh - var(--ed-topo,64px) - 52px);overflow-y:auto;box-sizing:border-box;padding:8px 10px}
+#ed-ap[hidden]{display:none}
+.ed-ap-topo{display:flex;align-items:center;justify-content:space-between;color:#ffd27a;margin-bottom:6px}
+.ed-ap-topo button{padding:0 6px!important}
+#ed-ap-palco{display:block;width:100%;aspect-ratio:400/520;border-radius:8px;background:#20170d;box-shadow:inset 0 0 0 1px #6e5328;cursor:grab;touch-action:none}
+#ed-ap-palco:active{cursor:grabbing}
+.ed-ap-linha{display:flex;align-items:center;gap:5px;margin:4px 0}
+.ed-ap-linha span{width:50px;color:#c9b88a}
+.ed-ap-linha b{flex:1;text-align:center;color:#f3e6c4;font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ed-ap-cores{display:flex;flex-wrap:wrap;align-items:center;gap:3px;margin:4px 0}
+.ed-ap-cores span{width:50px;color:#c9b88a}
+#ed-raiz .ed-ap-cor{width:20px;height:20px;padding:0;border-radius:50%;font-size:11px;line-height:1}
+#ed-raiz .ed-ap-cor.on{outline:2px solid #ffd27a;outline-offset:1px}
+.ed-ap-cores input[type=color]{width:24px;height:22px;padding:0;border:1px solid #6e5328;border-radius:5px;background:none;cursor:pointer}
+#ed-ap-lista{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:6px}
+#ed-ap-lista button{padding:3px 0!important;font-size:12px}
+#ed-ap-lista button.boa{border-color:#6fae5c;color:#bfe8a8}
+#ed-ap-lista button.ruim{border-color:#b0503c;color:#ff9a86;text-decoration:line-through}
+#ed-raiz.ed-sem-paineis #ed-ap{right:8px}
+@media (max-width:900px){#ed-ap{right:226px;width:240px}}
+/* emblemas das estações (arte das deusas): cinza desligado, colorido e brilhando ligado */
+#ed-raiz .ed-est{padding:1px 3px;background:#1a120a}
+.ed-est img{width:26px;height:26px;display:block;filter:grayscale(1) brightness(.8);opacity:.75;transition:filter .2s,opacity .2s,transform .2s}
+.ed-est:hover img{opacity:1;filter:grayscale(.3)}
+#ed-raiz .ed-est.on{background:#1a120a;border-color:#ffd27a;box-shadow:0 0 10px rgba(255,210,122,.55)}
+.ed-est.on img{filter:none;opacity:1;transform:scale(1.12)}

@@ -1,0 +1,18 @@
+# Saídas e dados. No src/, só o TS é formatado: o CSS vai byte a byte para o HTML (montagem.test.ts compara com a referência;
+# icones-pintados.css precisa de uma regra por linha) e os assets são embutidos como estão.
+node_modules/
+build/
+dist/
+reference/
+src/**/*.css
+src/assets/
+patches/
+assets/
+tests/browser/legacy-py/
+tests/browser/tools/sim/bot.js
+tests/browser/resultados/
+editor-historico/
+modelos-novos/
+package-lock.json
+*.md
+*.html

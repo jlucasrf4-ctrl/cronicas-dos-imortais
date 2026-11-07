@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mapa Vivo — Crônicas dos Imortais v8.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<!--@jogo:estilos-->
+</head>
+<body>
+<div id="app">
+  <div id="viewport">
+    <div id="stage">
+      <img id="map-img" src="/src/assets/map/mapa.webp" alt="Mapa do continente">
+    </div>
+    <canvas id="sim-canvas"></canvas>
+  </div>
+
+  <div id="topbar">
+    <div id="title-block">
+      <h1>Mapa Vivo</h1>
+      <p>Crônicas dos Imortais — núcleo ecológico, Floresta Central</p>
+    </div>
+  </div>
+
+  <div id="day-progress-wrap">
+    <div id="day-progress-top">
+      <span id="day-label">Dia 1</span>
+      <span id="day-time-label">06:00 · Amanhecer</span>
+    </div>
+    <div id="day-bar-bg"><div id="day-bar-fill"></div></div>
+  </div>
+
+  <div id="hero-panel">
+    <h2>Seu clã</h2>
+    <div id="hero-rows"></div>
+  </div>
+  <div id="command-hint" style="display:none;">Clique numa região do mapa pra mandar caçar ali</div>
+
+  <div id="right-col">
+    <div id="stats-panel">
+      <h2>População (região simulada)</h2>
+      <div id="species-rows"></div>
+      <button class="btn" id="btn-habitat" style="width:100%;margin-top:6px;font-size:.7rem">📊 Análise do habitat</button>
+    </div>
+    <div id="event-feed">
+      <div class="ef-head"><h2>Eventos</h2><button id="btn-full-log">ver tudo</button></div>
+      <div id="event-list"></div>
+    </div>
+  </div>
+
+  <div id="econ-bar"><span><i class="ic ico-ui_ouro"></i> <b id="e-gold">0</b></span><span><i class="ic ico-ui_comida"></i> <b id="e-meat">0</b></span><span><i class="ic ico-ui_cavalo"></i> <b id="e-horses">0</b></span><span><i class="ic ico-ui_carroca"></i> <b id="e-wagons">0</b></span><span title="Madeira · Pedra · Pena · Pena de Águia" id="e-res"></span><span title="Flechas na aljava"><i class="ic ico-flecha"></i> <b id="e-arrows">0</b></span><button class="btn" id="btn-chest"><i class="ic ico-ui_bau"></i> Baú</button><button class="btn" id="btn-market"><i class="ic ico-ui_mercado"></i> Mercado</button><button class="btn" id="btn-shop">🏹 Armaria</button><button class="btn" id="btn-craft"><i class="ic ico-btn_craft"></i> Crafting</button><span id="e-test" style="display:none;color:#9fe08a;font-weight:700">🧪 TESTE</span></div>
+  <div id="notif-stack"></div>
+  <div class="v3-modal" id="prep-modal"><div class="v3-card" style="width:min(680px,100%)">
+    <h2>🧭 Preparação da expedição</h2>
+    <div class="prep-flex">
+      <div class="prep-hero">
+        <div class="eq-wrap">
+          <div class="eq-col"><div class="eq-slot" data-slot="cabeca"></div><div class="eq-slot" data-slot="peito"></div><div class="eq-slot" data-slot="pernas"></div><div class="eq-slot" data-slot="pes"></div></div>
+          <canvas id="prep-portrait" width="130" height="190" style="display:none"></canvas><canvas id="prep-portrait3d" width="320" height="440" title="Arraste para girar"></canvas>
+          <div class="eq-col"><div class="eq-slot" data-slot="maoD"></div><div class="eq-slot" data-slot="maoE"></div><div class="eq-slot" data-slot="costas"></div></div>
+        </div>
+        <div id="prep-stats"></div>
+      </div>
+      <div class="prep-bags">
+        <h3>🎒 Mochila 01 <span style="font-weight:400;font-size:.7rem">(arraste · R gira · só o que estiver aqui vai com você)</span></h3>
+        <div id="prep-pack" class="gridbox"></div>
+        <h3>🏹 Mochila 02 — Aljava</h3>
+        <div id="prep-qvhead" class="qv-head"></div><div id="prep-qv" class="gridbox"></div><div id="prep-qvmat" class="qv-mat"></div>
+      </div>
+    </div>
+    <h3>🏪 Compras de última hora</h3>
+    <div id="prep-shop" class="v3-row"></div>
+    <p id="prep-msg" style="margin:4px 0;font-size:.76rem;color:#8a4a2a;min-height:1em"></p>
+    <div class="v3-row"><span id="prep-gold" style="font-weight:700"></span><button class="btn" id="prep-sheet" style="margin-left:auto">📜 Ficha</button><button class="btn" id="prep-cancel">← Voltar</button><button class="btn" id="prep-train" title="Dungeon Teste: campo de treino com boneco e alvo para testar dano, armas e atributos (nada gasta, ninguém morre)"><i class="ic ico-btn_teste"></i> Dungeon Teste</button><button class="btn" id="prep-go" style="background:#6b4a1f;color:#fff8e3;border-color:var(--gold-bright)">⚔ Partir para a expedição</button></div>
+  </div></div>
+  <div id="bag-win" class="win"><div class="win-bar"><b id="bag-title">🎒 Mochila</b></div><div class="win-body">
+    <div class="win-sub">🎒 Mochila 01 <small>(arraste · R gira)</small></div><div id="bag-pack" class="gridbox"></div>
+    <div id="bag-qvhead" class="qv-head" style="margin-top:8px"></div><div id="bag-qv" class="gridbox"></div><div id="bag-qvmat" class="qv-mat"></div>
+    <div id="bag-val" style="margin-top:6px;font-size:.74rem"></div></div></div>
+  <div class="v3-modal" id="sheet-modal"><div class="v3-card" id="sheet-card" style="width:min(780px,100%)"><div id="sheet-body"></div></div></div>
+  <div class="v3-modal" id="chest-modal"><div class="v3-card"><h2>📦 Baú do acampamento</h2>
+    <div class="v3-row">Personagem: <select id="chest-hero"></select><button class="btn" id="chest-close" style="margin-left:auto">✕</button></div>
+    <p style="margin:4px 0;font-size:.75rem">Arraste os itens entre o baú e a mochila · <b>R</b> ou botão direito gira durante o arrasto · duplo clique gira no lugar. Só personagens no acampamento aparecem.</p>
+    <div id="chest-res" class="v3-row"></div>
+    <div class="v3-row" style="gap:6px;margin:6px 0"><button class="btn" id="chest-all-out">⇩ Tudo do baú → mochila</button><button class="btn" id="chest-all-in">⇧ Tudo da mochila → baú</button><span id="chest-msg" style="font-size:.74rem;color:#8a4a2a"></span></div>
+    <h3>Baú <span id="chest-info"></span></h3><div id="chest-grid" class="gridbox"></div>
+    <h3>Mochila do personagem</h3><div id="pack-grid" class="gridbox"></div></div></div>
+  <div class="v3-modal" id="hab-modal"><div class="v3-card" style="width:min(680px,100%)"><h2>📊 Sucesso das espécies no habitat</h2>
+    <div class="v3-row"><span style="font-size:.74rem">Nota 0–100 = 45% sinais vitais (fome saciada, saúde e energia ALTAS · sede BAIXA) + 30% saldo nascimentos × mortes (3 dias) + 25% ocupação saudável do habitat.</span><button class="btn" id="hab-close" style="margin-left:auto">✕</button></div>
+    <div id="hab-body"></div></div></div>
+  <div class="v3-modal" id="shop-modal"><div class="v3-card" style="width:min(460px,100%)"><h2>🏹 Armaria</h2>
+    <div class="v3-row"><span id="sh-gold"></span><button class="btn" id="shop-close" style="margin-left:auto">✕</button></div>
+    <p id="sh-info" style="margin:4px 0;font-size:.76rem"></p>
+    <h3>Flechas</h3><div id="sh-arrows" class="v3-row" style="flex-wrap:wrap"></div>
+    <p style="margin:8px 0 0;font-size:.72rem">Aljavas maiores aqui · mochilas e baú maiores: no 🏪 Mercado.</p><div id="sh-quivers"></div>
+    <p id="sh-msg" style="margin:6px 0 0;font-size:.76rem;color:#2f6a2a"></p></div></div>
+  <div class="v3-modal" id="wm-modal"><div class="v3-card" style="width:min(400px,100%)"><h2 id="wm-title"></h2><p id="wm-sub" style="margin:4px 0"></p>
+    <div class="v3-row" style="flex-wrap:wrap"><button class="btn" id="wm-play">🎮 Jogar o minigame</button><button class="btn" id="wm-auto">🤖 Mandar fazer sozinho</button><button class="btn" id="wm-cancel" style="margin-left:auto">Cancelar</button></div>
+    <p id="wm-note" style="margin:6px 0 0;font-size:.72rem"></p></div></div>
+  <div class="v3-modal" id="mg-modal"><div class="v3-card" style="width:min(480px,100%)"><h2 id="mg-title"></h2><div id="mg-info"></div>
+    <div id="mg-track"><div id="mg-zone"><i></i></div><div id="mg-mark"></div></div>
+    <div class="v3-row"><button class="btn" id="mg-hit" style="flex:1;font-size:1rem;padding:10px">Parar! (Espaço)</button></div><div id="mg-log" style="margin-top:6px;font-size:.8rem"></div></div></div>
+  <div class="v3-modal" id="market-modal"><div class="v3-card" style="width:min(460px,100%)"><h2>🏪 Mercado</h2>
+    <div class="v3-row"><span id="mk-gold"></span><button class="btn" id="market-close" style="margin-left:auto">✕</button></div>
+    <h3>Comprar</h3>
+    <div class="v3-row"><button class="btn" id="buy-horse"></button><button class="btn" id="buy-wagon"></button></div>
+    <p style="margin:2px 0;font-size:.72rem">Cavalo: viagem ~2,2x mais rápida. Carroça: precisa de 2 cavalos livres, viaja ~1,5x e leva +12 itens do baú (os mais valiosos).</p>
+    <h3>Mandar vender</h3>
+    <div class="v3-row">Personagem: <select id="mk-hero"></select></div>
+    <div id="mk-mode" class="v3-row"></div><div id="mk-cities"></div>
+    <div class="v3-row"><button class="btn" id="mk-send">Enviar</button><span id="mk-msg" style="font-size:.75rem"></span></div>
+    <h3>🎒 Bolsas, aljavas e baú</h3><p style="margin:2px 0;font-size:.72rem">A mochila é a do personagem escolhido acima (precisa estar no acampamento).</p><div id="mk-bags" class="v3-row" style="flex-wrap:wrap"></div></div></div>
+  <div class="v3-modal" id="arrive-modal"><div class="v3-card" style="width:min(380px,100%)"><div id="arrive-body"></div><div class="v3-row" style="margin-top:10px"><button class="btn" id="arrive-close">Fechar</button></div></div></div>
+  <div id="extinction-banner" style="display:none;">
+    <p>O ecossistema entrou em colapso — não há mais nenhum animal vivo na região simulada.</p>
+    <button class="btn" id="btn-reset-from-banner">Reiniciar o mundo</button>
+  </div>
+
+  <div id="log-modal">
+    <div id="log-modal-card">
+      <div id="log-modal-head">
+        <h2>Registro completo de eventos</h2>
+        <button id="log-modal-close">✕</button>
+      </div>
+      <div id="log-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="controls">
+    <h2>Velocidade</h2>
+    <div class="btn-row">
+      <button class="btn" id="btn-pause">⏸ Pausar</button>
+      <button class="btn active" data-speed="1">1x</button>
+      <button class="btn" data-speed="3">3x</button>
+      <button class="btn" data-speed="8">8x</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn" id="ff-hour">+1 hora</button>
+      <button class="btn" id="ff-day">+1 dia</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn" id="btn-reset" style="border-color:#b3573f;">↺ Reiniciar mundo</button>
+    </div>
+    <h2>Modo teste</h2>
+    <div class="layer-toggles"><label><input type="checkbox" id="toggle-test"> 🧪 Tudo sem custo</label></div>
+    <div class="btn-row" id="test-tools" style="display:none;margin-top:4px"><button class="btn" id="tt-gold">+1000 💰</button><button class="btn" id="tt-res">+20 recursos</button><button class="btn" id="tt-heal">Cura total</button></div>
+    <h2>Camadas</h2>
+    <div class="layer-toggles">
+      <label><input type="checkbox" id="toggle-fauna" checked> Fauna</label>
+      <label><input type="checkbox" id="toggle-flora" checked> Vegetação</label>
+      <label><input type="checkbox" id="toggle-water"> Água detectada</label>
+      <label><input type="checkbox" id="toggle-bounds" checked> Limite simulado</label>
+    </div>
+  </div>
+
+  <div id="zoom-controls">
+    <button class="zoom-btn" id="zoom-in">+</button>
+    <button class="zoom-btn" id="zoom-out">−</button>
+    <button class="zoom-btn" id="zoom-reset" style="font-size:0.95rem;" title="Enquadrar a região simulada">⤾</button>
+    <button class="zoom-btn" id="hud-toggle" style="font-size:0.95rem;" title="Esconder/mostrar painéis">▣</button>
+  </div>
+
+  <div id="empty-hint">Arraste para mover · role para zoom · toque num animal ou planta pra inspecionar</div>
+
+  <div id="inspector">
+    <div id="insp-drag" title="Arraste para mover">⠿ detalhes</div><button id="inspector-close">✕</button>
+    <div id="inspector-inner">
+      <span id="insp-tag"></span>
+      <h2 id="insp-name"></h2>
+      <p id="insp-id"></p>
+
+      <div id="insp-animal-stats">
+        <div class="stat-bar-wrap">
+          <div class="lbl"><span>Fome</span><span id="v-hunger"></span></div>
+          <div class="stat-bar-bg"><div class="stat-bar-fill" id="b-hunger" style="background:#b35a3f;"></div></div>
+        </div>
+        <div class="stat-bar-wrap">
+          <div class="lbl"><span>Sede</span><span id="v-thirst"></span></div>
+          <div class="stat-bar-bg"><div class="stat-bar-fill" id="b-thirst" style="background:#3f7fb3;"></div></div>
+        </div>
+        <div class="stat-bar-wrap">
+          <div class="lbl"><span>Energia</span><span id="v-energy"></span></div>
+          <div class="stat-bar-bg"><div class="stat-bar-fill" id="b-energy" style="background:#5c8a45;"></div></div>
+        </div>
+        <div class="stat-bar-wrap">
+          <div class="lbl"><span>Vida</span><span id="v-health"></span></div>
+          <div class="stat-bar-bg"><div class="stat-bar-fill" id="b-health" style="background:#a33f6b;"></div></div>
+        </div>
+        <div id="insp-state"></div>
+        <div id="insp-meta"></div>
+        <div id="insp-traits"></div>
+      </div>
+      <div id="insp-actions"></div>
+
+      <div id="insp-plant-info" style="display:none;">
+        <div class="stat-bar-wrap">
+          <div class="lbl"><span>Crescimento</span><span id="v-growth"></span></div>
+          <div class="stat-bar-bg"><div class="stat-bar-fill" id="b-growth" style="background:#5c8a45;"></div></div>
+        </div>
+        <p id="insp-desc" style="line-height:1.6;font-size:0.92rem;margin-top:12px;color:var(--ink);"></p>
+        <div id="insp-meta-plant" style="font-size:0.8rem;color:var(--ink-soft);margin-top:10px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="create-modal">
+  <div id="create-card" class="misterio">
+    <div id="cr-palco">
+      <canvas id="cr-port" width="560" height="800"></canvas>
+      <div id="cr-misterio"><span>?</span><small>quem vai nascer?</small></div>
+      <div id="cr-arrastar">arraste para girar</div>
+    </div>
+    <div id="cr-lado">
+    <h2>Um novo indivíduo</h2>
+    <div id="cr-step1">
+      <p class="create-note">Você não escolhe quem nasce. Dê um nome — a afinidade, a genética e as características naturais surgem sozinhas, e só então você conhece o personagem. Depois, a jornada decide no que ele se torna.</p>
+      <input type="text" id="create-name" placeholder="Nome do personagem" maxlength="18">
+      <p id="create-cost" class="create-note" style="margin:6px 0 0"></p>
+      <div class="btn-row" style="margin-top:12px;">
+        <button class="btn" id="create-cancel">Cancelar</button>
+        <button class="btn" id="create-random" title="Sorteia só o nome">🎲 Nome</button>
+        <button class="btn" id="create-confirm" style="margin-left:auto;background:#6b4a1f;border-color:var(--gold-bright);color:#fff8e3">✨ Fazer nascer</button>
+      </div>
+    </div>
+    <div id="cr-reveal" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+  <div class="v3-modal" id="craft-modal"><div class="v3-card" style="width:min(460px,100%)"><h2>🔨 Crafting</h2>
+    <div class="v3-row"><span id="craft-res"></span><button class="btn" id="craft-close" style="margin-left:auto">✕</button></div>
+    <div id="craft-list"></div><p id="craft-quiver" style="margin:8px 0 2px;font-size:.78rem"></p><p id="craft-msg" style="margin:2px 0;font-size:.76rem;color:#8a4a2a"></p></div></div>
+<div id="portal-transition"></div>
+
+<div id="dungeon-view">
+  <div id="dungeon-hud">
+    <div id="dh-card"><div id="dh-top"><span id="dh-aff"></span><b id="dh-name"></b><span id="dh-lvl">Nv.1</span></div><div class="dh-xp" title="Experiência"><i id="dh-xpfill"></i></div></div>
+    <div id="dungeon-hp-wrap">
+      <div id="dungeon-hp-bg"><div id="dungeon-hp-trail"></div><div id="dungeon-hp-fill"></div></div>
+      <span id="dungeon-hp-label">0 / 0</span>
+    </div>
+    <div class="dh-stbg" title="Fôlego (guarda e corrida)"><i id="dh-st"></i></div>
+    <button class="btn" id="dungeon-weapon">⚔ Espada (Q)</button><button class="btn" id="dungeon-attack">Atacar (F) / Puxar (Espaço)</button><button class="btn" id="dungeon-interact">✋ Interagir (E)</button><button class="btn" id="dungeon-craft">🔨 Craft (C)</button><button class="btn" id="dungeon-guard">🛡 Defesa (Espaço)</button><button class="btn" id="dungeon-parry">⚡ Parry (botão dir.)</button><button class="btn" id="dungeon-herb">🌿 Erva (H)</button><span id="dungeon-arrows" style="font-size:.82rem"></span><button class="btn" id="dungeon-bag">🎒 Mochila (I)</button><span id="dungeon-wave-label" style="font-weight:700;color:#ffe08a;font-size:.8rem"></span><span id="dungeon-loot-label">🥩 0</span>
+    <span id="dungeon-skill-label">Espada: ainda não treinada</span>
+    <button class="btn" id="dungeon-sheet">📜 Ficha (K)<span id="dh-pts"></span></button><button class="btn" id="dungeon-test">🧪 Teste: OFF</button><button class="btn" id="dungeon-3d" title="Alterna entre a visão 3D inclinada e a visão 2D clássica">🧊 3D: ON</button><button class="btn" id="dungeon-exit" style="margin-left:auto;">Extrair (sair)</button>
+  </div>
+  <div id="dungeon-stage-wrap"><div id="hit-vig"></div>
+    <canvas id="dungeon-canvas"></canvas>
+  </div>
+  <div id="inv-modal"><div id="inv-card"><div id="inv-head"><b>🎒 Mochila</b><span id="inv-val"></span><button class="btn" id="inv-close">✕</button></div><div id="inv-grid"></div><div id="inv-quiver"><div id="inv-qvhead" class="qv-head"></div><div id="inv-qv" class="gridbox"></div><div id="inv-qvmat" class="qv-mat"></div></div><div id="inv-ground-wrap"><b>🟫 Chão</b> <span id="inv-ground-hint" style="font-size:.72rem;color:#c9b88a"></span><div id="inv-ground" class="gridbox" style="margin-top:5px"></div></div><p id="inv-help">Arraste para organizar · R gira o item · clique direito larga no chão · o jogo fica pausado. Só o que estiver na mochila vai com você ao extrair; se morrer, perde tudo.</p></div></div>
+  <div id="exp-modal" style="display:none;position:fixed;inset:0;z-index:45;background:rgba(10,7,4,.78);align-items:center;justify-content:center;padding:14px"><div class="v3-card" style="width:min(440px,100%);text-align:center"><h2 id="exp-title">🏆 Expedição concluída!</h2><p id="exp-text" style="font-size:.85rem"></p><div class="v3-row" style="justify-content:center;flex-wrap:wrap"><button class="btn" id="exp-leave">🚪 Voltar ao mapa</button><button class="btn" id="exp-stay">☠ Ficar (modo sobrevivência)</button></div></div></div>
+  <div id="sword-hud"><b title="Maestria da Espada">⚔ <span id="sw-lvl">1</span></b><div class="bb"><i id="sw-fill"></i></div><div id="sw-pts" style="color:#c9b88a"></div></div>
+  <div id="bow-hud"><b title="Maestria do Arco">🏹 <span id="bh-lvl">1</span></b><div class="bb"><i id="bh-fill"></i></div><div id="bh-pts" style="color:#c9b88a"></div></div>
+  <div id="weapon-progress-hud" aria-live="polite"></div>
+  <div id="focus-hud"><b id="fh-name"></b><div>Vida <span id="fh-hpt"></span></div><div class="fb" id="fh-hp"><i></i></div><div class="fh-stam-row"><span>Fôlego</span><span id="fh-stamt"></span></div><div class="fb" id="fh-stamina"><i></i></div><div id="fh-state"></div><div class="fb" id="fh-atk"><i></i></div><div id="fh-extra" style="color:#c9b88a"></div></div>
+  <div id="dungeon-hint">Toque no chão pra andar até lá · chegue perto de um lobo pra lutar</div>
+</div>
+
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "fbx": "arquivos de transferência/medieval village 3d model/medieval_village_3d_model.fbx",
+  "textura": "arquivos de transferência/medieval village 3d model/medieval_village_3d_model.fbm/medieval_village_3d_model_basecolor.jpg",
+  "texW": 2048,
+  "texQualidade": 82,
+  "saida": "src/assets/models/vila.json",
+  "texSaida": "src/assets/models/vila_tex.webp",
+  "previas": "build/modelos/vila",
+  "pecas": {
+    "taverna": { "x": [-0.35, -0.11], "z": [-0.43, -0.19] },
+    "igreja": { "x": [-0.11, 0.035], "z": [-0.37, -0.21] },
+    "casa_dois": { "x": [0.23, 0.37], "z": [-0.37, -0.23] },
+    "emporio": { "x": [-0.5, -0.35], "z": [-0.31, -0.13] },
+    "casa_lenha": { "x": [-0.44, -0.29], "z": [-0.12, 0.02] },
+    "quadro": { "x": [-0.25, -0.13], "z": [-0.12, 0.0] },
+    "banca": { "x": [-0.1, 0.08], "z": [-0.11, 0.01] },
+    "poco": { "x": [0.11, 0.23], "z": [-0.13, -0.03] },
+    "barril": { "x": [0.12, 0.175], "z": [0.07, 0.13] },
+    "caixote": { "x": [0.175, 0.225], "z": [0.07, 0.13] },
+    "rede": { "x": [0.32, 0.455], "z": [0.07, 0.17] },
+    "balde_peixes": { "x": [0.455, 0.51], "z": [0.09, 0.15] },
+    "doca": { "x": [-0.37, -0.15], "z": [0.06, 0.26] },
+    "bote": { "x": [-0.13, -0.02], "y": [0.08, 0.2], "z": [0.04, 0.25] },
+    "banco": { "x": [-0.05, 0.01], "y": [0, 0.06], "z": [0.19, 0.3] },
+    "feno": { "x": [-0.15, -0.07], "y": [0, 0.06], "z": [0.2, 0.33] },
+    "horta": { "x": [0.04, 0.18], "y": [0, 0.07], "z": [0.14, 0.28] },
+    "varal": { "x": [0.19, 0.33], "z": [0.15, 0.24] },
+    "placa": { "x": [-0.21, -0.15], "z": [0.33, 0.43] }
+  },
+  "fora": "casa simples furada (x 0.08–0.2, z −0.36–−0.22: sem as águas do telhado), carroça/ponte/cerca (x 0.21–0.45, z −0.18–0.08, uma sobre a outra em y), o lampião (deitado sobre a horta), a linha da vara e um plano solto"
+}

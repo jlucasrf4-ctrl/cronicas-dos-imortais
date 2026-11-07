@@ -1,0 +1,15 @@
+{
+  "folha": "arquivos de transferência/elemento vddw/Ícones de Vazio em Fumaça Cósmica.png",
+  "saida": "src/assets/art",
+  "dados": "src/assets/art/voidd_letras.json",
+  "previas": "build/modelos/voidd_letras",
+  "lado": 512,
+  "qualidade": 90,
+  "O": { "colunas": [521, 938] },
+  "V": { "colunas": [954, 1320], "glifo": [981, 240, 1310, 559] },
+  "IDD": {
+    "arquivo": "arquivos de transferência/Letras IDD em Energia Cósmica.png",
+    "glifo": [530, 128, 1768, 624],
+    "altura": 724
+  }
+}

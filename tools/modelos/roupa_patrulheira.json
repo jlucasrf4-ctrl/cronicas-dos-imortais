@@ -1,0 +1,49 @@
+{
+  "nome": "patrulheira",
+  "roupa": "build/modelos/roupas/roupa_patrulheira.glb",
+  "pecas": "build/modelos/roupas/roupa_patrulheira_pecas.json",
+  "textura": "build/modelos/roupas/roupa_patrulheira_tex.png",
+  "uv": "build/modelos/roupas/roupa_patrulheira_uv.json",
+  "manequim": [],
+  "cinza": true,
+  "solto": 0.025,
+  "cobre": 0.11,
+  "pes": {
+    "ate": 0.06,
+    "fator": 0.82,
+    "folga": 0.4
+  },
+  "corpos": [
+    {
+      "nome": "corpo_f01",
+      "anim": "build/modelos/corpo_f01_anim.json"
+    },
+    {
+      "nome": "corpo_f02",
+      "anim": "build/modelos/corpo_f02_anim.json"
+    },
+    {
+      "nome": "corpo_f03",
+      "anim": "build/modelos/corpo_f03_anim.json",
+      "ignorarCabelo": true
+    },
+    {
+      "nome": "corpo_f04",
+      "anim": "build/modelos/corpo_f04_anim.json"
+    },
+    {
+      "nome": "corpo_f05",
+      "anim": "build/modelos/corpo_f05_anim.json"
+    },
+    {
+      "nome": "corpo_f06",
+      "anim": "build/modelos/corpo_f06_anim.json"
+    }
+  ],
+  "pasta": "build/modelos",
+  "orcamento": {
+    "peito": 1700,
+    "pernas": 1800,
+    "pes": 400
+  }
+}

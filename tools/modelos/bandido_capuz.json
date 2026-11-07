@@ -1,0 +1,17 @@
+{
+  "nome": "bandido_capuz",
+  "glb": "arquivos de transferência/medieval warrior 3d model/medieval_warrior_3d_model.fbx",
+  "textura": "arquivos de transferência/medieval warrior 3d model/medieval_warrior_3d_model.fbm/medieval_warrior_3d_model_basecolor.jpg",
+  "regiao": {
+    "xMax": -0.265
+  },
+  "altura": 1.8,
+  "triangulos": 15000,
+  "texW": 2048,
+  "pasta": "build/modelos/bandido_capuz_tpose",
+  "cabeca": {
+    "y": 0.84,
+    "triangulos": 4000
+  },
+  "texturaSaida": 1536
+}

@@ -1,0 +1,12 @@
+{
+  "fonte": "arquivos de transferência/marcadores mapa.png",
+  "saida": "src/assets/art",
+  "previas": "build/marcador",
+  "altura": 96,
+  "limiar": 14,
+  "pecas": {
+    "marcador_branco": [85, 92, 322, 292],
+    "marcador_dourado": [410, 70, 666, 300],
+    "marcador_vermelho": [1445, 65, 1708, 300]
+  }
+}

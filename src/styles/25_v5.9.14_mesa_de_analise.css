@@ -1,0 +1,10 @@
+/* v5.9.14 — mesa de análise */
+#ana-modal .an-card{width:min(560px,95vw);max-height:90vh;overflow:auto;padding:14px}
+.an-sub{font-size:12px;opacity:.85;margin:4px 0 8px}
+.an-row{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid rgba(120,90,50,.25)}
+.an-it{flex:1;display:flex;gap:8px;align-items:flex-start}.an-it>.ic{width:40px;height:40px;flex:0 0 auto}.an-it small{display:block;font-size:11px;opacity:.75}
+.an-bar{height:5px;background:rgba(0,0,0,.15);border-radius:3px;margin:4px 0;overflow:hidden}.an-bar i{display:block;height:100%;background:#c9a24a}
+.an-mats{display:flex;flex-wrap:wrap;gap:4px}.an-m{font-size:11px;padding:2px 6px;border-radius:10px;background:rgba(0,0,0,.08);border:1px dashed rgba(120,90,50,.45)}.an-m.ok{border-style:solid;background:rgba(201,162,74,.18)}
+.an-btns{display:flex;flex-direction:column;gap:5px}
+.an-none{font-size:13px;opacity:.8}
+
