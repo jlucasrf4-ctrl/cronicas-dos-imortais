@@ -33,6 +33,7 @@ import { segmentarCabeca, segmentarCorpo } from "./lib/mascara_aparencias.ts";
 import { limparIlhasPescoco, type LimpezaPescoco } from "./lib/limpar-pescoco.ts";
 
 import { limparFragmentosCabeca, type LimpezaFragmentosCabeca } from "./lib/limpar-fragmentos-cabeca.ts";
+import { corrigirUvCabelo } from "./lib/uv-cabelo.ts";
 
 interface Plano {
   saida: string;
@@ -778,6 +779,28 @@ for (const c of plano.cabecas) {
     console.log(
       `${c.nome}: textura ${W}×${H}, ${(img.length / 1024).toFixed(0)} KB, ${uvT.filter((q) => q).length} triângulos nela`,
     );
+  }
+  // 2026-11-07 — o triângulo de cabelo com a cor da pele na textura (um ponto laranja no meio do cabelo da busto_15)
+  if (comTextura) {
+    const url = comTextura.tex ?? folhas.get(comTextura.texDe!)!.url,
+      { data, info } = await sharp(Buffer.from(url.split(",")[1], "base64"))
+        .removeAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true }),
+      uvB = Buffer.from(comTextura.uv, "base64"),
+      uv16 = new Uint16Array(uvB.buffer.slice(uvB.byteOffset, uvB.byteOffset + uvB.byteLength)),
+      feitos = corrigirUvCabelo(
+        I,
+        uv16,
+        mascara,
+        { data, w: info.width, h: info.height },
+        { pele: refs.refPele, cabelo: refs.refCabelo },
+        comTextura.branco,
+      );
+    if (feitos.length) {
+      comTextura.uv = b64(uv16);
+      console.log(`${c.nome}: ${feitos.length} triângulo(s) de cabelo com cor de pele corrigido(s)`);
+    }
   }
   cabecasSaida.push({
     nome: c.nome,

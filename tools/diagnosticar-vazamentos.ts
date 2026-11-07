@@ -15,12 +15,14 @@ import {
 } from "../src/render/gl/esqueleto.ts";
 import {
   peleDaAparencia,
+  bustoIntegral,
   cabeNoCorpo,
   cabecaDaAparencia,
   type AparenciasDados,
   type Aparencia,
 } from "../src/render/gl/aparencias.ts";
 import { assinaturaTriangulo } from "../src/render/gl/cobertura-roupa.ts";
+import { extrasDoPescoco } from "../src/render/gl/gola.ts";
 import { grade, raio } from "./lib/raios-pose.ts";
 
 type Modelo = { nome: string; anim?: DadosAnim; partes?: Partial<Record<"peito" | "pernas" | "pes", DadosAnim>> };
@@ -50,10 +52,11 @@ function roupa(visual: Aparencia, estilo: string) {
   return { modelo: esp?.partes ? esp.nome : `${corpo}__${estilo}`, partes: (esp?.partes ? esp : porNome(`${corpo}__${estilo}`))?.partes };
 }
 
-/** A máscara por triângulo da pele montada (o mesmo caminho de peleDaAparencia); null se não der para saber. */
-function mascaraDa(visual: Aparencia, nt: number): Uint8Array | null {
+/** A máscara por triângulo da pele montada (o mesmo caminho de peleDaAparencia); null se não der para saber.
+ *  2026-11-07 — `gola`: os últimos triângulos que são o pano do pescoço (render/gl/gola.ts), que não são pele. */
+function mascaraDa(visual: Aparencia, nt: number, gola = 0): Uint8Array | null {
   const cab = cabecaDaAparencia(visual, aparencias),
-    integral = bustos.combinacoes?.find((c) => c.corpo === visual.corpo && c.cabeca === cab);
+    integral = bustoIntegral({ corpo: visual.corpo, cabeca: cab }, bustos);
   let m: Uint8Array | null = null;
   const corpo = aparencias.corpos?.find((c) => c.nome === visual.corpo),
     h = aparencias.cabecas?.find((c) => c.nome === cab);
@@ -63,9 +66,11 @@ function mascaraDa(visual: Aparencia, nt: number): Uint8Array | null {
   if (!m) return null;
   if (m.length === nt) return m;
   if (m.length < nt) {
-    // a ponte do pescoço (unirPescoco) acrescenta triângulos de pele no fim
+    // a ponte do pescoço (unirPescoco) e os buracos fechados (gola.ts) acrescentam triângulos de pele no fim; a gola,
+    // depois deles, é pano
     const r = new Uint8Array(nt).fill(1);
     r.set(m);
+    r.fill(0, nt - gola);
     return r;
   }
   return null;
@@ -120,7 +125,9 @@ const visuais: Aparencia[] = [];
 for (const c of aparencias.corpos ?? []) {
   if ((c.sexo ?? "f") !== "f" || c.nome.startsWith("deusa_")) continue;
   const cabecas = (aparencias.cabecas ?? []).filter((h) => cabeNoCorpo(c, h)).map((h) => h.nome);
-  const integrais = new Set(bustos.combinacoes?.filter((v) => v.corpo === c.nome).map((v) => v.cabeca));
+  const integrais = new Set(
+    bustos.combinacoes?.filter((v) => bustoIntegral(v, bustos)).filter((v) => v.corpo === c.nome).map((v) => v.cabeca),
+  );
   const escolha = todasCabecas ? cabecas : cabecas.filter((h) => integrais.has(h)).concat("busto_10");
   visuais.push({ corpo: c.nome, cabeca: "propria" });
   for (const h of new Set(escolha)) if (h !== c.cabecaPadrao) visuais.push({ corpo: c.nome, cabeca: h });
@@ -150,7 +157,7 @@ for (const visual of visuais) {
   }
   const pele = "ini" in peleD ? peleD : decodificarAnim(peleD),
     ntPele = pele.I.length / 3,
-    mascara = mascaraDa(visual, ntPele);
+    mascara = mascaraDa(visual, ntPele, extrasDoPescoco(pele).gola);
   if (!mascara) avisos.push(`${visual.corpo}/${visual.cabeca}: máscara não confere (${ntPele} triângulos)`);
   for (const estilo of ESTILOS) {
     const r = roupa(visual, estilo);
