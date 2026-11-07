@@ -52,6 +52,7 @@ import { refillQuiver } from "../render/sprites.ts";
 import { campanhaEvento } from "../campanha/campanha.ts";
 import { loboNaSaida } from "../campanha/lobos.ts";
 import { mundoSaida } from "../map/mundo.ts";
+import { hudMinimapLugar } from "../ui/hud.ts";
 import type { Hero, InvGrid, Item, Repasse } from "../core/tipos.ts";
 
 export function drawPrepPortrait(h: Hero, cvOpt?: HTMLCanvasElement, bare?: boolean) {
@@ -654,6 +655,7 @@ export function launchDungeon(heroId: string, suave = false) {
     setupDungeon(h);
     document.getElementById("app")!.style.display = "none";
     document.getElementById("dungeon-view")!.style.display = "flex";
+    hudMinimapLugar(true); // v8.3: o minimapa também no campo (o #app onde ele mora fica escondido)
     fitDungeonCanvas();
   };
   if (suave) abrir();
@@ -741,6 +743,7 @@ export function exitDungeon(suave?: (fx: number, fy: number, s: number) => void)
     document.getElementById("app")!.style.display = "block";
     resizeCanvas();
     dungeon.active = false;
+    hudMinimapLugar(false);
     prep.launchId = null;
     if (h) {
       h.state = eraVila ? "field" : "idle"; // v8.0: saindo da vila, ela fica na vila, no mapa

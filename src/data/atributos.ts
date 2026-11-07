@@ -93,6 +93,13 @@ export const PROFS = [
     g: "Ofícios",
     d: "Fogueira e assar carne mais fáceis; nível 10 acende a fogueira direto.",
   },
+  {
+    id: "cartografo",
+    n: "Cartógrafo",
+    i: "🗺",
+    g: "Ofícios",
+    d: "Cada área nova que você pisa no mapa sobe a perícia. Mais alto, o aviso das armadilhas chega antes e mais forte.",
+  },
 ];
 export const PROF_MAX = 10,
   PROF_BY = Object.fromEntries(PROFS.map((p) => [p.id, p]));

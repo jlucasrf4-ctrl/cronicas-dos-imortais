@@ -1,6 +1,7 @@
 /* ==== Fase 4 — chão do campo: itens perto do herói, pegar, guardar, interagir (base/17) ==== */
 import { recipMontar, recipCliqueDireito } from "../ui/recipientes.ts";
 import { bolsasNaTela } from "../ui/cinto_tela.ts";
+import { hudMinimap } from "../ui/hud.ts";
 import { canvasMochilaViva } from "../render/retrato.ts";
 import { rastreioTick, rastreioMarcas } from "./rastreio.ts";
 import { ITEM_DEFS, INV_CELL } from "../data/itens.ts";
@@ -1975,9 +1976,18 @@ function drawDungeonExtras(dt: number) {
     c.fillRect(dungeon.px - 12, dungeon.py + 16, w, 3);
   }
 }
+const MM_QUADRO = { t: 0 };
 export function renderDungeonFrame(deltaSec: number) {
   const realDt = deltaSec;
   dungeon._realDt = realDt;
+  // v8.3: o minimapa redondo do campo acompanha a heroína (~12 vezes por segundo; o HUD só o redesenha 4)
+  {
+    const agora = performance.now();
+    if (agora - MM_QUADRO.t > 80) {
+      MM_QUADRO.t = agora;
+      hudMinimap();
+    }
+  }
   if (dungeon.invOpen || dungeon.craftOpen || dungeon.modalOpen) deltaSec = 0; // mochila / craft / mensagem aberta = jogo pausado
   if (ED.on) deltaSec = 0; // v8.1: o Modo Editor pausa o campo (editor/editor.ts)
   if (dungeon.camLenta != null) deltaSec *= dungeon.camLenta; // v8.0: câmera lenta (a lição do rolamento na cena inicial)

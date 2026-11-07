@@ -7,6 +7,7 @@ import { avisoNoite, dormir } from "../../campanha/sono.ts";
 import { loboConferir } from "../../campanha/lobos.ts";
 import { casalTick, teclaMenuLobo } from "../../campanha/cercado.ts";
 import { abrirDiario, teclaDiario } from "../../campanha/diario.ts";
+import { teclaCaderno } from "../../map/caderno.ts";
 
 /** Quantas vezes por segundo o quadro confere se deve aparecer (título, diálogo, mochila…). */
 const MISSAO_HZ = 4;
@@ -39,7 +40,7 @@ export function iniciarCampanha() {
     (e) => {
       const t = e.target as HTMLElement | null;
       if (e.repeat || (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA"))) return;
-      if (teclaDiario(e.code)) e.stopImmediatePropagation();
+      if (teclaDiario(e.code) || teclaCaderno(e.code)) e.stopImmediatePropagation();
     },
     true,
   );
