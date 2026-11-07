@@ -1,0 +1,6 @@
+/* v8.3 — botões do minimapa (zoom + e − e voltar ao mapa) e a névoa é desenhada no canvas (map/explorar.ts) */
+#mm-ferr{position:absolute;right:10px;top:9px;display:flex;gap:4px;z-index:2}
+#mm-ferr button{font:700 .72rem 'Cinzel',serif;min-width:26px;height:22px;padding:0 6px;border-radius:6px;border:1px solid rgba(224,179,95,.6);background:rgba(42,29,14,.92);color:#f0d9a2;cursor:pointer;line-height:1}
+#mm-ferr button:hover{background:rgba(70,48,20,.95)}
+#mm-ferr button:active{transform:translateY(1px)}
+#mm-volta{padding:0 8px}

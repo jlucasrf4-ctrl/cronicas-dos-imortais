@@ -3,7 +3,7 @@
    deusas ficam fora do sorteio (as cabeças delas entram).
    Cada opção tem a mesma chance, independentemente dos pesos antigos e das notas do Editor. ==== */
 import { decodificarAnim, type Anim, type DadosAnim } from "./esqueleto.ts";
-import { TINGIR, CABECAS_FORA } from "../../data/aparencias.ts";
+import { TINGIR, CABECAS_FORA, AJUSTE_BUSTO } from "../../data/aparencias.ts";
 import { ENCAIXES } from "../../data/encaixes.ts";
 import { unirPescoco } from "./unir-pescoco.ts";
 
@@ -247,7 +247,10 @@ export function tingir(
     // a variação de luz cresce/encolhe com a razão das luzes (como multiplicar); a do matiz, com a do croma
     const luz = med ? Math.max(P.luz[0], Math.min(P.luz[1], para[0] / Math.max(1, med[0]))) : 1,
       croma = med
-        ? Math.max(P.croma[0], Math.min(P.croma[1], Math.hypot(para[1], para[2]) / Math.max(1, Math.hypot(med[1], med[2]))))
+        ? Math.max(
+            P.croma[0],
+            Math.min(P.croma[1], Math.hypot(para[1], para[2]) / Math.max(1, Math.hypot(med[1], med[2]))),
+          )
         : 1;
     for (let t = 0; t < nt; t++) {
       if (mascara[t] !== parte) continue;
@@ -393,6 +396,53 @@ export function comporPele(corpo: Anim, cab: CabecaDados, enc: Encaixe): Anim {
   return { ...corpo, P, J, W, I, C, ini, cantos, UV, tex: UV ? cab.tex : undefined };
 }
 
+/**
+ * v8.1 (2026-11-07) — refina a cabeça de um busto integral (AJUSTE_BUSTO): as cabeças dos bustos saíam altas, num
+ * pescoço comprido, e maiores que as trocadas. Acima da base do pescoço tudo desce `baixar` (o pescoço encurta aos
+ * poucos até o queixo, a cabeça desce inteira) e, do queixo para cima, a cabeça encolhe para `escala` em torno do queixo
+ * (no meio da cabeça na horizontal). Puro: as posições são da pose de bind.
+ */
+function ajustarBustoIntegral(A: Anim, aj: { baixar: number; escala: number }, enc: Encaixe): Anim {
+  const P = Float32Array.from(A.P),
+    nv = P.length / 3,
+    uT = enc.uTroca ?? enc.u,
+    q = enc.queixo,
+    base = q - 0.8 * uT,
+    antes = q + aj.baixar;
+  const suave = (a: number, b: number, x: number) => {
+    const t = Math.max(0, Math.min(1, (x - a) / (b - a)));
+    return t * t * (3 - 2 * t);
+  };
+  for (let v = 0; v < nv; v++) {
+    const y = P[v * 3 + 1];
+    if (y > base) P[v * 3 + 1] = y - aj.baixar * suave(base, antes, y);
+  }
+  if (aj.escala !== 1) {
+    let cx = 0,
+      cz = 0,
+      n = 0;
+    for (let v = 0; v < nv; v++)
+      if (P[v * 3 + 1] > q) {
+        cx += P[v * 3];
+        cz += P[v * 3 + 2];
+        n++;
+      }
+    if (n) {
+      cx /= n;
+      cz /= n;
+      for (let v = 0; v < nv; v++) {
+        const y = P[v * 3 + 1];
+        if (y <= q - 0.6 * uT) continue;
+        const k = 1 + (aj.escala - 1) * suave(q - 0.6 * uT, q, y);
+        P[v * 3] = cx + (P[v * 3] - cx) * k;
+        P[v * 3 + 1] = q + (y - q) * k;
+        P[v * 3 + 2] = cz + (P[v * 3 + 2] - cz) * k;
+      }
+    }
+  }
+  return { ...A, P };
+}
+
 /** Resolve o alias da cabeça própria também na seleção das roupas feitas para cada combinação. */
 export function cabecaDaAparencia(ap: Aparencia, dados: AparenciasDados = DADOS) {
   return ap.cabeca === "propria"
@@ -424,8 +474,12 @@ export function peleDaAparencia(
   if (integral) {
     const d = integral.anim;
     let pele: Anim | DadosAnim = d.texDe ? { ...d, tex: fontes.bustos.texturas?.[d.texDe] ?? d.tex } : d;
+    // 2026-11-07 — a cabeça do busto no tamanho e na altura das outras (AJUSTE_BUSTO)
+    const aj = AJUSTE_BUSTO[ap.corpo + "|" + ap.cabeca],
+      encCorpo = dados.corpos?.find((c) => c.nome === ap.corpo)?.encaixe;
+    if (aj && encCorpo) pele = ajustarBustoIntegral(decodificarAnim(pele), aj, encCorpo);
     if (ap.pele || ap.cabelo) {
-      const anim = decodificarAnim(pele),
+      const anim = "ini" in pele ? pele : decodificarAnim(pele),
         mascara = bytes(integral.mascara);
       const regiao = integral.regiaoPele ? bytes(integral.regiaoPele) : null;
       if (regiao?.length === mascara.length) {

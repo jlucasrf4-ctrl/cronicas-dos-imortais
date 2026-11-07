@@ -41,6 +41,21 @@ export const CABECAS_FORA = [
   "rosa",
   "morena_tiara",
 ];
+/** Refino da cabeça dos bustos integrais (render/gl/aparencias.ts ajustarBustoIntegral), por "corpo|cabeça" (2026-11-07,
+ *  mantenedor: "dá uma refinada na posição e tamanho de todas as cabeças"): as cabeças dos bustos saíam ~1,4× maiores
+ *  que as trocadas e altas, num pescoço comprido. `baixar`: quanto a cabeça desce (unidades do jogo; o pescoço encurta);
+ *  `escala`: o tamanho da cabeça, em torno do queixo. Medido nas prévias de build/tmp/previa_cabecas.ts. */
+export const AJUSTE_BUSTO: Record<string, { baixar: number; escala: number }> = {
+  "corpo_f01|busto_01": { baixar: 2.6, escala: 0.85 },
+  "corpo_f02|busto_02": { baixar: 0.5, escala: 0.75 },
+  "corpo_f02|busto_01": { baixar: 0.7, escala: 0.82 },
+  "corpo_f02|busto_03": { baixar: 0.3, escala: 1 },
+  "corpo_f02|busto_04": { baixar: 0.3, escala: 0.8 },
+  "corpo_f02|busto_16": { baixar: 0.3, escala: 0.6 },
+  "corpo_f04|busto_04": { baixar: 1.4, escala: 0.8 },
+  "corpo_f05|busto_05": { baixar: 1.3, escala: 0.75 },
+  "corpo_f06|busto_06": { baixar: 1.2, escala: 1 },
+};
 /** O tingimento pela máscara (render/gl/aparencias.ts tingir), em CIELAB: cada triângulo guarda a diferença dele para a
  *  mediana da parte (2026-11-06; antes, metade da luz e nenhum matiz: a pele chapava). `luz`: limites do fator da
  *  diferença de luz (a razão L da cor nova / L da mediana) — no cabelo preto vindo do loiro as mechas ainda aparecem

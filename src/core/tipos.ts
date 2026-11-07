@@ -521,6 +521,13 @@ export interface Econ {
   armasKit?: number;
   caixas?: number;
   campanha?: EstadoCampanha; // v7.7: missão atual da campanha (campanha/campanha.ts)
+  /** v8.3: células do mapa já exploradas (map/explorar.ts: chave (cy+5000)*10000+(cx+5000)) */
+  explorado?: number[];
+  /** v8.3: o caderno do cartógrafo (map/caderno.ts): o texto das anotações e o desenho (PNG em data URL) */
+  caderno?: { notas: string; desenho: string };
+  /** v8.3: armadilhas já disparadas (map/armadilhas.ts, mesma chave de explorar.ts) e os pontos marcados no minimapa */
+  armadilhasDisparadas?: number[];
+  marcasMapa?: number[][];
   lobos?: LoboCercado[]; // v7.7: os lobos do cercado (campanha/lobos.ts)
   lobosFugidos?: { L: LoboCercado; volta: number }[]; // v7.7: lobos do Caçador que fugiram pela porteira (voltam)
   pedido?: PedidoCarne | null; // v7.7: o pedido de carne do Caçador em aberto (campanha/pedidos.ts)

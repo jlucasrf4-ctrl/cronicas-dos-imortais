@@ -1,0 +1,6 @@
+/* v8.3 — aviso de armadilha por perto (map/armadilhas.ts): pisca no alto da tela; mais rápido no nível 8 do cartógrafo */
+#armadilha-aviso{position:fixed;left:50%;top:136px;transform:translateX(-50%);z-index:300;display:none;padding:6px 16px;border-radius:8px;background:rgba(120,22,10,.94);border:1px solid #ffb199;color:#ffe9dc;font:700 .85rem Cinzel,serif;letter-spacing:.03em;text-shadow:0 1px 2px #000;pointer-events:none;box-shadow:0 0 16px rgba(255,90,60,.55)}
+#armadilha-aviso.on{display:block}
+#armadilha-aviso.pisca{animation:armPisca .9s steps(1,end) infinite}
+#armadilha-aviso.pisca-rapido{animation:armPisca .35s steps(1,end) infinite}
+@keyframes armPisca{0%{opacity:1}50%{opacity:.2}}

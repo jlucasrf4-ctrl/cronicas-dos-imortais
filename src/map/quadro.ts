@@ -8,6 +8,8 @@
 import { TELAS, camera, dungeon, econ, world } from "../core/state.ts";
 import { NEVOA, NOITE_MAPA } from "../data/mapa.ts";
 import { luzDoDia } from "../render/luz_do_dia.ts";
+import { explorarQuadro } from "./explorar.ts";
+import { armadilhasQuadro } from "./armadilhas.ts";
 import {
   CAMF,
   MAPFX2,
@@ -64,6 +66,10 @@ export function antesDoDesenhoMapa(now: number, dt: number) {
   } catch (_) {}
   passoCamera(now);
   if (!econ.introDone) return;
+  try {
+    explorarQuadro(); // v8.3: o mapa explorado (map/explorar.ts) acompanha os heróis
+    armadilhasQuadro(); // v8.3: aviso e disparo das armadilhas (map/armadilhas.ts)
+  } catch (_) {}
   const h = segueHeroi();
   if (h && !SEGUIR.solto && !camera.zanim && !CAMF.anim && econ.campTut !== 1 && !anyGameModal()) {
     const vw = TELAS.viewport.clientWidth,

@@ -1,0 +1,18 @@
+/* v8.3 — o caderno do cartógrafo (#caderno, map/caderno.ts: N abre). Mesmo tom do diário. */
+#caderno{position:fixed;inset:0;z-index:322;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.35)}
+#caderno.on{display:flex}
+#caderno .cad-folha{width:min(600px,94vw);max-height:90vh;display:flex;flex-direction:column;gap:8px;padding:12px 14px 10px;background:linear-gradient(180deg,#f3e3bd,#e6cf9b);border:1px solid #8a6a2c;border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.6);color:#2a1a08;font:500 .85rem/1.4 Lora,serif}
+#caderno header{display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(90,60,20,.35);padding-bottom:6px}
+#caderno header b{font:700 1rem Cinzel,serif;color:#5a3412;letter-spacing:.03em}
+#caderno header span{flex:1;font-size:.72rem;color:#6b4a1f}
+#caderno header .btn{padding:2px 9px;min-width:0}
+#caderno nav{display:flex;gap:6px}
+#caderno nav button{font:700 .72rem Cinzel,serif;padding:4px 10px;border-radius:6px 6px 0 0;border:1px solid #8a6a2c;border-bottom:none;background:#ead9ae;color:#5a3412;cursor:pointer}
+#caderno nav button.on{background:#fff7e0;color:#2a1a08}
+#caderno #cad-texto{width:100%;min-height:260px;resize:vertical;box-sizing:border-box;padding:10px;border:1px solid #8a6a2c;border-radius:6px;background:#fffbef;color:#2a1a08;font:500 .9rem/1.5 Lora,serif}
+#caderno .cad-barra{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+#caderno .cad-cor{width:22px;height:22px;border-radius:50%;border:2px solid #fff7e0;box-shadow:0 0 0 1px #8a6a2c;cursor:pointer;padding:0}
+#caderno #cad-borracha,#caderno #cad-limpar{padding:2px 8px;border:1px solid #8a6a2c;border-radius:6px;background:#fff7e0;cursor:pointer}
+#caderno #cad-tela{width:100%;height:auto;aspect-ratio:560/360;background:#fffbef;border:1px solid #8a6a2c;border-radius:6px;touch-action:none;cursor:crosshair}
+#caderno footer{text-align:right;font-size:.68rem;color:#6b4a1f}
+#caderno kbd{font:700 .66rem monospace;background:#fff7e0;border:1px solid #8a6a2c;border-radius:3px;padding:0 4px}

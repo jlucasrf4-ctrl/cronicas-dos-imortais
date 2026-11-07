@@ -73,6 +73,20 @@ export function iniciarTutorial() {
     } catch (_) {}
   }
   /* ---------- MODOS: Jogo (sala em 3D) ⇄ Mapa, pela roda do mouse ---------- */
+  /* v8.1 — roda do mouse: um clique (≈100) = um passo. O ruído de uma roda gasta (pulsos pequenos e de sinal trocado)
+     soma e se anula, em vez de dar zoom para dentro e para fora a cada pulso */
+  const RODA = { acc: 0, t: 0 };
+  const rodaSentido = (e: WheelEvent): number => {
+    const dy = e.deltaMode ? e.deltaY * 33 : e.deltaY;
+    const agora = performance.now();
+    if (agora - RODA.t > 250) RODA.acc = 0;
+    RODA.t = agora;
+    RODA.acc += dy;
+    if (Math.abs(RODA.acc) < 100) return 0;
+    const sentido = RODA.acc < 0 ? -1 : 1;
+    RODA.acc = 0;
+    return sentido;
+  };
   setTimeout(function wheelBind() {
     const v = document.getElementById("dungeon-view");
     if (!v) {
@@ -92,9 +106,12 @@ export function iniciarTutorial() {
       (e) => {
         const d = dungeon;
         if (!d.active) return;
+        e.preventDefault();
+        const sentido = rodaSentido(e);
+        if (!sentido) return;
         /* v7.7 — roda do mouse: aproxima (até a distância antiga) e afasta (até o padrão); só no mais afastado o
            afastar continua juntando para sair ao mapa, como antes */
-        if (e.deltaY < 0) {
+        if (sentido < 0) {
           e.preventDefault();
           // v8.0: no zoom máximo, a roda continua até o personagem, de frente (CZ.perto, renderer.ts vpPerto)
           if (CZ.jog >= ZOOM_JOG.max - 1e-6 && !d.crav && !d.finish) {
@@ -113,22 +130,19 @@ export function iniciarTutorial() {
           dicaSaida(0);
           return;
         }
-        if (e.deltaY > 0 && CZ.pertoAlvo > 0) {
-          e.preventDefault();
+        if (sentido > 0 && CZ.pertoAlvo > 0) {
           if (CZ.inv && d.invOpen) toggleInv(false); // afastando, a mochila do lado fecha primeiro
           CZ.pertoAlvo = Math.max(0, CZ.pertoAlvo - ZOOM_PERTO.passo);
           JOGO.wheel = 0;
           return;
         }
-        if (e.deltaY > 0 && CZ.jog > 1) {
-          e.preventDefault();
+        if (sentido > 0 && CZ.jog > 1) {
           CZ.jog = Math.max(1, CZ.jog - ZOOM_JOG.passo);
           JOGO.wheel = 0;
           return;
         }
         if (d.mode !== "campo" && !d.camp) return;
-        e.preventDefault();
-        if (e.deltaY <= 0) {
+        if (sentido <= 0) {
           JOGO.wheel = 0;
           return;
         }

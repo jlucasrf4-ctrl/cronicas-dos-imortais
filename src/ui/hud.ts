@@ -1,6 +1,9 @@
 /* ==== Fase 4 — HUD do mapa: brasão, relógio, velocidades, minimapa (base/18) ==== */
-import { TELAS, camera, JANELAS, world } from "../core/state.ts";
-import { constrainCamera, applyCameraTransform } from "../map/camera.ts";
+import { TELAS, camera, JANELAS, world, dungeon } from "../core/state.ts";
+import { constrainCamera, applyCameraTransform, zoomAt } from "../map/camera.ts";
+import { explorarNevoa } from "../map/explorar.ts";
+import { armadilhasDesenhar, marcarAqui } from "../map/armadilhas.ts";
+import { sairDoCampo } from "../map/transicao.ts";
 import { openGameMenu } from "./titulo.ts";
 import { openSlots } from "./paineis.ts";
 import { winDock } from "./janelas.ts";
@@ -53,9 +56,38 @@ export function hudBuild() {
   // minimapa
   const mm = document.createElement("div");
   mm.id = "minimap";
-  mm.innerHTML = '<canvas width="200" height="150"></canvas><div class="mm-t">MAPA</div>';
+  mm.innerHTML =
+    '<canvas width="200" height="150"></canvas><div class="mm-t">MAPA</div>' +
+    '<div id="mm-ferr"><button id="mm-mais" title="Aproximar o mapa">＋</button><button id="mm-menos" title="Afastar o mapa">－</button><button id="mm-marca" title="Marcar no minimapa onde o herói está (anote as armadilhas)">📍</button><button id="mm-volta" title="Voltar ao modo mapa">🗺 Mapa</button></div>';
   app.appendChild(mm);
   HUD.mm = mm.querySelector("canvas");
+  // v8.3 — botões do minimapa: zoom sem a roda, e voltar ao mapa de dentro do campo (sem rolar o mouse)
+  const centroVista = () => {
+    const r = TELAS.viewport.getBoundingClientRect();
+    return [r.left + r.width / 2, r.top + r.height / 2] as const;
+  };
+  mm.querySelector("#mm-mais")!.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (dungeon.active) return;
+    // abaixo do limite: o zoom do mapa não entra no campo (map/camera.ts zoomAt só entra pela heroína com o cursor nela)
+    if ((camera.zt || camera.scale) >= camera.maxScale * 0.97) return;
+    const [x, y] = centroVista();
+    zoomAt(1.3, x, y);
+  });
+  mm.querySelector("#mm-menos")!.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (dungeon.active) return;
+    const [x, y] = centroVista();
+    zoomAt(1 / 1.3, x, y);
+  });
+  mm.querySelector("#mm-marca")!.addEventListener("click", (e) => {
+    e.stopPropagation();
+    marcarAqui();
+  });
+  mm.querySelector("#mm-volta")!.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (dungeon.active) sairDoCampo();
+  });
   const go = (e: PointerEvent) => {
     const r = HUD.mm!.getBoundingClientRect(),
       wx = ((e.clientX - r.left) / r.width) * TELAS.worldW,
@@ -130,6 +162,12 @@ export function hudUpdate() {
     hr.textContent =
       (arq ? "🐟 " + arq + " · " : "Região ativa " + quadName(QUAD.active) + " · ") + quadRegion(QUAD.active);
   }
+  // v8.3 — no campo o minimapa mostra só "Mapa" (volta); no mapa, os botões de zoom
+  const emCampo = !!dungeon.active;
+  const vol = document.getElementById("mm-volta"),
+    zs = [document.getElementById("mm-mais"), document.getElementById("mm-menos")];
+  if (vol && vol.style.display !== (emCampo ? "" : "none")) vol.style.display = emCampo ? "" : "none";
+  for (const z of zs) if (z && z.style.display !== (emCampo ? "none" : "")) z.style.display = emCampo ? "none" : "";
   hudMinimap();
 }
 export function hudMinimap() {
@@ -158,6 +196,9 @@ export function hudMinimap() {
     k = W / TELAS.worldW;
   c.clearRect(0, 0, W, H);
   c.drawImage(HUD.mmBase, 0, 0);
+  // v8.3 — névoa: só o que o herói já explorou aparece (map/explorar.ts)
+  explorarNevoa(c, W, H, k);
+  armadilhasDesenhar(c, k); // v8.3: armadilhas disparadas (X) e os pontos marcados (📍)
   c.save();
   c.strokeStyle = "rgba(255,240,200,.22)";
   c.lineWidth = 0.8;
