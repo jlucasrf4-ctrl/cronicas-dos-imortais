@@ -1,0 +1,8 @@
+/* ==== v7.7 — o menu do lobo no acampamento (campanha/cercado.ts: E perto de um lobo = afagar, dar comida, conduzir, soltar) ==== */
+#lobo-menu{position:fixed;left:50%;bottom:22%;transform:translateX(-50%);z-index:310;display:flex;flex-direction:column;gap:5px;min-width:250px;max-width:92vw;padding:8px 10px;background:rgba(24,17,9,.95);border:1px solid #e0b35f;border-radius:10px;box-shadow:0 8px 22px rgba(0,0,0,.6);color:#f3e6c8;font:500 .82rem Lora,serif}
+#lobo-menu b{color:#ffd27a;font-family:Cinzel,Lora,serif;font-size:.86rem}
+#lobo-menu small{color:#c9b88a;font-size:.7rem}
+#lobo-menu button{display:flex;align-items:center;gap:8px;text-align:left}
+#lobo-menu button kbd{min-width:16px;text-align:center;font-size:.66rem}
+#lobo-menu button:disabled{opacity:.5;cursor:default}
+#lobo-menu button i{margin-left:auto;font-size:.68rem;color:#c9b88a}

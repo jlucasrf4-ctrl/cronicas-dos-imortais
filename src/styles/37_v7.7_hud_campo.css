@@ -1,0 +1,43 @@
+/* ==== v7.7 — HUD do campo compacta (documento mestre 3.2): painel flutuante no centro, embaixo (como a barra do mapa).
+   Linha 1: personagem · vida com o fôlego embaixo · fome/temperatura/peso · flechas · mochila · fase.
+   Linha 2: atalhos (ícone + tecla num selo) · teste, 3D, ajuda · extrair. Detalhes no title (passar o mouse).
+   Só no computador: o celular tem o layout dele (07_v4.4_celular.css) ==== */
+html:not(.mob) #dungeon-hud{position:absolute;left:0;right:0;margin:0 auto;width:fit-content;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:6;flex-wrap:wrap;justify-content:center;gap:6px 6px;max-width:min(780px,96vw);padding:7px 12px 8px;border:1px solid rgba(169,121,63,.6);border-radius:10px;background:linear-gradient(180deg,rgba(33,29,25,.94),rgba(22,19,16,.94));box-shadow:0 6px 18px rgba(0,0,0,.55)}
+html:not(.mob) #dungeon-hud::before{content:"";order:9;flex-basis:100%;height:0}
+html:not(.mob) #dungeon-hud>*{flex:0 0 auto}
+html:not(.mob) #dungeon-hud .btn{position:relative;padding:3px 9px 3px 6px;min-height:30px;font-size:.72rem}
+html:not(.mob) #dungeon-hud .btn kbd{position:absolute;right:-3px;bottom:-4px;margin:0;padding:0 3px;font-size:.52rem;line-height:1.3;background:#1b1815;border-color:rgba(169,121,63,.7)}
+html:not(.mob) #dh-card{order:1;min-width:0;max-width:120px}
+html:not(.mob) #dungeon-hp-wrap{order:2;display:grid;grid-template-columns:150px auto;column-gap:8px;row-gap:3px;align-items:center}
+html:not(.mob) #dungeon-hp-bg,html:not(.mob) #dungeon-hp-wrap .dh-stbg{width:150px!important;min-width:0!important}
+html:not(.mob) #dungeon-hp-bg{grid-column:1;grid-row:1}
+html:not(.mob) #dungeon-hp-label{grid-column:2;grid-row:1/3;font-size:.74rem}
+html:not(.mob) #dungeon-hp-wrap .dh-stbg{grid-column:1;grid-row:2;height:5px}
+html:not(.mob) #surv-hud{order:3}
+html:not(.mob) #dungeon-arrows{order:4;font-size:.74rem}
+html:not(.mob) #dungeon-loot-label{order:5;font-size:.74rem;cursor:help}
+html:not(.mob) #dungeon-wave-label{order:6;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.72rem}
+/* v7.7 — a passagem do tempo, só no acampamento (field/chao.ts tempoAcampamento): o sol ou a lua e barrinhas */
+#dh-hora{display:none;align-items:center;gap:5px;cursor:help}
+#dh-hora.on{display:inline-flex}
+#dh-hora .ic{width:18px;height:18px}
+#dh-hora .barras{display:inline-flex;gap:2px;align-items:center}
+#dh-hora .barras b{width:4px;height:11px;border-radius:1px;background:rgba(255,255,255,.12)}
+#dh-hora.dia .barras b.ch{background:#e8c15a;box-shadow:0 0 3px rgba(255,200,90,.5)}
+#dh-hora.tarde .barras b.ch{background:#e8833a;box-shadow:0 0 3px rgba(255,140,60,.6)}
+#dh-hora.noite .barras b.ch{background:#9fb4e8;box-shadow:0 0 3px rgba(160,180,255,.5)}
+html:not(.mob) #dh-hora{order:7}
+html:not(.mob) #dungeon-weapon{order:10}
+html:not(.mob) #dungeon-interact{order:11}
+html:not(.mob) #dungeon-craft{order:12}
+html:not(.mob) #dungeon-guard{order:13}
+html:not(.mob) #dungeon-parry{order:14}
+html:not(.mob) #dungeon-herb{order:15}
+html:not(.mob) #dungeon-mount{order:16}
+html:not(.mob) #dungeon-fire{order:17}
+html:not(.mob) #dungeon-bag{order:18}
+html:not(.mob) #dungeon-sheet{order:19}
+html:not(.mob) #dungeon-test{order:20;margin-left:12px}
+html:not(.mob) #dungeon-3d{order:21}
+html:not(.mob) #dungeon-help{order:22}
+html:not(.mob) #dungeon-exit{order:23;margin-left:12px!important;white-space:nowrap}

@@ -1,0 +1,18 @@
+{
+  "nome": "bandido_bruto",
+  "glb": "arquivos de transferência/medieval warrior 3d model/medieval_warrior_3d_model.fbx",
+  "textura": "arquivos de transferência/medieval warrior 3d model/medieval_warrior_3d_model.fbm/medieval_warrior_3d_model_basecolor.jpg",
+  "regiao": {
+    "xMin": -0.025,
+    "xMax": 0.285
+  },
+  "altura": 1.8,
+  "triangulos": 15000,
+  "texW": 2048,
+  "pasta": "build/modelos/bandido_bruto_tpose",
+  "cabeca": {
+    "y": 0.84,
+    "triangulos": 4000
+  },
+  "texturaSaida": 1536
+}

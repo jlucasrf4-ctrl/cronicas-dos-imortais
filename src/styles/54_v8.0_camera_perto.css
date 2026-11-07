@@ -1,0 +1,51 @@
+/* v8.0 — câmera de perto no campo (a roda além do zoom máximo; field/tipos.ts CZ.perto, renderer.ts vpPerto): a
+   camada 2D por cima do 3D (nomes, barras, anéis, textos no chão) segue a projeção da vista de sempre e ficaria fora
+   do lugar na perspectiva — some enquanto a câmera está perto. */
+#dungeon-canvas {
+  transition: opacity 0.25s;
+}
+#dungeon-stage-wrap.perto #dungeon-canvas {
+  opacity: 0;
+}
+/* zoom máximo: a mochila abre ao lado (field/tipos.ts cravZoom), à direita, sem escurecer a cena; a personagem fica
+   à esquerda. O fundo deixa passar o mouse (a roda continua indo para a cena: afastar fecha) */
+#inv-modal.lateral {
+  background: none;
+  pointer-events: none;
+  justify-content: flex-end;
+  padding-right: 2vw;
+}
+#inv-modal.lateral #inv-card {
+  pointer-events: auto;
+  max-height: 86vh;
+  overflow: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.55);
+  animation: invLado 0.35s ease-out;
+}
+@keyframes invLado {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+}
+#inv-modal.lateral #inv-vivo {
+  display: none;
+}
+/* a mochila do campo: o personagem em 3D no lugar da silhueta (render/retrato.ts mochilaVivaQuadro); sem WebGL a
+   silhueta continua */
+#inv-doll .dfoto #inv-vivo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+#inv-doll .dfoto.vivo #inv-vivo {
+  opacity: 1;
+}
+#inv-doll .dfoto.vivo .dsil {
+  opacity: 0;
+}

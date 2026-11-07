@@ -1,0 +1,4 @@
+/* v8.1 — o marcador do acampamento na borda da tela do campo aberto (field/acampamento_campo.ts) */
+#acamp-marca{position:fixed;z-index:24;transform:translate(-50%,-50%);display:none;align-items:center;gap:4px;pointer-events:none;background:rgba(24,16,6,.82);border:1px solid #c9a24a;border-radius:14px;padding:3px 9px 3px 6px;color:#ffe2a0;font:600 12px Lora,serif;white-space:nowrap;box-shadow:0 2px 8px #0008}
+#acamp-marca.on{display:flex}
+#acamp-marca i{font-style:normal;color:#ffb347;display:inline-block;transform-origin:50% 50%}

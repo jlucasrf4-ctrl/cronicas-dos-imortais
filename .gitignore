@@ -1,0 +1,15 @@
+build/
+__pycache__/
+*.png
+!assets/**/*.png
+*.log
+node_modules/
+dist/
+tests/browser/resultados/
+# pesados: ficam na cópia do pendrive, não no git (2026-11-07)
+arquivos de transferência/
+backups/
+*.glb
+*.fbx
+*.zip
+*.rar

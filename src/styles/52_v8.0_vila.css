@@ -1,0 +1,12 @@
+/* ==== v8.0 — a vila em janela (map/vila.ts): abas Empório, Taverna, Quadro, Doca, Igreja e as conversas ==== */
+#musgo-modal .vila-abas{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 8px}
+#musgo-modal .vila-abas .btn{padding:4px 8px;font-size:.78rem}
+#musgo-modal .vila-sec{display:flex;flex-direction:column;gap:6px}
+#musgo-modal .vila-sec>p{margin:0 0 4px;font-size:.84rem;color:#4a3418;font-style:italic}
+#musgo-modal .vila-sec>.btn{align-self:flex-start}
+#musgo-modal .emp-row.vila-row{grid-template-columns:1fr auto auto}
+#musgo-modal .vila-fala{display:flex;flex-direction:column;gap:6px;padding:8px 10px;background:rgba(90,60,20,.08);border-radius:8px}
+#musgo-modal .vila-fala p{margin:0;font-size:.9rem;color:#2e2010;line-height:1.35}
+#musgo-modal .vila-fala .btn{align-self:flex-end;margin-top:4px}
+#musgo-modal .vila-quem{display:flex;align-items:center;gap:6px;font:600 .95rem Lora,serif;color:#6a3d08}
+#musgo-modal .vila-quem span{font-size:1.2rem}

@@ -1,0 +1,14 @@
+{
+  "fbx": "arquivos de transferência/voodi/Meshy_AI_Neon_Wisp_1020015106_texture.fbx",
+  "cor": "arquivos de transferência/voodi/Meshy_AI_Neon_Wisp_1020015106_texture.png",
+  "normal": "arquivos de transferência/voodi/Meshy_AI_Neon_Wisp_1020015106_texture_normal.png",
+  "saida": "src/assets/models/voodi.json",
+  "previas": "build/modelos/voodi",
+  "texW": 1024,
+  "qualidade": 88,
+  "escuro": 0.1,
+  "branco": { "min": 0.45, "sat": 0.25 },
+  "achatar": { "raio": 1.7, "cheio": 1.25, "dz": 0.25 },
+  "corCabeca": [12, 9, 26],
+  "dilatar": 0.0045
+}

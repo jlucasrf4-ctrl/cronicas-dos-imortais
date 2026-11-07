@@ -1,0 +1,43 @@
+/* ==== v7.7 — mochila do campo (documento mestre 4.1): personagem à esquerda (equipamentos, retrato 3D, armas embaixo),
+   mochila com o chão embaixo, aljava à direita; cada área com o nome; as explicações em "❓ Dicas" (fechado) ==== */
+#inv-bags .ib-tit{font:700 .66rem Cinzel,serif;letter-spacing:.06em;text-transform:uppercase;color:#d9a35a;margin:0 0 4px}
+#inv-doll{display:grid;grid-template-columns:40px 150px 52px;gap:8px 8px;align-items:start;justify-content:start}
+#inv-doll .darm{position:static;display:flex;flex-direction:column;gap:12px;align-items:center;padding:4px 0}
+#inv-doll .dfoto{position:relative;width:150px;height:230px;border:1px solid rgba(169,121,63,.55);border-radius:8px;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#3a3128,#1b1714)}
+#inv-doll .dfoto .dfig{position:absolute;left:45px;top:40px;width:60px;height:150px}
+#inv-doll .dport{position:absolute;inset:0;width:150px;height:230px;opacity:0;transition:opacity .2s}
+#inv-doll .dport.ok{opacity:1}
+#inv-doll .dativo .dset{padding:3px 4px}
+#inv-doll .dreserva{grid-column:1/4;display:flex;justify-content:center}
+#inv-doll .dreserva .dset{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:6px}
+#inv-doll .dreserva .dset>b{flex-basis:100%;text-align:center}
+#inv-foot>#inv-ground-hint:not(:has(.invf)){display:none}
+#inv-dicas{font-size:.7rem;color:#c9b88a}
+#inv-dicas summary{cursor:pointer;color:#d9a35a;font-weight:600;list-style:none;display:inline-block;padding:2px 8px;border:1px solid rgba(169,121,63,.5);border-radius:6px}
+#inv-dicas summary::-webkit-details-marker{display:none}
+#inv-dicas[open] summary{margin-bottom:6px}
+html:not(.mob) #inv-bags{grid-template-columns:auto auto;grid-template-areas:"doll bag" "doll gnd";gap:8px 14px}
+html:not(.mob) #inv-bags .ib-a{grid-area:bag}
+html:not(.mob) #inv-bags .ib-b{grid-area:qv}
+html:not(.mob) #inv-bags .ib-c{grid-area:gnd}
+html:not(.mob) #inv-bags .ib-d{grid-area:doll}
+/* janelas de recipiente (ui/recipientes.ts): aljava e alforjes, arrastáveis pela barra; ⇄ = destino do clique direito */
+.recip-bar{display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap}
+.inv-win{position:fixed;z-index:3;min-width:120px;padding:0 8px 8px;background:linear-gradient(180deg,rgba(33,29,25,.97),rgba(22,19,16,.97));border:1px solid rgba(169,121,63,.65);border-radius:9px;box-shadow:0 8px 22px rgba(0,0,0,.6);color:#efe3c8}
+.inv-win.dest{border-color:#f0c66e;box-shadow:0 0 0 1px rgba(240,198,110,.35),0 8px 22px rgba(0,0,0,.6)}
+.inv-win .iw-bar{display:flex;align-items:center;gap:8px;padding:6px 0 6px;cursor:grab;user-select:none;font:700 .7rem Cinzel,serif;letter-spacing:.05em;color:#d9a35a}
+.inv-win .iw-bar small{font:500 .66rem Lora,serif;color:#bfae8e;letter-spacing:0}
+.inv-win .iw-dest{font-style:normal;color:#f0c66e;opacity:0;margin-left:auto}
+.inv-win.dest .iw-dest{opacity:1}
+.inv-win .iw-x{margin-left:4px;width:20px;height:20px;padding:0;border:0;border-radius:4px;background:none;color:#bfae8e;cursor:pointer}
+.inv-win .iw-x:hover{color:#ffd27a;background:rgba(255,255,255,.06)}
+.inv-win.dest .iw-dest+.iw-x,.inv-win .iw-dest+.iw-x{margin-left:4px}
+.inv-win:not(.dest) .iw-x{margin-left:auto}
+.inv-win .iw-msg{margin:4px 0 0;font-size:.7rem;color:#bfae8e;font-style:italic}
+.inv-win .iw-msg:empty{display:none}
+.inv-win .ib-b,.inv-win #ib-saddle{margin:0}/* sem mochila (items/mochilas.ts): a grade fica 0×0; no lugar, o aviso */
+.sem-mochila{width:auto!important;height:auto!important;min-width:200px;padding:14px 12px;border:1px dashed rgba(169,121,63,.6);border-radius:8px}
+.sem-mochila::before{content:"🎒 Sem mochila — vista uma no encaixe Mochila";display:block;font:500 .74rem Lora,serif;color:#bfae8e;text-align:center}
+#prep-mochila{display:flex;justify-content:center;gap:6px;margin:4px 0}
+.sem-aljava{width:auto!important;height:auto!important;min-width:120px;padding:14px 12px;border:1px dashed rgba(169,121,63,.6);border-radius:8px}
+.sem-aljava::before{content:"🏹 Sem aljava — vista uma no encaixe Aljava";display:block;font:500 .74rem Lora,serif;color:#bfae8e;text-align:center}

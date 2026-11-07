@@ -1,0 +1,18 @@
+/* v5.2 — ícones pintados */
+.ic{display:inline-block;width:1.35em;height:1.35em;background:center/contain no-repeat;vertical-align:-.32em;flex:none;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+.ic.at{width:1.25em;height:1.25em}
+.ic.hud{width:24px;height:24px;vertical-align:middle}
+.inv-emo .ic{filter:drop-shadow(0 2px 2px rgba(0,0,0,.55));vertical-align:middle;transform-origin:50% 50%}
+.tb .ic.tbi{width:62%;height:62%;display:block;margin:0 auto}
+.tb.big .ic.tbi{width:66%;height:66%}
+#mob-nav .ic.nav{width:24px;height:24px}
+.eq-slot .ic,.fg-ico .ic{width:80%;height:80%;max-width:44px;max-height:44px}
+.ra-ico .ic{width:34px;height:34px}
+.ic.tr{width:1.5em;height:1.5em}
+.ic.nd{width:1.9em;height:1.9em;vertical-align:-.6em;margin-right:2px}
+.ic.sy{width:1.3em;height:1.3em}
+.ic.lb{width:1.5em;height:1.5em;vertical-align:-.4em}
+.ic.sun{width:30px;height:30px;filter:drop-shadow(0 0 6px rgba(255,210,74,.6))}
+#insp-portrait{float:right;width:64px;height:64px;margin:-4px 0 4px 8px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))}
+.inv-emo .icf{position:absolute;inset:1px;background-size:100% 100%;background-repeat:no-repeat;transform:none!important;opacity:.95;pointer-events:none}
+.inv-emo .icf.boa{filter:drop-shadow(0 0 3px #7fc4ff) saturate(1.3)}

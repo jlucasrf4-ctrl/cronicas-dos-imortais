@@ -1,0 +1,30 @@
+/* v5.9 acampamento e sobrevivência */
+#surv-hud{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px;pointer-events:auto}
+#surv-hud .sv{font-size:.66rem;padding:1px 6px;border-radius:9px;background:rgba(20,14,8,.72);border:1px solid #6b5432;color:#f0e2c0;display:inline-flex;align-items:center;gap:2px;white-space:nowrap}
+#surv-hud .sv .ico{width:13px;height:13px}
+#surv-hud .sv.warn{border-color:#d9a43a;color:#ffd98a}
+#surv-hud .sv.bad{border-color:#d0503a;color:#ffb0a0;animation:svPulse 1s infinite}
+#surv-hud .sv.wound{border-color:#a03a3a;color:#ffb3b3}
+@keyframes svPulse{50%{background:rgba(120,30,20,.75)}}
+#dungeon-hp-bg{position:relative}
+#dungeon-hp-wound{position:absolute;top:0;right:0;bottom:0;width:0;pointer-events:none;background:repeating-linear-gradient(45deg,#4a1414 0 4px,#2a0a0a 4px 8px);border-left:1px solid #c84a4a;transition:width .3s}
+#camp-modal{z-index:80}
+#camp-card{width:min(520px,94vw);max-height:90vh;overflow:auto}
+#camp-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+#camp-head>b{font-size:1rem}
+#camp-tabs{display:flex;gap:4px;flex:1;flex-wrap:wrap}
+#camp-tabs .btn.on{background:#e0b35f;color:#241508}
+#camp-body p{font-size:.8rem;line-height:1.4;margin:.3em 0 .6em}
+.camp-stock{display:flex;flex-wrap:wrap;gap:10px;font-size:.76rem;margin-bottom:8px}
+.camp-warn{color:#ffb37a;font-size:.7rem}
+.camp-hero{border:1px solid #5a4528;border-radius:8px;padding:6px 8px;margin-bottom:6px;font-size:.76rem}
+.camp-hero>div{margin:3px 0}
+.camp-w{color:#ff9a9a}
+#cook-cv{width:100%;max-width:420px;display:block;margin:0 auto;border-radius:8px;border:1px solid #5a4528;touch-action:none}
+.cook-tip{font-size:.72rem!important;color:#c9b88a}
+.cook-btns{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.cook-btns .btn{user-select:none;-webkit-user-select:none}
+#camp-prompt{position:absolute;left:50%;bottom:118px;transform:translateX(-50%);background:rgba(20,14,8,.82);border:1px solid #e0b35f;border-radius:10px;padding:5px 12px;color:#f3e6c8;font-size:.82rem;pointer-events:none;z-index:6;white-space:nowrap}
+#camp-prompt b{background:#e0b35f;color:#241508;border-radius:4px;padding:0 5px;margin-right:4px}
+#camp-prompt .ico{width:16px;height:16px;vertical-align:-3px}
+

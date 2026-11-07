@@ -1,0 +1,13 @@
+{
+  "nome": "corpo_f06",
+  "glb": "arquivos de transferência/corpos_tripo/F06_voluptuosa_v2.glb",
+  "altura": 1.7,
+  "triangulos": 12000,
+  "texturaSaida": 1536,
+  "cabeca": {
+    "y": 0.84,
+    "triangulos": 4000
+  },
+  "texW": 2048,
+  "pasta": "build/modelos/corpo_f06_tpose"
+}

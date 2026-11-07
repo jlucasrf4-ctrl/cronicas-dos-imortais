@@ -1,0 +1,681 @@
+{
+  "saida": "src/assets/models/aparencias.json",
+  "previas": "build/modelos/aparencias",
+  "trisCabeca": 8000,
+  "pescoco": 1.3,
+  "proporcao": 17.5,
+  "alisar": {
+    "voltas": 2,
+    "lambda": 0.5,
+    "mu": -0.53,
+    "voltasCor": 0,
+    "pesoCor": 0.6,
+    "tolCor": 14
+  },
+  "corpos": [
+    {
+      "nome": "heroina",
+      "rotulo": "Heroína",
+      "anim": "src/assets/models/heroina_anim.json",
+      "peso": 1,
+      "pesoPropria": 1,
+      "faixa": [32.2, 44.66],
+      "olhos": 0.477,
+      "queixo": 0.307
+    },
+    {
+      "nome": "lider",
+      "rotulo": "Líder dos bandidos",
+      "anim": "build/modelos/lider_bandidos_anim.json",
+      "pecas": "build/modelos/lider_bandidos_tpose/lider_bandidos_tpose_pecas.json",
+      "pecasCabeca": [0, 30],
+      "cabeloDesce": 5,
+      "limparManchas": true,
+      "pecasCabelo": [0],
+      "pecasCabeloTol": 35,
+      "peso": 1,
+      "pesoPropria": 1,
+      "faixa": [34, 45],
+      "olhos": 0.474,
+      "queixo": 0.281
+    },
+    {
+      "nome": "corpo_f02",
+      "rotulo": "Atlética (F2)",
+      "anim": "build/modelos/corpo_f02_anim.json",
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [33, 45],
+      "olhos": 0.485,
+      "queixo": 0.335,
+      "cabecaPadrao": "busto_02",
+      "limparIlhasPescoco": {
+        "abaixo": 1,
+        "acima": 0.7,
+        "raio": 1.8,
+        "trisMax": 64
+      }
+    },
+    {
+      "nome": "corpo_f04",
+      "rotulo": "Delicada (F4)",
+      "anim": "build/modelos/corpo_f04_anim.json",
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [33, 45],
+      "olhos": 0.487,
+      "queixo": 0.305,
+      "cabecaPadrao": "busto_04"
+    },
+    {
+      "nome": "corpo_f05",
+      "rotulo": "Natural (F5)",
+      "anim": "build/modelos/corpo_f05_anim.json",
+      "tirarCabelo": 4,
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [33, 45],
+      "olhos": 0.507,
+      "queixo": 0.317,
+      "cabecaPadrao": "busto_05"
+    },
+    {
+      "nome": "corpo_f06",
+      "rotulo": "Voluptuosa (F6)",
+      "anim": "build/modelos/corpo_f06_anim.json",
+      "tirarCabelo": 0.5,
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [36, 49.1],
+      "olhos": 0.47,
+      "queixo": 0.286,
+      "cabecaPadrao": "busto_06"
+    },
+    {
+      "nome": "corpo_m01",
+      "rotulo": "Esbelto (M01)",
+      "anim": "build/modelos/corpo_m01_anim.json",
+      "sexo": "m",
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [34.5, 47.2],
+      "olhos": 0.552,
+      "queixo": 0.345
+    },
+    {
+      "nome": "corpo_m04",
+      "rotulo": "Alto e magro (M04)",
+      "anim": "build/modelos/corpo_m04_anim.json",
+      "sexo": "m",
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [36.8, 50.2],
+      "olhos": 0.491,
+      "queixo": 0.295
+    },
+    {
+      "nome": "corpo_m06",
+      "rotulo": "Musculoso (M06)",
+      "anim": "build/modelos/corpo_m06_anim.json",
+      "sexo": "m",
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [35.3, 48.2],
+      "olhos": 0.584,
+      "queixo": 0.365
+    },
+    {
+      "nome": "corpo_f01",
+      "rotulo": "Esbelta (F1)",
+      "anim": "build/modelos/corpo_f01_anim.json",
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [33, 45],
+      "olhos": 0.491,
+      "queixo": 0.307,
+      "cabecaPadrao": "busto_01"
+    },
+    {
+      "nome": "corpo_f03",
+      "rotulo": "Curvilínea (F3)",
+      "anim": "build/modelos/corpo_f03_anim.json",
+      "tirarCabelo": 6,
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [33, 45],
+      "olhos": 0.476,
+      "queixo": 0.29,
+      "cabecaPadrao": "busto_03"
+    },
+    {
+      "nome": "deusa_primavera",
+      "rotulo": "Deusa da Primavera",
+      "anim": "build/modelos/deusa_primavera_anim.json",
+      "tirarCabelo": 9,
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [33, 47],
+      "olhos": 0.528,
+      "queixo": 0.385
+    },
+    {
+      "nome": "deusa_verao",
+      "rotulo": "Deusa do Verão",
+      "anim": "build/modelos/deusa_verao_anim.json",
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [33, 47],
+      "olhos": 0.532,
+      "queixo": 0.376,
+      "cabeloFixo": true
+    },
+    {
+      "nome": "deusa_outono",
+      "rotulo": "Deusa do Outono",
+      "anim": "build/modelos/deusa_outono_anim.json",
+      "tirarCabelo": 9,
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [33, 47],
+      "olhos": 0.528,
+      "queixo": 0.385
+    },
+    {
+      "nome": "deusa_outono_nova",
+      "rotulo": "Deusa do Outono (nova)",
+      "anim": "build/modelos/deusa_outono_nova_anim.json",
+      "tirarCabelo": 9,
+      "corCabelo": [126, 7, 0],
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [33, 47],
+      "olhos": 0.55,
+      "queixo": 0.36
+    },
+    {
+      "nome": "deusa_inverno",
+      "rotulo": "Deusa do Inverno",
+      "anim": "build/modelos/deusa_inverno_anim.json",
+      "peso": 0,
+      "pesoPropria": 0,
+      "faixa": [33, 47],
+      "olhos": 0.528,
+      "queixo": 0.391
+    }
+  ],
+  "cabecas": [
+    {
+      "nome": "busto_01",
+      "rotulo": "F1",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.707,
+      "queixo": 0.579,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/Cabeças F1-f6.glb",
+        "xMin": -0.4909905029296875,
+        "xMax": -0.1635301676432292,
+        "yMin": 0.3325347900390625,
+        "yMax": 0.665169580078125,
+        "textura": "bustos_novos_0"
+      },
+      "recorteIntegro": true
+    },
+    {
+      "nome": "busto_02",
+      "rotulo": "F2",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.74,
+      "queixo": 0.599,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/Cabeças F1-f6.glb",
+        "xMin": -0.16373016764322917,
+        "xMax": 0.16373016764322912,
+        "yMin": 0.3325347900390625,
+        "yMax": 0.665169580078125,
+        "textura": "bustos_novos_0"
+      }
+    },
+    {
+      "nome": "busto_03",
+      "rotulo": "F3",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.737,
+      "queixo": 0.545,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/Cabeças F1-f6.glb",
+        "xMin": 0.16353016764322914,
+        "xMax": 0.4909905029296875,
+        "yMin": 0.3325347900390625,
+        "yMax": 0.665169580078125,
+        "textura": "bustos_novos_0"
+      },
+      "recorteIntegro": true
+    },
+    {
+      "nome": "busto_04",
+      "rotulo": "F4",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.69,
+      "queixo": 0.517,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/Cabeças F1-f6.glb",
+        "xMin": -0.4909905029296875,
+        "xMax": -0.1635301676432292,
+        "yMin": -0.0001,
+        "yMax": 0.3325347900390625,
+        "textura": "bustos_novos_0"
+      },
+      "recorteIntegro": true
+    },
+    {
+      "nome": "busto_05",
+      "rotulo": "F5",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.708,
+      "queixo": 0.538,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/Cabeças F1-f6.glb",
+        "xMin": -0.16373016764322917,
+        "xMax": 0.16373016764322912,
+        "yMin": -0.0001,
+        "yMax": 0.3325347900390625,
+        "textura": "bustos_novos_0"
+      }
+    },
+    {
+      "nome": "busto_06",
+      "rotulo": "F6",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.694,
+      "queixo": 0.537,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/Cabeças F1-f6.glb",
+        "xMin": 0.16353016764322914,
+        "xMax": 0.4909905029296875,
+        "yMin": -0.0001,
+        "yMax": 0.3325347900390625,
+        "textura": "bustos_novos_0"
+      }
+    },
+    {
+      "nome": "busto_07",
+      "rotulo": "F7",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.678,
+      "queixo": 0.505,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/Cabeça 7 - 12.glb",
+        "xMin": -0.490090234375,
+        "xMax": -0.163230078125,
+        "yMin": 0.303863525390625,
+        "yMax": 0.60782705078125,
+        "textura": "bustos_novos_1"
+      }
+    },
+    {
+      "nome": "busto_08",
+      "rotulo": "F8",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.696,
+      "queixo": 0.487,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/Cabeça 7 - 12.glb",
+        "xMin": -0.163430078125,
+        "xMax": 0.163430078125,
+        "yMin": 0.303863525390625,
+        "yMax": 0.60782705078125,
+        "textura": "bustos_novos_1"
+      }
+    },
+    {
+      "nome": "busto_09",
+      "rotulo": "F9",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.703,
+      "queixo": 0.527,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/Cabeça 7 - 12.glb",
+        "xMin": 0.163230078125,
+        "xMax": 0.490090234375,
+        "yMin": 0.303863525390625,
+        "yMax": 0.60782705078125,
+        "textura": "bustos_novos_1"
+      }
+    },
+    {
+      "nome": "busto_10",
+      "rotulo": "F10",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.688,
+      "queixo": 0.494,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/Cabeça 7 - 12.glb",
+        "xMin": -0.490090234375,
+        "xMax": -0.163230078125,
+        "yMin": -0.0001,
+        "yMax": 0.303863525390625,
+        "textura": "bustos_novos_1"
+      }
+    },
+    {
+      "nome": "busto_11",
+      "rotulo": "F11",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.672,
+      "queixo": 0.478,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/Cabeça 7 - 12.glb",
+        "xMin": -0.163430078125,
+        "xMax": 0.163430078125,
+        "yMin": -0.0001,
+        "yMax": 0.303863525390625,
+        "textura": "bustos_novos_1"
+      }
+    },
+    {
+      "nome": "busto_12",
+      "rotulo": "F12",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.64,
+      "queixo": 0.47,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/Cabeça 7 - 12.glb",
+        "xMin": 0.163230078125,
+        "xMax": 0.490090234375,
+        "yMin": -0.0001,
+        "yMax": 0.303863525390625,
+        "textura": "bustos_novos_1"
+      }
+    },
+    {
+      "nome": "busto_13",
+      "rotulo": "F13",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.69,
+      "queixo": 0.56,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/afdf1c97-549a-4ae0-9b92-a82b5169e382.glb",
+        "xMin": -0.48984609375,
+        "xMax": 0.0001,
+        "yMin": 0.47705078125,
+        "yMax": 0.9542015625,
+        "textura": "bustos_novos_2"
+      },
+      "escala": 0.86
+    },
+    {
+      "nome": "busto_14",
+      "rotulo": "F14",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.665,
+      "queixo": 0.525,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/afdf1c97-549a-4ae0-9b92-a82b5169e382.glb",
+        "xMin": -0.0001,
+        "xMax": 0.48984609375,
+        "yMin": 0.47705078125,
+        "yMax": 0.9542015625,
+        "textura": "bustos_novos_2"
+      },
+      "limparFragmentos": {
+        "topoMax": -1.5,
+        "trisMax": 80
+      },
+      "escala": 0.96
+    },
+    {
+      "nome": "busto_15",
+      "rotulo": "F15",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.66,
+      "queixo": 0.51,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/afdf1c97-549a-4ae0-9b92-a82b5169e382.glb",
+        "xMin": -0.48984609375,
+        "xMax": 0.0001,
+        "yMin": -0.0001,
+        "yMax": 0.47705078125,
+        "textura": "bustos_novos_2"
+      },
+      "escala": 0.96
+    },
+    {
+      "nome": "busto_16",
+      "rotulo": "F16",
+      "peso": 1,
+      "busto": true,
+      "olhos": 0.696,
+      "queixo": 0.557,
+      "tripo": {
+        "arquivo": "arquivos de transferência/3.11.2026/afdf1c97-549a-4ae0-9b92-a82b5169e382.glb",
+        "xMin": -0.0001,
+        "xMax": 0.48984609375,
+        "yMin": -0.0001,
+        "yMax": 0.47705078125,
+        "textura": "bustos_novos_2"
+      },
+      "recorteIntegro": true
+    },
+    {
+      "nome": "loira_trancas",
+      "rotulo": "F17",
+      "peso": 1,
+      "glb": "build/modelos/cabecas/loira_trancas.glb",
+      "olhos": 0.563,
+      "queixo": 0.35
+    },
+    {
+      "nome": "ruiva_rabo",
+      "rotulo": "F18",
+      "peso": 1,
+      "glb": "build/modelos/cabecas/ruiva_rabo.glb",
+      "olhos": 0.506,
+      "queixo": 0.3
+    },
+    {
+      "nome": "morena_argolas",
+      "rotulo": "F19",
+      "peso": 1,
+      "glb": "build/modelos/cabecas/morena_argolas.glb",
+      "olhos": 0.563,
+      "queixo": 0.35
+    },
+    {
+      "nome": "acobreada_coque",
+      "rotulo": "F20",
+      "peso": 1,
+      "glb": "build/modelos/cabecas/acobreada_coque.glb",
+      "olhos": 0.512,
+      "queixo": 0.3
+    },
+    {
+      "nome": "marinho_coque",
+      "rotulo": "F21",
+      "peso": 1,
+      "glb": "build/modelos/cabecas/marinho_coque.glb",
+      "olhos": 0.518,
+      "queixo": 0.316
+    },
+    {
+      "nome": "rosa",
+      "rotulo": "F22",
+      "peso": 1,
+      "glb": "build/modelos/cabecas/rosa.glb",
+      "olhos": 0.518,
+      "queixo": 0.31
+    },
+    {
+      "nome": "verde_trancas",
+      "rotulo": "F23",
+      "peso": 1,
+      "glb": "build/modelos/cabecas/verde_trancas.glb",
+      "olhos": 0.532,
+      "queixo": 0.33
+    },
+    {
+      "nome": "morena_tiara",
+      "rotulo": "F24",
+      "peso": 1,
+      "glb": "build/modelos/cabecas/morena_tiara.glb",
+      "olhos": 0.532,
+      "queixo": 0.33
+    },
+    {
+      "nome": "deusa_primavera",
+      "rotulo": "F25",
+      "peso": 0.25,
+      "deusa": {
+        "arquivo": "arquivos de transferência/deusas/para_tripo/stylized female head 3d model.glb",
+        "xMin": -1,
+        "xMax": -0.245
+      },
+      "olhos": 0.548,
+      "queixo": 0.323
+    },
+    {
+      "nome": "deusa_verao",
+      "rotulo": "F26",
+      "peso": 0.25,
+      "deusa": {
+        "arquivo": "arquivos de transferência/deusas/para_tripo/stylized female head 3d model.glb",
+        "xMin": -0.245,
+        "xMax": 0
+      },
+      "olhos": 0.548,
+      "queixo": 0.323,
+      "cabeloFixo": true
+    },
+    {
+      "nome": "deusa_outono",
+      "rotulo": "F27",
+      "peso": 0.25,
+      "deusa": {
+        "arquivo": "arquivos de transferência/deusas/para_tripo/stylized female head 3d model.glb",
+        "xMin": 0,
+        "xMax": 0.245
+      },
+      "olhos": 0.548,
+      "queixo": 0.334
+    },
+    {
+      "nome": "deusa_inverno",
+      "rotulo": "F28",
+      "peso": 0.25,
+      "deusa": {
+        "arquivo": "arquivos de transferência/deusas/para_tripo/stylized female head 3d model.glb",
+        "xMin": 0.245,
+        "xMax": 1
+      },
+      "olhos": 0.562,
+      "queixo": 0.334,
+      "manter": [[80, 110, 165, 28]]
+    },
+    {
+      "nome": "homem_bagunca",
+      "rotulo": "Bagunçado de barba",
+      "peso": 1,
+      "sexo": "m",
+      "tripo": {
+        "arquivo": "arquivos de transferência/male head 3d model.glb",
+        "xMin": -0.5,
+        "xMax": -0.313,
+        "textura": "homens"
+      },
+      "alongarPescoco": 2,
+      "olhos": 0.523,
+      "queixo": 0.178
+    },
+    {
+      "nome": "homem_espetado",
+      "rotulo": "Espetado de barba",
+      "peso": 1,
+      "sexo": "m",
+      "tripo": {
+        "arquivo": "arquivos de transferência/male head 3d model.glb",
+        "xMin": -0.313,
+        "xMax": -0.145,
+        "textura": "homens"
+      },
+      "alongarPescoco": 2,
+      "olhos": 0.523,
+      "queixo": 0.178
+    },
+    {
+      "nome": "homem_longo",
+      "rotulo": "Cabelo longo de barba",
+      "peso": 1,
+      "sexo": "m",
+      "tripo": {
+        "arquivo": "arquivos de transferência/male head 3d model.glb",
+        "xMin": -0.145,
+        "xMax": 0.024,
+        "textura": "homens"
+      },
+      "alongarPescoco": 2,
+      "olhos": 0.523,
+      "queixo": 0.178
+    },
+    {
+      "nome": "homem_coque",
+      "rotulo": "Coque de barba",
+      "peso": 1,
+      "sexo": "m",
+      "tripo": {
+        "arquivo": "arquivos de transferência/male head 3d model.glb",
+        "xMin": 0.024,
+        "xMax": 0.186,
+        "textura": "homens"
+      },
+      "alongarPescoco": 2,
+      "olhos": 0.49,
+      "queixo": 0.153
+    },
+    {
+      "nome": "homem_raspado",
+      "rotulo": "Raspado de barba",
+      "peso": 1,
+      "sexo": "m",
+      "tripo": {
+        "arquivo": "arquivos de transferência/male head 3d model.glb",
+        "xMin": 0.186,
+        "xMax": 0.341,
+        "textura": "homens"
+      },
+      "alongarPescoco": 2,
+      "olhos": 0.59,
+      "queixo": 0.203
+    },
+    {
+      "nome": "homem_careca",
+      "rotulo": "Careca",
+      "peso": 1,
+      "sexo": "m",
+      "tripo": {
+        "arquivo": "arquivos de transferência/male head 3d model.glb",
+        "xMin": 0.341,
+        "xMax": 0.5,
+        "textura": "homens"
+      },
+      "alongarPescoco": 2,
+      "olhos": 0.59,
+      "queixo": 0.216
+    }
+  ],
+  "tamanhoTextura": 2048,
+  "qualidadeTextura": 92
+}

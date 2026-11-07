@@ -1,0 +1,44 @@
+/* v8.1 — estados da heroína (field/estados.ts): o do anel, os selos, a fita sob os pés, o painel completo e os selos dos
+   cartões do clã */
+#est-selos{position:fixed;inset:0;z-index:22;pointer-events:none;display:none}
+#est-anel{position:fixed;width:0;height:0;z-index:22;pointer-events:none;display:none}
+#est-anel.on,#est-selos.on{display:block}
+.est-selo{position:fixed;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;line-height:1;background:rgba(20,13,6,.92);border:2px solid;box-shadow:0 1px 4px #000a}
+.est-selo.alerta{border-color:#ffd23a}.est-selo.perigo{border-color:#ff5a4a;animation:est-pulsa 1s ease-in-out infinite}.est-selo.bonus{border-color:#f0c66e}
+#est-anel .est-selo{position:absolute;left:0;top:0;width:var(--d,16px);height:var(--d,16px);font-size:calc(var(--d,16px) * .6)}
+#est-fita{position:fixed;z-index:23;transform:translate(-50%,-50%);display:none;align-items:center;gap:4px;padding:3px 9px 4px;border-radius:14px;border:1px solid rgba(224,179,95,.55);background:rgba(18,12,6,.86);cursor:pointer;font:inherit;color:inherit;box-shadow:0 2px 8px #0008}
+#est-fita.on{display:flex}
+#est-fita:hover{border-color:#f0c66e}
+#est-fita:focus-visible{outline:2px solid #f0c66e;outline-offset:2px}
+.est-i{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:13px;line-height:1}
+.est-i i{display:block;width:16px;height:3px;border-radius:2px;background:#3a2a18;overflow:hidden}
+.est-i b{display:block;height:100%;width:0}
+.est-i.alerta b{background:#ffd23a}.est-i.perigo b{background:#ff5a4a}.est-i.bonus b{background:#f0c66e}
+.est-i.perigo{animation:est-pulsa 1s ease-in-out infinite}
+@keyframes est-pulsa{50%{opacity:.5}}
+#est-painel{position:fixed;z-index:70;left:50%;bottom:calc(120px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(560px,calc(100vw - 24px));max-height:60vh;overflow:auto;display:none;flex-direction:column;gap:10px;padding:12px 14px;border-radius:10px;border:1px solid #e0b35f;background:rgba(24,16,8,.97);color:#e9dcbd;box-shadow:0 10px 30px #000a;font-family:Lora,serif}
+#est-painel.on{display:flex}
+#est-painel header{display:flex;align-items:center;gap:8px}
+#est-painel h3{margin:0;flex:1;font-family:Cinzel,serif;font-size:.95rem;color:#e0b35f}
+#est-painel header button{background:none;border:1px solid rgba(224,179,95,.4);color:#e9dcbd;border-radius:6px;cursor:pointer;font:inherit;padding:0 8px}
+#est-painel h4{margin:0 0 4px;font-family:Cinzel,serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:#b9a982}
+#est-painel h4+*{margin-top:0}
+.est-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.est-cols>div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.est-cols>div h4:not(:first-child){margin-top:10px}
+.est-ef{display:grid;grid-template-columns:22px 1fr auto;gap:1px 8px;align-items:center;padding:5px 0;border-top:1px solid rgba(224,179,95,.12);font-size:.84rem}
+.est-ic{grid-row:span 2;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:#140d06;border:1.5px solid}
+.est-ic.alerta{border-color:#ffd23a}.est-ic.perigo{border-color:#ff5a4a}.est-ic.bonus{border-color:#f0c66e}
+.est-ef small{grid-column:2/4;color:#b9a982;font-size:.76rem}
+.est-v{font-variant-numeric:tabular-nums;color:#b9a982;font-size:.78rem;text-align:right}
+.est-vazio{margin:2px 0;color:#b9a982;font-size:.8rem}
+.est-nec{display:grid;grid-template-columns:78px 1fr 44px;gap:8px;align-items:center;font-size:.82rem;padding:3px 0}
+.est-b{height:7px;border-radius:4px;background:rgba(0,0,0,.5);overflow:hidden;position:relative;display:block}
+.est-b i{position:absolute;top:0;bottom:0;left:0}
+.est-temp{background:linear-gradient(90deg,#7ac8ff,#3d5a3a 40%,#3d5a3a 60%,#ff9a4a)}
+.est-temp i{width:3px;background:#fff;border-radius:2px;box-shadow:0 0 4px #fff}
+/* selos nos cartões do clã (ui/painel.ts) */
+.cla-selo{font-style:normal;width:17px;height:17px;border-radius:50%;display:inline-grid;place-items:center;font-size:9px;background:#140d06;border:1.5px solid;cursor:pointer;flex:0 0 auto}
+.cla-selo.alerta{border-color:#ffd23a}.cla-selo.perigo{border-color:#ff5a4a;animation:est-pulsa 1s ease-in-out infinite}.cla-selo.bonus{border-color:#f0c66e}
+.cla-alerta+.cla-selo,.cla-nv+.cla-selo{margin-left:auto}
+@media (prefers-reduced-motion:reduce){.est-i.perigo,.cla-selo.perigo{animation:none}}

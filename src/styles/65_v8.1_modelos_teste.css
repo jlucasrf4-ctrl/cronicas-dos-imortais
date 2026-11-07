@@ -1,0 +1,7 @@
+#modelos-teste { position: fixed; z-index: 600; inset: 3vh auto auto 50%; transform: translateX(-50%); width: min(540px, 94vw); max-height: 94vh; overflow: auto; padding: 16px; border: 1px solid #bfa878; border-radius: 12px; background: #211e1b; color: #f0e7d6; box-shadow: 0 12px 60px #000a; }
+#modelos-teste .mt-topo, #modelos-teste .mt-controles { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+#modelos-teste label { display: flex; gap: 12px; align-items: center; margin: 8px 0; }
+#modelos-teste select, #modelos-teste input { flex: 1; min-width: 0; }
+#modelos-teste canvas { display: block; width: 100%; max-height: 53vh; object-fit: contain; touch-action: none; background: #302b25; border-radius: 8px; }
+#modelos-teste button, #modelos-teste select { padding: 7px 10px; background: #383027; color: #f0e7d6; border: 1px solid #77684c; border-radius: 5px; }
+#modelos-teste small { color: #c8bfae; }

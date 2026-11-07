@@ -1,0 +1,14 @@
+/* ==== v7.7 — controle de RTS no mapa (map/selecao.ts): cursor, arrasto com o botão do meio, marcador da ordem ==== */
+#viewport{cursor:default}
+#viewport.arrastando{cursor:grabbing}
+.ordem-ping{position:absolute;width:0;height:0;pointer-events:none;z-index:5}
+.ordem-ping::before{content:"";position:absolute;left:calc(-9px*var(--k));top:calc(-5px*var(--k));width:calc(18px*var(--k));height:calc(10px*var(--k));border:calc(2px*var(--k)) solid #7dff9a;border-radius:50%;animation:ordem-ping .7s ease-out forwards}
+.ordem-ping.coletar::before{border-color:#ffd27a}
+@keyframes ordem-ping{from{transform:scale(1.8);opacity:1}to{transform:scale(.4);opacity:0}}
+/* v7.7 (2026-10-18) — ordem de caça (marcador vermelho), cursor sobre um alvo e a dica do que o botão direito faz ali (#ordem-dica) */
+.ordem-ping.cacar::before{border-color:#ff8a6a}
+#viewport[data-ordem=cacar]{cursor:crosshair}
+#viewport[data-ordem=coletar],#viewport[data-ordem=pescar],#viewport[data-ordem=acampamento]{cursor:pointer}
+#ordem-dica{position:fixed;z-index:70;pointer-events:none;display:none;padding:3px 10px;border-radius:12px;background:rgba(20,12,4,.86);border:1px solid rgba(224,179,95,.6);color:#ffe7b0;font:600 12px Lora,serif;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,.45)}
+#ordem-dica.on{display:block}
+#ordem-dica.fraca{opacity:.62;font-weight:500}

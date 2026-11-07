@@ -1,0 +1,8 @@
+/* v5.9.13 — carpintaria */
+#carp-modal .cp-card{width:min(480px,95vw);padding:14px}
+#cp-cv{width:100%;height:auto;border-radius:8px;touch-action:none;display:block;margin:6px 0}
+.cp-stock{display:flex;gap:10px;flex-wrap:wrap;font-size:13px;margin:6px 0 8px}.cp-stock .ic{width:18px;height:18px;vertical-align:middle}
+.cp-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(120,90,50,.25)}.cp-row>div{flex:1}.cp-row small{display:block;font-size:11px;opacity:.8}.cp-row .cp-cost{color:#8a5a20;opacity:1}
+.cp-msg{background:rgba(224,176,74,.18);border:1px solid #c9a24a;border-radius:6px;padding:6px 8px;font-size:13px;margin-bottom:6px}
+.cp-tip,.cp-note{font-size:12px;opacity:.8;margin:4px 0 0}
+

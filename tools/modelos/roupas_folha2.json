@@ -1,0 +1,24 @@
+{
+  "nome": "roupas_folha2",
+  "glb": "arquivos de transferência/fantasy armor 3d model (1).glb",
+  "referencia": "arquivos de transferência/roupas/_tripo_deserto_patrulheira_ref.png",
+  "altura": 1.7,
+  "escala": 1,
+  "triangulos": 16000,
+  "separar": [
+    {
+      "nome": "roupa_deserto",
+      "malhas": [
+        4, 6, 7, 9, 10, 13, 14, 17, 18, 20, 21, 22, 24, 25, 27, 28, 29, 31, 32, 33, 35, 36, 37, 38, 40, 41, 42, 43, 44,
+        45, 46, 47, 48, 49, 50, 54, 58, 59, 60, 63, 64, 65, 66, 68
+      ],
+      "textura": 1024
+    },
+    {
+      "nome": "roupa_patrulheira",
+      "malhas": [0, 1, 2, 3, 5, 8, 11, 12, 15, 16, 19, 23, 26, 30, 34, 39, 51, 52, 53, 55, 56, 57, 61, 62, 67, 69],
+      "textura": 1024
+    }
+  ],
+  "pasta": "build/modelos/roupas"
+}

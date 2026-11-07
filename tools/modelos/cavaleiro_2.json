@@ -1,0 +1,17 @@
+{
+  "nome": "cavaleiro_2",
+  "glb": "arquivos de transferência/referencias para cidade/medieval knight 3d model.glb",
+  "regiao": {
+    "xMin": -0.246,
+    "xMax": 0
+  },
+  "altura": 1.8,
+  "triangulos": 15000,
+  "cabeca": {
+    "y": 0.84,
+    "triangulos": 4000
+  },
+  "texW": 2048,
+  "pasta": "build/modelos/cavaleiro_2_tpose",
+  "texturaSaida": 1536
+}

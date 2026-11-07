@@ -1,0 +1,8 @@
+/* v8.1 — janelinhas de progresso das proficiências (field/progresso_hud.ts); substituem os HUDs antigos da espada e do arco */
+#weapon-progress-hud{position:fixed;left:12px;bottom:164px;max-height:calc(100vh - 190px);overflow-y:auto;display:none;flex-direction:column;align-items:flex-start;gap:6px;z-index:6;pointer-events:none}
+.wph-card{width:190px;box-sizing:border-box;padding:8px 10px;background:rgba(28,20,11,.92);border:1px solid #6b5a3a;border-radius:8px;color:#fff8e3;font-size:.74rem;box-shadow:0 4px 14px #0006;pointer-events:auto}
+.wph-card.wph-piscando{animation:wphPisca .65s steps(2,end) infinite}@keyframes wphPisca{50%{opacity:.35}}
+.wph-head{display:flex;align-items:center;gap:4px}.wph-head b{display:flex;align-items:center;gap:4px;flex:1;min-width:0}.wph-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wph-card .bb{height:6px;background:rgba(0,0,0,.5);border-radius:4px;overflow:hidden;margin:5px 0 3px}.wph-card .bb i{display:block;height:100%;width:0;background:#ffd27a;transition:width .25s}
+.wph-pts{color:#c9b88a;font-size:.68rem}.wph-pin{border:0;background:transparent;color:inherit;cursor:pointer;font-size:.8rem;padding:1px 4px;border-radius:50%}.wph-pin:hover{background:rgba(255,255,255,.12)}
+#sword-hud,#bow-hud{display:none!important}

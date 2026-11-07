@@ -1,0 +1,11 @@
+/* ==== v8.0 — cena inicial: a lição do rolamento (#isc-esq, intro/cena.ts telaEsquiva: o tempo congela até rolar) e o
+   objetivo (#isc-obj) no alto da tela ==== */
+#isc-esq{position:absolute;left:50%;top:38%;z-index:70;display:none;flex-direction:column;align-items:center;gap:6px;padding:16px 28px 14px;background:rgba(14,10,6,.9);border:2px solid #ffd27a;border-radius:12px;box-shadow:0 0 0 4px rgba(255,210,122,.15),0 12px 34px rgba(0,0,0,.7);color:#fff3d6;text-align:center;pointer-events:none;transform:translate(-50%,-50%)}
+#isc-esq.on{display:flex;animation:iscEsq .9s ease-in-out infinite}
+#isc-esq b{font:700 1.5rem Cinzel,Lora,serif;letter-spacing:.03em}
+#isc-esq kbd{display:inline-block;margin:0 4px;padding:2px 12px;border:1px solid #ffd27a;border-bottom-width:4px;border-radius:6px;background:#2a1d0e;color:#ffd27a;font:700 1.15rem Cinzel,serif;vertical-align:2px}
+#isc-esq small{font:500 .85rem Lora,serif;color:#e0c48a}
+@keyframes iscEsq{0%,100%{box-shadow:0 0 0 4px rgba(255,210,122,.15),0 12px 34px rgba(0,0,0,.7)}50%{box-shadow:0 0 0 10px rgba(255,210,122,.32),0 12px 34px rgba(0,0,0,.7)}}
+html.mob #isc-esq b{font-size:1.15rem}
+/* v8.0 — o objetivo da cena inicial (#isc-obj) sobe para o alto da tela: no meio ele ficava em cima da cabeça da heroína */
+#isc-obj{top:calc(18px + env(safe-area-inset-top,0px))}

@@ -1,0 +1,3 @@
+/* ==== v7.7 — camada dos ladrilhos do mapa vetorial (map/vetorial.ts): a placa de vídeo move e escala, sem repintar ==== */
+#map-ladrilhos{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;pointer-events:none}
+#map-ladrilhos canvas{position:absolute;display:block}

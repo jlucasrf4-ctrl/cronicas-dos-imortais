@@ -1,0 +1,15 @@
+/* v5.9.09 — editor de botões */
+#touch-ui .tb.tb-free{position:absolute;margin:0}
+#touch-ui.tb-editing{pointer-events:auto;background:rgba(10,8,4,.35)}
+#touch-ui.tb-editing #tj-zone{pointer-events:none}
+#touch-ui.tb-editing .tb{outline:2px dashed rgba(255,226,160,.75);outline-offset:3px;animation:tbw 1.2s ease-in-out infinite alternate;cursor:grab}
+#touch-ui.tb-editing .tb.tb-sel{outline:3px solid #ffd27a;box-shadow:0 0 18px rgba(255,200,100,.8);animation:none}
+#touch-ui.tb-editing #tb-layout{outline:none;animation:none;background:radial-gradient(circle at 40% 30%,#8a6a22,#3a2810)}
+@keyframes tbw{from{filter:brightness(1)}to{filter:brightness(1.25)}}
+#tbl-bar{position:absolute;left:50%;top:calc(58px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:6;pointer-events:auto;background:rgba(28,20,10,.94);border:1px solid #c9a24a;border-radius:10px;padding:6px 10px;color:#f3e2b8;font:13px Lora,serif;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.6);max-width:94vw}
+#tbl-bar b{display:block;font-size:14px;color:#ffe2a0}
+#tbl-bar #tbl-tip{display:block;font-size:11px;opacity:.85;margin:2px 0 5px}
+#tbl-bar .tbl-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+#tbl-bar button{background:#3a2a14;border:1px solid #8a6a32;color:#f3e2b8;border-radius:7px;padding:5px 9px;font:12px Lora,serif}
+#tbl-bar button.pri{background:#6a4a1a;border-color:#ffd27a;color:#fff0c8;font-weight:600}
+

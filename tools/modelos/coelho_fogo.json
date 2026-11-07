@@ -1,0 +1,10 @@
+{
+  "glb": "arquivos de transferência/referencias para cidade/fire wolf 3d model.glb",
+  "saida": "src/assets/models/coelho_fogo.json",
+  "previas": "build/modelos/coelho_fogo",
+  "cache": "build/modelos/cache",
+  "texW": 1024,
+  "regiao": { "xMin": 0.2, "xMax": 0.4, "yMin": 0.3, "yMax": 0.42 },
+  "tris": 6000,
+  "giro": 0
+}

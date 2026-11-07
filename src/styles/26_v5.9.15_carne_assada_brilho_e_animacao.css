@@ -1,0 +1,19 @@
+/* v5.9.15 — carne assada: brilho e animação */
+#camp-card{position:relative}
+#cook-splash{position:fixed;left:50%;top:50%;width:min(380px,92vw);height:360px;margin:calc(-180px) 0 0 calc(min(380px,92vw) / -2);z-index:100000;border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;flex-direction:column;background:radial-gradient(circle,rgba(52,32,10,.97),rgba(22,13,4,.98));overflow:hidden;animation:csIn .25s ease-out;cursor:pointer}
+#cook-splash.out{animation:csOut .45s ease-in forwards}
+#cook-splash .cs-rays{position:absolute;width:520px;height:520px;left:50%;top:44%;margin:-260px 0 0 -260px;background:repeating-conic-gradient(rgba(255,214,120,.28) 0 10deg,transparent 10deg 24deg);border-radius:50%;animation:csSpin 6s linear infinite;-webkit-mask:radial-gradient(circle,#000 20%,transparent 68%);mask:radial-gradient(circle,#000 20%,transparent 68%)}
+#cook-splash .cs-glow{position:absolute;width:220px;height:220px;left:50%;top:44%;margin:-110px 0 0 -110px;border-radius:50%;background:radial-gradient(circle,rgba(255,226,140,.85),rgba(255,160,60,.35) 45%,transparent 70%);animation:csPulse 1s ease-in-out infinite alternate}
+#cook-splash .cs-meat{position:relative;width:150px;height:150px;margin-top:-30px;filter:drop-shadow(0 0 14px rgba(255,200,90,.9)) drop-shadow(0 6px 10px rgba(0,0,0,.6));animation:csPop .55s cubic-bezier(.2,1.6,.4,1)}
+#cook-splash .cs-emo{font-size:96px;line-height:150px;text-align:center}
+#cook-splash .cs-sp{position:absolute;left:50%;top:44%;color:#ffe9a0;font-size:18px;text-shadow:0 0 8px #ffcf5a;animation:csSpark 1.3s ease-out var(--d) both;transform:rotate(var(--a)) translateY(0)}
+#cook-splash .cs-steam{position:absolute;left:calc(50% + var(--x));top:38%;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.35);filter:blur(3px);animation:csSteam 1.8s ease-out var(--d) infinite}
+#cook-splash .cs-txt{position:relative;margin-top:8px;font:700 22px Cinzel,Lora,serif;color:#ffe2a0;text-shadow:0 2px 6px #000,0 0 14px rgba(255,190,80,.7);animation:csPop .5s .15s cubic-bezier(.2,1.6,.4,1) both}
+#cook-splash.good .cs-rays{opacity:.55}#cook-splash.good .cs-glow{opacity:.7}
+#cook-splash.burnt .cs-rays,#cook-splash.burnt .cs-glow{display:none}#cook-splash.burnt .cs-meat{filter:brightness(.55) drop-shadow(0 6px 10px rgba(0,0,0,.6))}#cook-splash.burnt .cs-steam{background:rgba(60,55,50,.6)}#cook-splash.burnt .cs-txt{color:#d8c8b0}
+@keyframes csIn{from{opacity:0}to{opacity:1}}@keyframes csOut{to{opacity:0;transform:scale(1.05)}}
+@keyframes csSpin{to{transform:rotate(360deg)}}@keyframes csPulse{from{transform:scale(.9);opacity:.75}to{transform:scale(1.1);opacity:1}}
+@keyframes csPop{from{transform:scale(.2) rotate(-12deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+@keyframes csSpark{0%{opacity:0;transform:rotate(var(--a)) translateY(0) scale(.4)}20%{opacity:1}100%{opacity:0;transform:rotate(var(--a)) translateY(-120px) scale(1.2)}}
+@keyframes csSteam{0%{opacity:0;transform:translateY(0) scale(.6)}30%{opacity:.8}100%{opacity:0;transform:translateY(-60px) scale(1.8)}}
+

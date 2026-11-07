@@ -1,0 +1,15 @@
+{
+  "nome": "lider_bandidos",
+  "glb": "arquivos de transferência/fantasy warrior 3d model.glb",
+  "referencia": "arquivos de transferência/lider bandidos referencia.png",
+  "altura": 1.7,
+  "triangulos": 15000,
+  "prioridade": {
+    "30": 10
+  },
+  "tirar": [
+    1,
+    50
+  ],
+  "pasta": "build/modelos/lider_bandidos_tpose"
+}

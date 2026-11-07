@@ -1,0 +1,38 @@
+/* v5.0 — Sala de Treino + status */
+#tr-hud{position:absolute;right:10px;top:64px;z-index:60;width:272px;max-height:calc(100% - 140px);overflow:auto;background:rgba(30,22,12,.9);border:1px solid #c9a25a;border-radius:12px;color:#f3e6c8;font:12px/1.35 Lora,serif;box-shadow:0 10px 26px rgba(0,0,0,.5);backdrop-filter:blur(4px)}
+#tr-hud .tr-h{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;font-weight:700;color:#ffe08a;border-bottom:1px solid rgba(201,162,90,.4);position:sticky;top:0;background:rgba(30,22,12,.96)}
+#tr-hud.min .tr-body{display:none}
+#tr-hud.min{width:auto}
+#tr-hud button{background:#3a2c18;color:#f3e6c8;border:1px solid #7a6038;border-radius:7px;padding:3px 7px;font:inherit;cursor:pointer;min-width:26px}
+#tr-hud button:hover{border-color:#e0b35f}
+#tr-hud button.on{background:#6b4a1f;border-color:#ffe08a;color:#fff8e3}
+#tr-hud .tr-body{padding:8px 10px;display:flex;flex-direction:column;gap:8px}
+#tr-hud .tr-big{display:flex;gap:8px}
+#tr-hud .tr-big>div{flex:1;background:rgba(0,0,0,.28);border-radius:9px;padding:5px 8px;text-align:center}
+#tr-hud .tr-big b{display:block;font-size:22px;color:#ffd24a;font-family:Cinzel,serif}
+#tr-hud .tr-big small{color:#c9b88a;font-size:10px}
+#tr-hud .tr-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;margin-top:5px;color:#c9b88a}
+#tr-hud .tr-grid b{color:#f3e6c8}
+#tr-hud .tr-log{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px;min-height:20px}
+#tr-hud .tr-log i{font-style:normal;background:rgba(255,255,255,.07);border-radius:5px;padding:1px 5px;font-size:11px}
+#tr-hud .tr-log i.c{background:rgba(255,210,74,.25);color:#ffe08a}
+#tr-hud .tr-log i.b{color:#ff8a8a}
+#tr-hud .tr-l{color:#ffe08a;font-weight:700;margin-bottom:4px}
+#tr-hud .tr-l small{color:#a8977a;font-weight:400}
+#tr-hud .tr-row{display:flex;flex-wrap:wrap;gap:4px}
+#tr-hud .tr-row.q{margin-top:4px}
+#tr-hud .tr-row.q button{font-size:10.5px;padding:2px 6px}
+#tr-hud .tr-row.act button{flex:1}
+#tr-hud .tr-af{margin-top:4px;color:#9fe3a0;font-size:11px}
+#tr-hud .tr-at{display:grid;grid-template-columns:1fr 24px 26px 24px;align-items:center;gap:4px;margin:2px 0}
+#tr-hud .tr-at b{text-align:center;font-size:14px}
+#tr-hud .tr-at small{grid-column:1/-1;color:#a8977a;font-size:10px;margin-top:-3px}
+.st-box{margin-top:8px;border-top:1px dashed rgba(122,96,56,.5);padding-top:6px}
+.st-h{font-weight:700;margin-bottom:3px}
+.st-row{display:flex;justify-content:space-between;gap:8px;font-size:.78rem;padding:1px 0}
+.st-row b{white-space:nowrap}
+#tr-hud .st-box{margin-top:0;border-top:0;padding-top:0}
+#tr-hud .st-h{color:#ffe08a}
+#tr-hud .st-row span{color:#c9b88a}
+@media (max-width:700px){#tr-hud{top:auto;bottom:auto;top:52px;right:6px;width:230px;max-height:55vh}}
+

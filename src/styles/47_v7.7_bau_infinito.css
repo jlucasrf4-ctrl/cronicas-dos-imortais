@@ -1,0 +1,11 @@
+/* v7.7 — baú infinito (items/bau_infinito.ts): o baú é uma lista de quadradinhos iguais, com rolagem; soltar em qualquer ponto guarda */
+.bau-lista{position:relative;display:flex;flex-wrap:wrap;align-content:flex-start;gap:4px;padding:4px;box-sizing:border-box;min-height:180px;max-height:360px;overflow-y:auto;background:#1c140b!important;background-image:none!important;border:1px solid #4a3a24;border-radius:6px}
+.bau-lista.alvo{border-color:#7dff9a;box-shadow:inset 0 0 0 2px rgba(125,255,154,.45)}
+.bau-lista .bau-peca{position:relative;left:auto!important;top:auto!important;flex:none;cursor:grab}
+.bau-lista .bau-peca .inv-cell{position:relative;left:0;top:0;background:#3b2c19!important;border:2px solid rgba(240,210,150,.55)!important;border-radius:7px;box-shadow:none!important}
+.bau-lista .bau-peca .inv-emo{position:absolute;left:0;top:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.bau-lista .bau-peca .tier-b{position:absolute;left:3px;top:1px}
+.bau-lista .bau-peca .inv-cnt{position:absolute;right:3px;bottom:1px;left:auto;top:auto}
+.bau-lista .bau-peca:hover .inv-cell{filter:brightness(1.18)}
+.bau-lista .bau-peca.inv-sel .inv-cell{border-color:#ffd27a!important;box-shadow:inset 0 0 0 40px rgba(255,210,122,.16)!important}
+.bau-lista .bau-vazio{width:100%;padding:24px 8px;text-align:center;color:#c9b88a;font:italic .8rem Lora,serif;pointer-events:none}

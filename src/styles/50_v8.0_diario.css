@@ -1,0 +1,41 @@
+/* ==== v8.0 — a aba de missões (#diario, campanha/diario.ts: J ou clique no quadro do objetivo) e o quadro clicável ==== */
+#missao{pointer-events:auto;cursor:pointer}
+#missao::after{content:"J";position:absolute;top:4px;right:6px;font:700 .58rem Cinzel,serif;color:#c9a24a;opacity:.7}
+#diario{position:fixed;left:50%;top:50%;z-index:320;width:min(420px,92vw);max-height:80vh;overflow:auto;display:none;flex-direction:column;gap:10px;padding:12px 16px 10px;background:rgba(22,15,8,.97);border:1px solid #e0b35f;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.65);color:#f3e6c8;font:500 .85rem/1.45 Lora,serif;transform:translate(-50%,-50%)}
+#diario.on{display:flex}
+#diario header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(224,179,95,.35);padding-bottom:6px}
+#diario header b{font:700 1rem Cinzel,serif;color:#ffd27a;letter-spacing:.04em}
+#diario header .btn{padding:2px 9px;min-width:0}
+#diario small{display:block;font:700 .66rem Cinzel,serif;letter-spacing:.08em;text-transform:uppercase;color:#c9a24a}
+#diario h3{margin:2px 0 4px;font:600 1.05rem Cinzel,Lora,serif;color:#ffd27a}
+#diario h4{margin:8px 0 3px;font:700 .72rem Cinzel,serif;letter-spacing:.06em;text-transform:uppercase;color:#e0b35f}
+#diario p{margin:0}
+#diario ul{margin:0;padding-left:18px}
+#diario li{margin:2px 0}
+#diario .atual{padding:8px 10px;border-left:3px solid #e0b35f;background:rgba(255,210,122,.06);border-radius:4px}
+#diario .chamado{margin-top:6px;color:#ffe08a;font-weight:600}
+#diario .fim{margin-top:8px;color:#c9b88a;font-style:italic;font-size:.78rem}
+#diario .feitas ul{list-style:none;padding-left:4px;color:#c9b88a}
+#diario .feitas div{margin-bottom:6px}
+#diario footer{text-align:right;font-size:.68rem;color:#a8977a}
+/* v8.0 — a linha paralela (os lobos): no quadro, uma linha menor embaixo; no diário, um bloco com borda prateada */
+#missao em{display:block;font:italic 500 .76rem/1.35 Lora,serif;color:#d8cbb0;margin-top:5px;padding-top:4px;border-top:1px solid rgba(224,179,95,.25)}
+#missao em small{font-style:normal;color:#a9b4b8}
+#missao em:first-child{margin-top:0;padding-top:0;border-top:0}
+#diario .paralela{padding:8px 10px;border-left:3px solid #a9b4b8;background:rgba(200,215,220,.05);border-radius:4px}
+#diario .paralela h3{font-size:.95rem;color:#e6dcc4}
+/* v8.0 — dispensar o objetivo sem perder o atalho para abrir o diário */
+#missao{position:relative;padding-right:30px}
+#missao.oculta{display:none!important}
+#missao-fechar{position:absolute;top:4px;right:5px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(224,179,95,.45);border-radius:50%;background:rgba(20,14,7,.8);color:#f3e6c8;font-size:1.05rem;line-height:1;cursor:pointer;pointer-events:auto;touch-action:manipulation}
+#missao-abrir{display:none}
+#missao-abrir.on{position:fixed;top:calc(56px + env(safe-area-inset-top,0px));right:8px;z-index:46;display:flex;align-items:center;justify-content:center;min-width:42px;min-height:42px;padding:6px 10px}
+html.mob #missao,html.mob #missao.campo{left:50%;right:auto;top:calc(58px + env(safe-area-inset-top,0px));bottom:auto;width:min(340px,calc(100vw - 20px));max-width:none;max-height:18vh;overflow:hidden;padding:6px 34px 7px 10px;text-align:left;transform:translateX(-50%)}
+html.mob #missao.on,html.mob #missao.campo.on{transform:translateX(-50%)}
+html.mob #missao small{font-size:.58rem}
+html.mob #missao b{font-size:.78rem}
+html.mob #missao span{font-size:.72rem;line-height:1.25}
+html.mob #missao em{font-size:.68rem;line-height:1.2;margin-top:3px;padding-top:3px}
+html.mob #missao::after{display:none}
+html.mob #missao-fechar{top:5px;right:5px;width:30px;height:30px;font-size:1.2rem}
+html.mob #missao-abrir.on{top:calc(58px + env(safe-area-inset-top,0px));right:8px}

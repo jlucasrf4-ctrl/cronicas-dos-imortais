@@ -1,0 +1,24 @@
+/* v8.1 — Perigo (map/perigo.ts): o painel "X está em perigo" no mapa e o contador "ajuda a caminho" no campo */
+#perigo{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;background:rgba(10,4,2,.55);padding:16px}
+#perigo.on{display:flex}
+.pg-card{width:min(440px,100%);max-height:calc(100vh - 32px);overflow:auto;display:flex;flex-direction:column;gap:10px;padding:16px 18px;border-radius:12px;border:1px solid #ff6a4a;background:linear-gradient(180deg,rgba(48,20,12,.98),rgba(22,12,6,.98));color:#f3e6c8;font-family:Lora,serif;box-shadow:0 0 0 1px #000 inset,0 14px 40px #000c,0 0 30px rgba(255,90,60,.25)}
+.pg-alerta{align-self:flex-start;font-family:Cinzel,serif;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#ff8a6a;border:1px solid rgba(255,106,74,.6);border-radius:999px;padding:2px 10px;animation:pg-pulsa 1s ease-in-out infinite}
+@keyframes pg-pulsa{50%{opacity:.5}}
+.pg-card h2{margin:0;font-family:Cinzel,serif;font-size:1.25rem;color:#ffd27a;text-wrap:balance}
+.pg-card p{margin:0;font-size:.9rem}
+.pg-card h3{margin:4px 0 0;font-family:Cinzel,serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:#c9b88a}
+.pg-chance{font-size:.86rem;color:#d8c9a3}
+.pg-chance b{color:#ffd27a}
+.pg-lista{display:flex;flex-direction:column;gap:4px}
+.pg-lista label{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:7px;background:rgba(0,0,0,.25);cursor:pointer;font-size:.88rem}
+.pg-lista input{accent-color:#e0b35f}
+.pg-lista small{margin-left:auto;color:#b9a982;font-size:.76rem}
+.pg-todos{align-self:flex-start;font:inherit;font-size:.8rem;color:#e9dcbd;background:none;border:1px solid rgba(224,179,95,.4);border-radius:6px;padding:3px 10px;cursor:pointer}
+.pg-vazio{color:#b9a982;font-size:.84rem}
+.pg-acoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.pg-b{flex:1 1 160px;font:inherit;font-weight:600;font-size:.9rem;padding:9px 12px;border-radius:8px;cursor:pointer;border:1px solid rgba(224,179,95,.5);background:rgba(255,255,255,.06);color:#f3e6c8}
+.pg-b.pri{background:linear-gradient(180deg,#8a3a20,#5a2412);border-color:#ff8a6a;color:#fff}
+.pg-b:focus-visible,.pg-todos:focus-visible{outline:2px solid #ffd27a;outline-offset:2px}
+#perigo-hud{position:absolute;left:50%;top:calc(64px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:26;display:none;padding:5px 14px;border-radius:999px;border:1px solid #9fe3ff;background:rgba(10,18,24,.86);color:#d8f3ff;font:600 .9rem Lora,serif;font-variant-numeric:tabular-nums;pointer-events:none;box-shadow:0 2px 10px #0009}
+#perigo-hud.on{display:block}
+@media (prefers-reduced-motion:reduce){.pg-alerta{animation:none}}

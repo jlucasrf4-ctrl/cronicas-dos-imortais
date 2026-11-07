@@ -1,0 +1,86 @@
+{
+  "folha": "arquivos de transferência/armas/folha_armas.png",
+  "saida": "src/assets/models/armas.json",
+  "previas": "build/modelos/armas",
+  "tris": 1400,
+  "metalMeia": 0.32,
+  "achatarMadeira": 0.85,
+  "encolher": { "comp": 0.85, "larg": 0.4 },
+  "armas": [
+    { "nome": "eq_espada", "caixa": [18, 20, 700, 190], "cabo": 165, "comp": 27.5, "x": "+x", "y": "+z" },
+    { "nome": "eq_espada_longa", "caixa": [725, 6, 1526, 212], "cabo": 880, "comp": 32, "x": "+x", "y": "+z" },
+    { "nome": "eq_machado", "caixa": [27, 151, 680, 392], "cabo": 170, "comp": 27, "x": "+x", "y": "+y" },
+    {
+      "nome": "eq_clava",
+      "caixa": [797, 173, 1527, 391],
+      "cabo": 900,
+      "comp": 27,
+      "x": "+x",
+      "y": "+y",
+      "encolher": { "comp": 1, "larg": 0.75 }
+    },
+    { "nome": "eq_lanca", "caixa": [18, 395, 809, 511], "cabo": 272, "comp": 53.5, "x": "+x", "y": "+y" },
+    { "nome": "eq_lanca_madeira", "caixa": [816, 395, 1527, 515], "cabo": 1044, "comp": 50, "x": "+x", "y": "+y" },
+    {
+      "nome": "eq_faca_velha",
+      "caixa": [16, 548, 531, 670],
+      "cabo": 125,
+      "comp": 9,
+      "x": "+x",
+      "y": "+y",
+      "manter": true
+    },
+    {
+      "nome": "eq_faca_simples",
+      "caixa": [554, 553, 973, 673],
+      "cabo": 630,
+      "comp": 7.5,
+      "x": "+x",
+      "y": "+y",
+      "manter": true
+    },
+    {
+      "nome": "eq_faca",
+      "caixa": [1013, 552, 1527, 676],
+      "cabo": 1130,
+      "comp": 9,
+      "x": "+x",
+      "y": "+y",
+      "manter": true
+    },
+    {
+      "nome": "eq_arco",
+      "caixa": [16, 757, 557, 939],
+      "cabo": 286,
+      "comp": 28,
+      "x": "+y",
+      "y": "-x",
+      "arco": true,
+      "abrir": 3,
+      "largY": 0.85
+    },
+    {
+      "nome": "eq_arco_longo",
+      "caixa": [554, 738, 1183, 952],
+      "cabo": 868,
+      "comp": 32,
+      "x": "+y",
+      "y": "-x",
+      "arco": true,
+      "abrir": 3,
+      "largY": 0.85
+    },
+    {
+      "nome": "eq_escudo",
+      "caixa": [1191, 662, 1514, 991],
+      "comp": 12.6,
+      "x": "+x",
+      "y": "+y",
+      "centro": true,
+      "plano": 0.55,
+      "largZ": 1,
+      "domo": 0.2,
+      "largY": 0.85
+    }
+  ]
+}

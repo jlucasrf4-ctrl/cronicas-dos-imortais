@@ -1,0 +1,5 @@
+/* ==== v7.7 — seleção no mapa (map/selecao.ts): retângulo do Shift + arrastar e o aviso de quem está selecionado ==== */
+#sel-caixa{position:absolute;display:none;z-index:30;pointer-events:none;border:1.5px solid rgba(130,235,150,.95);background:rgba(110,220,130,.12);border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+#sel-grupo{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:none;z-index:30;pointer-events:none;padding:6px 14px;border-radius:8px;background:rgba(20,14,8,.82);border:1px solid rgba(130,235,150,.55);color:#f1e3c0;font:12px Lora,serif;white-space:nowrap}
+#sel-grupo b{color:#9ff0aa}
+#sel-grupo kbd{font:11px Lora,serif;padding:0 4px;border:1px solid #8d7c5a;border-radius:3px;background:#2a1f14}

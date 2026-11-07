@@ -1,0 +1,179 @@
+{
+  "arquivo": "arquivos de transferência/animações heorina.glb",
+  "saida": "src/assets/models/heroina_anim.json",
+  "previas": "build/modelos/heroina_anim",
+  "alturaJogo": 43,
+  "roupa": {
+    "cor": [
+      92,
+      110,
+      135
+    ],
+    "yMin": 0.36,
+    "yMax": 0.85,
+    "lado": 0.256,
+    "claroMin": 48,
+    "cromaMax": 22,
+    "contraste": 0.8
+  },
+  "fps": 24,
+  "juntas": [
+    "Hips",
+    "Spine",
+    "Spine1",
+    "Spine2",
+    "Neck",
+    "Head",
+    "LeftShoulder",
+    "LeftArm",
+    "LeftForeArm",
+    "LeftHand",
+    "RightShoulder",
+    "RightArm",
+    "RightForeArm",
+    "RightHand",
+    "LeftUpLeg",
+    "LeftLeg",
+    "LeftFoot",
+    "LeftToeBase",
+    "RightUpLeg",
+    "RightLeg",
+    "RightFoot",
+    "RightToeBase"
+  ],
+  "bindMixamo": "arquivos de transferência/Longbow Aiming Pack.zip/heroina_tpose_mixamo.fbx",
+  "clips": {
+    "andar": {
+      "fbx": "arquivos de transferência/Walking (1).fbx",
+      "noLugar": true,
+      "bind": "quadro0"
+    },
+    "correr": {
+      "de": "run",
+      "noLugar": true
+    },
+    "rolar": {
+      "de": "dive",
+      "t0": 0.95,
+      "t1": 2.55,
+      "noLugar": true
+    },
+    "coletar": {
+      "de": "dig",
+      "t0": 0,
+      "t1": 2
+    },
+    "morrer": {
+      "de": "fall",
+      "t0": 0,
+      "t1": 2.6
+    },
+    "parada": {
+      "fbx": "arquivos de transferência/Catwalk Idle 02.fbx",
+      "noLugar": true
+    },
+    "arco_parada": {
+      "fbx": "arquivos de transferência/Longbow Aiming Pack.zip/standing idle 01.fbx",
+      "noLugar": true
+    },
+    "arco_puxar": {
+      "fbx": "arquivos de transferência/Longbow Aiming Pack.zip/standing draw arrow.fbx",
+      "noLugar": true
+    },
+    "arco_mirar": {
+      "fbx": "arquivos de transferência/Longbow Aiming Pack.zip/standing aim overdraw.fbx",
+      "noLugar": true
+    },
+    "arco_soltar": {
+      "fbx": "arquivos de transferência/Longbow Aiming Pack.zip/standing aim recoil.fbx",
+      "noLugar": true
+    },
+    "arco_frente": {
+      "fbx": "arquivos de transferência/Longbow Aiming Pack.zip/standing aim walk forward.fbx",
+      "noLugar": true
+    },
+    "arco_tras": {
+      "fbx": "arquivos de transferência/Longbow Aiming Pack.zip/standing aim walk back.fbx",
+      "noLugar": true
+    },
+    "arco_esq": {
+      "fbx": "arquivos de transferência/Longbow Aiming Pack.zip/standing aim walk left.fbx",
+      "noLugar": true
+    },
+    "arco_dir": {
+      "fbx": "arquivos de transferência/Longbow Aiming Pack.zip/standing aim walk right.fbx",
+      "noLugar": true
+    },
+    "lanca_estocada": {
+      "fbx": "arquivos de transferência/Stabbing.fbx",
+      "noLugar": true
+    },
+    "lanca_baioneta": {
+      "fbx": "arquivos de transferência/Bayonet Stab.fbx",
+      "noLugar": true
+    },
+    "escudo_lado": {
+      "fbx": "arquivos de transferência/Sword And Shield Strafe.fbx",
+      "noLugar": true
+    },
+    "faca_parada": {
+      "fbx": "arquivos de transferência/Knife Idle.fbx",
+      "noLugar": true
+    },
+    "espada_0": {
+      "fbx": "arquivos de transferência/Sword and Shield Pack heroina.zip/sword and shield slash.fbx",
+      "t0": 0,
+      "t1": 1.2,
+      "noLugar": true
+    },
+    "espada_1": {
+      "fbx": "arquivos de transferência/Sword and Shield Pack heroina.zip/sword and shield attack (2).fbx",
+      "t0": 0,
+      "t1": 1.2,
+      "noLugar": true
+    },
+    "espada_2": {
+      "fbx": "arquivos de transferência/Sword and Shield Pack heroina.zip/sword and shield slash (3).fbx",
+      "t0": 0.2,
+      "t1": 1.4,
+      "noLugar": true
+    },
+    "machado_golpe": {
+      "fbx": "arquivos de transferência/animações para/Pro Melee Axe Pack.zip/standing melee attack downward.fbx",
+      "t0": 0,
+      "t1": 1.6,
+      "noLugar": true
+    },
+    "atingido": {
+      "fbx": "arquivos de transferência/Sword and Shield Pack heroina.zip/sword and shield impact (3).fbx",
+      "noLugar": true
+    },
+    "escudo_bloqueio": {
+      "fbx": "arquivos de transferência/Sword and Shield Pack heroina.zip/sword and shield block.fbx",
+      "noLugar": true
+    },
+    "escudo_parado": {
+      "fbx": "arquivos de transferência/Sword and Shield Pack heroina.zip/sword and shield block idle.fbx",
+      "noLugar": true
+    },
+    "derrubada": {
+      "fbx": "arquivos de transferência/Scissor Kick.fbx",
+      "bind": "proprio",
+      "t0": 0.45,
+      "noLugar": true
+    },
+    "recuar": {
+      "fbx": "arquivos de transferência/Step Backward.fbx",
+      "bind": "proprio",
+      "noLugar": true
+    },
+    "lanca_mira": {
+      "fbx": "arquivos de transferência/Sword Fight One.fbx",
+      "bind": "proprio",
+      "t0": 0.8,
+      "noLugar": true
+    }
+  },
+  "vestir": "build/modelos/heroina_detalhado_tpose/heroina_tpose.glb",
+  "ombroMedido": true
+}

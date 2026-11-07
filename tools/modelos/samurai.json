@@ -1,0 +1,13 @@
+{
+  "nome": "samurai",
+  "glb": "arquivos de transferência/samurai character 3d model (1).glb",
+  "altura": 1.75,
+  "triangulos": 15000,
+  "cabeca": {
+    "y": 0.84,
+    "triangulos": 4000
+  },
+  "texW": 2048,
+  "pasta": "build/modelos/samurai_tpose",
+  "texturaSaida": 1536
+}

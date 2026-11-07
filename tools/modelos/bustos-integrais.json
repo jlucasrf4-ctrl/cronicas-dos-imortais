@@ -1,0 +1,482 @@
+{
+  "aparencias": "src/assets/models/aparencias.json",
+  "planoAparencias": "tools/modelos/aparencias.json",
+  "saida": "build/modelos",
+  "publicarEm": "src/assets/models/bustos-integrais.json",
+  "tamanhoTextura": 2048,
+  "rodapeTextura": 16,
+  "qualidadeTextura": 94,
+  "combinacoes": [
+    {
+      "corpo": "corpo_f01",
+      "cabeca": "busto_01",
+      "tris": 10000,
+      "proporcaoRosto": 0.7,
+      "abaixoQueixoRosto": 0.025,
+      "fonte": {
+        "eixoX": -0.3517913818359375,
+        "bracoY": 0.46002197265625,
+        "bracoZ": -0.004126931075006723,
+        "narizZ": 0.06793220341205597,
+        "pescocoZ": -0.004126931075006723
+      },
+      "destino": {
+        "bracoX": -0.709167933334921,
+        "bracoY": 35.85693117461285,
+        "eixoZ": -0.06602572914455518
+      },
+      "esticarBase": {
+        "distancia": 0,
+        "inicio": 30.19769413779573,
+        "fim": 32.68769413779573
+      },
+      "cortes": {
+        "corpoY": 28.26346196154354,
+        "bustoY": 30.28769413779573,
+        "corpoBraco": 7.913114279387466,
+        "bustoBraco": 6.330491423509973,
+        "fimAjusteBase": 31.78769413779573
+      },
+      "amostrasAnel": 48,
+      "harmonizarPele": {
+        "contraste": 0.22,
+        "fatorMin": 0.87,
+        "fatorMax": 1.1
+      },
+      "suavizar": {
+        "cinturaY": [26.26346196154354, 27.26346196154354, 30.687694137795727, 31.78769413779573],
+        "bracoZ": [4.930491423509974, 6.330491423509973, 8.113114279387466, 9.913114279387466],
+        "bracoY": [32.25693117461285, 34.25693117461285, 36.75693117461285, 38.25693117461285],
+        "ciclos": 10,
+        "lambda": 0.42,
+        "mu": -0.44,
+        "deslocamentoMax": 0.22
+      }
+    },
+    {
+      "corpo": "corpo_f02",
+      "cabeca": "busto_02",
+      "tris": 10000,
+      "proporcaoRosto": 0.7,
+      "abaixoQueixoRosto": 0.025,
+      "fonte": {
+        "eixoX": -0.01767,
+        "bracoY": 0.454,
+        "bracoZ": -0.00346713,
+        "narizZ": 0.0807648,
+        "pescocoZ": 0.0055
+      },
+      "destino": {
+        "bracoX": -0.7013,
+        "bracoY": 34.6,
+        "eixoZ": -0.08527
+      },
+      "esticarBase": {
+        "distancia": 1.4,
+        "inicio": 29.65,
+        "fim": 32
+      },
+      "cortes": {
+        "corpoY": 28.01,
+        "bustoY": 28.61,
+        "corpoBraco": 8,
+        "bustoBraco": 6.4,
+        "fimAjusteBase": 31.6
+      },
+      "amostrasAnel": 48,
+      "harmonizarPele": {
+        "contraste": 0.22,
+        "fatorMin": 0.87,
+        "fatorMax": 1.1
+      },
+      "suavizar": {
+        "cinturaY": [24, 26.5, 30, 32],
+        "bracoZ": [5, 6.4, 8.2, 10],
+        "bracoY": [31, 33, 35.5, 37],
+        "ciclos": 10,
+        "lambda": 0.42,
+        "mu": -0.44,
+        "deslocamentoMax": 0.22
+      }
+    },
+    {
+      "corpo": "corpo_f03",
+      "cabeca": "busto_03",
+      "tris": 10000,
+      "proporcaoRosto": 0.7,
+      "abaixoQueixoRosto": 0.025,
+      "fonte": {
+        "eixoX": 0.3180694580078125,
+        "bracoY": 0.4508209824562073,
+        "bracoZ": -0.004351647570729256,
+        "narizZ": 0.0830383151769638,
+        "pescocoZ": -0.004351647570729256
+      },
+      "destino": {
+        "bracoX": -0.7162889962725771,
+        "bracoY": 35.311261406488256,
+        "eixoZ": -0.07992304053491583
+      },
+      "esticarBase": {
+        "distancia": 0,
+        "inicio": 31.871630206047534,
+        "fim": 34.111261406488254
+      },
+      "cortes": {
+        "corpoY": 27.771052052624633,
+        "bustoY": 31.961630206047534,
+        "corpoBraco": 7.90611000391776,
+        "bustoBraco": 4.5,
+        "fimAjusteBase": 33.46163020604753
+      },
+      "amostrasAnel": 48,
+      "harmonizarPele": {
+        "contraste": 0.22,
+        "fatorMin": 0.87,
+        "fatorMax": 1.1
+      },
+      "suavizar": {
+        "cinturaY": [25.771052052624633, 26.771052052624633, 32.361630206047536, 33.46163020604753],
+        "bracoZ": [3.1, 4.5, 8.10611000391776, 9.90611000391776],
+        "bracoY": [31.711261406488255, 33.711261406488255, 36.211261406488255, 37.711261406488255],
+        "ciclos": 10,
+        "lambda": 0.42,
+        "mu": -0.44,
+        "deslocamentoMax": 0.22
+      }
+    },
+    {
+      "corpo": "corpo_f04",
+      "cabeca": "busto_04",
+      "tris": 10000,
+      "proporcaoRosto": 0.7,
+      "abaixoQueixoRosto": 0.025,
+      "fonte": {
+        "eixoX": -0.3590545356273651,
+        "bracoY": 0.08758547902107239,
+        "bracoZ": -0.0026885373517870903,
+        "narizZ": 0.07802590727806091,
+        "pescocoZ": -0.0026885373517870903
+      },
+      "destino": {
+        "bracoX": -0.7093227219180775,
+        "bracoY": 35.58977644541052,
+        "eixoZ": -0.07769880970361354
+      },
+      "esticarBase": {
+        "distancia": 0,
+        "inicio": 32.07551377900087,
+        "fim": 34.38977644541052
+      },
+      "cortes": {
+        "corpoY": 28.05454745456946,
+        "bustoY": 32.165513779000875,
+        "corpoBraco": 7.904474764508491,
+        "bustoBraco": 4.5,
+        "fimAjusteBase": 33.665513779000875
+      },
+      "amostrasAnel": 48,
+      "harmonizarPele": {
+        "contraste": 0.22,
+        "fatorMin": 0.87,
+        "fatorMax": 1.1
+      },
+      "suavizar": {
+        "cinturaY": [26.05454745456946, 27.05454745456946, 32.565513779000874, 33.665513779000875],
+        "bracoZ": [3.1, 4.5, 8.10447476450849, 9.90447476450849],
+        "bracoY": [31.98977644541052, 33.98977644541052, 36.48977644541052, 37.98977644541052],
+        "ciclos": 10,
+        "lambda": 0.42,
+        "mu": -0.44,
+        "deslocamentoMax": 0.22
+      }
+    },
+    {
+      "corpo": "corpo_f05",
+      "cabeca": "busto_05",
+      "tris": 10000,
+      "proporcaoRosto": 0.7,
+      "abaixoQueixoRosto": 0.025,
+      "fonte": {
+        "eixoX": -0.01755712740123272,
+        "bracoY": 0.08239749073982239,
+        "bracoZ": -0.007903032004833221,
+        "narizZ": 0.08420567214488983,
+        "pescocoZ": -0.007903032004833221
+      },
+      "destino": {
+        "bracoX": -0.7068706272991893,
+        "bracoY": 35.66492407129,
+        "eixoZ": -0.0857843100439033
+      },
+      "esticarBase": {
+        "distancia": 0,
+        "inicio": 32.240703419361516,
+        "fim": 34.46492407129
+      },
+      "cortes": {
+        "corpoY": 28.086447837374045,
+        "bustoY": 32.33070341936152,
+        "corpoBraco": 7.956311853782343,
+        "bustoBraco": 4.5,
+        "fimAjusteBase": 33.83070341936152
+      },
+      "amostrasAnel": 48,
+      "harmonizarPele": {
+        "contraste": 0.22,
+        "fatorMin": 0.87,
+        "fatorMax": 1.1
+      },
+      "suavizar": {
+        "cinturaY": [26.086447837374045, 27.086447837374045, 32.73070341936152, 33.83070341936152],
+        "bracoZ": [3.1, 4.5, 8.156311853782343, 9.956311853782342],
+        "bracoY": [32.06492407129, 34.06492407129, 36.56492407129, 38.06492407129],
+        "ciclos": 10,
+        "lambda": 0.42,
+        "mu": -0.44,
+        "deslocamentoMax": 0.22
+      }
+    },
+    {
+      "corpo": "corpo_f06",
+      "cabeca": "busto_06",
+      "tris": 10000,
+      "proporcaoRosto": 0.7,
+      "abaixoQueixoRosto": 0.025,
+      "fonte": {
+        "eixoX": 0.3181305229663849,
+        "bracoY": 0.08483891189098358,
+        "bracoZ": -0.010969175025820732,
+        "narizZ": 0.08351898193359375,
+        "pescocoZ": -0.010969175025820732
+      },
+      "destino": {
+        "bracoX": -0.78178795841957,
+        "bracoY": 37.51970584244166,
+        "eixoZ": -0.0940121146260755
+      },
+      "esticarBase": {
+        "distancia": 0,
+        "inicio": 33.485880315489936,
+        "fim": 35.97588031548994
+      },
+      "cortes": {
+        "corpoY": 29.142336677386837,
+        "bustoY": 33.57588031548994,
+        "corpoBraco": 8.594485836441992,
+        "bustoBraco": 6.8755886691535935,
+        "fimAjusteBase": 35.07588031548994
+      },
+      "amostrasAnel": 48,
+      "harmonizarPele": {
+        "contraste": 0.22,
+        "fatorMin": 0.87,
+        "fatorMax": 1.1
+      },
+      "suavizar": {
+        "cinturaY": [27.142336677386837, 28.142336677386837, 33.97588031548994, 35.07588031548994],
+        "bracoZ": [5.475588669153593, 6.8755886691535935, 8.794485836441991, 10.594485836441992],
+        "bracoY": [33.91970584244166, 35.91970584244166, 38.41970584244166, 39.91970584244166],
+        "ciclos": 10,
+        "lambda": 0.42,
+        "mu": -0.44,
+        "deslocamentoMax": 0.22
+      }
+    },
+    {
+      "corpo": "corpo_f02",
+      "cabeca": "busto_01",
+      "tris": 10000,
+      "proporcaoRosto": 0.7,
+      "abaixoQueixoRosto": 0.025,
+      "fonte": {
+        "eixoX": -0.3517913818359375,
+        "bracoY": 0.46002197265625,
+        "bracoZ": -0.004126931075006723,
+        "narizZ": 0.06793220341205597,
+        "pescocoZ": -0.004126931075006723
+      },
+      "destino": {
+        "bracoX": -0.701508310595897,
+        "bracoY": 34.721824593988345,
+        "eixoZ": -0.07586368340345051
+      },
+      "esticarBase": {
+        "distancia": 0,
+        "inicio": 29.000339530935808,
+        "fim": 31.490339530935806
+      },
+      "cortes": {
+        "corpoY": 28.00495885950631,
+        "bustoY": 29.090339530935807,
+        "corpoBraco": 8,
+        "bustoBraco": 6.4,
+        "fimAjusteBase": 30.590339530935807
+      },
+      "amostrasAnel": 48,
+      "harmonizarPele": {
+        "contraste": 0.22,
+        "fatorMin": 0.87,
+        "fatorMax": 1.1
+      },
+      "suavizar": {
+        "cinturaY": [26.00495885950631, 27.00495885950631, 29.490339530935806, 30.590339530935807],
+        "bracoZ": [5, 6.4, 8.2, 10],
+        "bracoY": [31.121824593988343, 33.12182459398834, 35.62182459398834, 37.12182459398834],
+        "ciclos": 10,
+        "lambda": 0.42,
+        "mu": -0.44,
+        "deslocamentoMax": 0.22
+      }
+    },
+    {
+      "corpo": "corpo_f02",
+      "cabeca": "busto_03",
+      "tris": 10000,
+      "proporcaoRosto": 0.7,
+      "abaixoQueixoRosto": 0.025,
+      "fonte": {
+        "eixoX": 0.3180694580078125,
+        "bracoY": 0.4508209824562073,
+        "bracoZ": -0.004351647570729256,
+        "narizZ": 0.0830383151769638,
+        "pescocoZ": -0.004351647570729256
+      },
+      "destino": {
+        "bracoX": -0.701508310595897,
+        "bracoY": 34.721824593988345,
+        "eixoZ": -0.07586368340345051
+      },
+      "esticarBase": {
+        "distancia": 0,
+        "inicio": 31.241226867691793,
+        "fim": 33.52182459398834
+      },
+      "cortes": {
+        "corpoY": 28.00495885950631,
+        "bustoY": 31.331226867691793,
+        "corpoBraco": 8,
+        "bustoBraco": 4.5,
+        "fimAjusteBase": 32.8312268676918
+      },
+      "amostrasAnel": 48,
+      "harmonizarPele": {
+        "contraste": 0.22,
+        "fatorMin": 0.87,
+        "fatorMax": 1.1
+      },
+      "suavizar": {
+        "cinturaY": [26.00495885950631, 27.00495885950631, 31.73122686769179, 32.8312268676918],
+        "bracoZ": [3.1, 4.5, 8.2, 10],
+        "bracoY": [31.121824593988343, 33.12182459398834, 35.62182459398834, 37.12182459398834],
+        "ciclos": 10,
+        "lambda": 0.42,
+        "mu": -0.44,
+        "deslocamentoMax": 0.22
+      }
+    },
+    {
+      "corpo": "corpo_f02",
+      "cabeca": "busto_04",
+      "tris": 10000,
+      "proporcaoRosto": 0.7,
+      "abaixoQueixoRosto": 0.025,
+      "fonte": {
+        "eixoX": -0.3590545356273651,
+        "bracoY": 0.08758547902107239,
+        "bracoZ": -0.0026885373517870903,
+        "narizZ": 0.07802590727806091,
+        "pescocoZ": -0.0026885373517870903
+      },
+      "destino": {
+        "bracoX": -0.701508310595897,
+        "bracoY": 34.721824593988345,
+        "eixoZ": -0.07586368340345051
+      },
+      "esticarBase": {
+        "distancia": 0,
+        "inicio": 31.164971365754866,
+        "fim": 33.52182459398834
+      },
+      "cortes": {
+        "corpoY": 28.00495885950631,
+        "bustoY": 31.254971365754866,
+        "corpoBraco": 8,
+        "bustoBraco": 4.5,
+        "fimAjusteBase": 32.75497136575487
+      },
+      "amostrasAnel": 48,
+      "harmonizarPele": {
+        "contraste": 0.22,
+        "fatorMin": 0.87,
+        "fatorMax": 1.1
+      },
+      "suavizar": {
+        "cinturaY": [26.00495885950631, 27.00495885950631, 31.654971365754864, 32.75497136575487],
+        "bracoZ": [3.1, 4.5, 8.2, 10],
+        "bracoY": [31.121824593988343, 33.12182459398834, 35.62182459398834, 37.12182459398834],
+        "ciclos": 10,
+        "lambda": 0.42,
+        "mu": -0.44,
+        "deslocamentoMax": 0.22
+      }
+    },
+    {
+      "corpo": "corpo_f02",
+      "cabeca": "busto_16",
+      "tris": 10000,
+      "proporcaoRosto": 0.7,
+      "abaixoQueixoRosto": 0.025,
+      "fonte": {
+        "eixoX": 0.2475280910730362,
+        "bracoY": 0.11911007761955261,
+        "bracoZ": 0.002409621374681592,
+        "narizZ": 0.11216730624437332,
+        "pescocoZ": 0.002409621374681592,
+        "eixoXBase": 0.30815,
+        "eixoXBaseY": [0.045, 0.115]
+      },
+      "destino": {
+        "bracoX": -0.701508310595897,
+        "bracoY": 34.721824593988345,
+        "eixoZ": -0.07586368340345051
+      },
+      "esticarBase": {
+        "distancia": 0,
+        "inicio": 30.556714407543936,
+        "fim": 33.04671440754393
+      },
+      "cortes": {
+        "corpoY": 28.00495885950631,
+        "bustoY": 30.646714407543936,
+        "corpoBraco": 8,
+        "bustoBraco": 6.4,
+        "fimAjusteBase": 32.14671440754394
+      },
+      "amostrasAnel": 48,
+      "harmonizarPele": {
+        "contraste": 0.22,
+        "fatorMin": 0.87,
+        "fatorMax": 1.1
+      },
+      "suavizar": {
+        "cinturaY": [25, 26, 28.5, 29.5],
+        "bracoZ": [5, 6.4, 8.2, 10],
+        "bracoY": [31.121824593988343, 33.12182459398834, 35.62182459398834, 37.12182459398834],
+        "ciclos": 10,
+        "lambda": 0.42,
+        "mu": -0.44,
+        "deslocamentoMax": 0.22
+      },
+      "margemCabelo": 3,
+      "protegerPeleBusto": true,
+      "ajustarBase": false,
+      "cabeloDaCabeca": {
+        "x": 0.253570556640625,
+        "y": 0.239058534771204,
+        "z": 0.11133570224046707,
+        "u": 0.05962688097357746
+      }
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+/* v8.1 — o painel do clã no mapa (ui/painel.ts updateHeroPanelUI): cartões dos personagens e as ordens de quem está em foco */
+#hero-panel{width:232px;max-height:calc(100vh - 150px);overflow-y:auto}
+.cla-faixa{display:flex;flex-direction:column;gap:4px}
+.cla-card{display:flex;gap:7px;align-items:flex-start;padding:5px 7px;border-radius:8px;border:1px solid rgba(224,179,95,.14);background:rgba(0,0,0,.22);cursor:pointer;transition:border-color .15s,background .15s}
+.cla-card:hover{border-color:rgba(224,179,95,.45);background:rgba(255,230,180,.06)}
+.cla-card.foco{border-color:rgba(240,198,110,.75);background:rgba(107,74,31,.35)}
+.cla-card.sel{box-shadow:0 0 0 1px rgba(120,230,140,.7) inset}
+.cla-card .dot{margin-top:4px}
+.cla-meio{flex:1;min-width:0}
+.cla-topo{display:flex;align-items:baseline;gap:5px}
+.cla-nome{font-size:.8rem;color:var(--parchment);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cla-nv{font-size:.62rem;color:#a99a74}
+.cla-alerta{font-style:normal;margin-left:auto;color:#f0c66e;font-size:.7rem}
+.cla-alerta.ferida{color:#ff8a7a}
+.cla-alerta+.cla-alerta{margin-left:2px}
+.cla-ativ{font-size:.68rem;color:#b9cfa9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.cla-barra{height:4px;border-radius:3px;background:rgba(0,0,0,.45);overflow:hidden;margin-top:3px}
+.cla-barra i{display:block;height:100%}
+.cla-barra.vida i{background:#c4524a}
+.cla-barra.prog i{background:#e0b35f}
+.cla-novo{font-size:.9rem;padding:2px 0;opacity:.75}
+.cla-novo:hover{opacity:1}
+.cla-ordens{margin-top:8px;padding-top:7px;border-top:1px solid rgba(224,179,95,.22);display:flex;flex-direction:column;gap:5px}
+.cla-ordens-topo{display:flex;align-items:center;gap:5px}
+.cla-ordens-topo b{font-family:Cinzel,serif;font-size:.74rem;color:#f0c66e;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cla-comida{font-size:.7rem;color:#d8c9a3;white-space:nowrap}
+.cla-ordens .hero-btn{width:auto;margin:0;flex:1;font-size:.7rem;padding:4px 5px}
+.cla-ordens-topo .hero-btn{flex:0 0 auto;padding:2px 6px}
+.cla-linha{display:flex;gap:5px}
+.cla-trab{display:flex;gap:5px}
+.cla-trab .hunt-sel{flex:1;min-width:0;font-size:.7rem}
+.cla-ocupado{font-size:.72rem;color:#b9cfa9;padding:2px 0}
+/* no celular, as abas (07_v4.4_celular.css) mostram o painel mesmo fechado na barra de janelas, e a barra não aparece
+   (ficava por cima das abas) */
+html.mob #win-dock{display:none!important}
+html.mob.mt-pop #stats-panel.win-hidden,html.mob.mt-pop #event-feed.win-hidden{display:block!important}
+html.mob.mt-ctl #controls.win-hidden{display:flex!important}

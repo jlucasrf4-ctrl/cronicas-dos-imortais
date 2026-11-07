@@ -1,0 +1,14 @@
+{
+  "nome": "deusa_outono_nova",
+  "glb": "arquivos de transferência/deusas/outono_tripo_novo/tripo_convert_53396a24-33de-4b96-9619-e729e29186bf.fbx",
+  "textura": "arquivos de transferência/deusas/outono_tripo_novo/tripo_convert_53396a24-33de-4b96-9619-e729e29186bf.fbm/Color.png",
+  "altura": 1.7,
+  "triangulos": 21000,
+  "cabeca": {
+    "y": 0.83,
+    "triangulos": 5000
+  },
+  "texW": 2048,
+  "pasta": "build/modelos/deusa_outono_nova_tpose_afinada",
+  "afinarBunda": 0.9
+}

@@ -1,0 +1,19 @@
+/* ===== v4.5: forja e desgaste ===== */
+#fg-modal{position:fixed;inset:0;z-index:262;background:rgba(8,6,3,.82);display:none;align-items:center;justify-content:center;padding:10px}
+#fg-modal.open{display:flex}
+#fg-card{width:min(640px,100%);max-height:100%;overflow:auto;background:linear-gradient(180deg,#2c1f0f,#160f07);border:1px solid #e0b35f;border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.7);color:#f3e6c4;padding:12px 14px;font-family:Lora,serif}
+#fg-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}#fg-head b{font-family:Cinzel,serif;color:#f0c66e;font-size:.98rem}#fg-head span{flex:1;font-size:.72rem;color:#c9b88a}
+#fg-tabs{display:flex;gap:6px;margin-bottom:8px}#fg-tabs .btn.on{border-color:#ffd27a;background:rgba(240,190,90,.22);color:#fff2cf}
+.fg-row{display:flex;gap:10px;align-items:center;padding:7px 8px;border:1px solid rgba(224,179,95,.2);border-radius:10px;margin-bottom:6px;background:rgba(0,0,0,.2)}
+.fg-row>div{flex:1;min-width:0}.fg-row b{font-size:.84rem}.fg-row small{display:block;font-size:.68rem;color:#c9b88a;line-height:1.3}
+.fg-row.unk{opacity:.6}.fg-ico{font-size:1.5rem;width:36px;text-align:center}
+.fg-mat{font-size:.7rem;margin-top:3px;display:flex;flex-wrap:wrap;gap:4px 8px}.fg-mat .ok{color:#9fe08a}.fg-mat .no{color:#ff9a7a}
+.fg-dur{height:6px;border-radius:4px;background:rgba(0,0,0,.5);overflow:hidden;margin:3px 0;max-width:180px}.fg-dur i{display:block;height:100%}
+#fg-card .btn:disabled{opacity:.42;filter:grayscale(.6);cursor:not-allowed}
+#fg-mg canvas{display:block;width:100%;border-radius:10px;border:1px solid rgba(224,179,95,.35);touch-action:none}
+#fg-mgtxt{font-size:.8rem;margin:8px 0;line-height:1.4}#fg-mgbtn{display:flex;gap:8px;flex-wrap:wrap}#fg-mgbtn .btn{padding:10px 14px;font-size:.85rem;user-select:none;-webkit-user-select:none;touch-action:none}
+#fg-mgbtn .btn.pri{background:linear-gradient(180deg,#7a5a22,#4a3412);border-color:#f0c66e;color:#fff2cf}
+#fg-msg{font-size:.76rem;color:#cfe8a0;min-height:1em;margin:6px 0 0}
+.eq-slot{position:relative}.eq-slot .eq-dur{position:absolute;left:5px;right:5px;bottom:3px;height:4px;border-radius:3px;background:rgba(0,0,0,.45);overflow:hidden;display:block}.eq-slot .eq-dur i{display:block;height:100%}
+.inv-dur{position:absolute;height:3px;border-radius:2px;background:rgba(0,0,0,.6);overflow:hidden;pointer-events:none;z-index:2}.inv-dur i{display:block;height:100%}
+

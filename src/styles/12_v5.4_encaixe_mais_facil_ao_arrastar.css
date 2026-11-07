@@ -1,0 +1,12 @@
+/* v5.4: encaixe mais fácil ao arrastar */
+.inv-item.ghost{opacity:.6!important}
+.inv-item.ghost .inv-emo{opacity:.55}
+.inv-item.ghost .inv-cell{background-color:rgba(255,255,255,.08)!important}
+.inv-item.ghost.ok .inv-cell{background:rgba(125,255,154,.28)!important;filter:none!important;box-shadow:inset 0 0 0 2px #7dff9a}
+.inv-item.ghost.bad .inv-cell{background:rgba(255,80,80,.38)!important;box-shadow:inset 0 0 0 2px #ff5a5a}
+.inv-item.hasico .inv-cell{border-color:rgba(0,0,0,.28)}
+.eqf{position:relative;display:inline-flex;align-items:center;justify-content:center;width:82%;height:82%;max-width:46px;max-height:46px}
+.eqf .icf{position:absolute;inset:-6%;background-position:center;background-size:100% 100%;background-repeat:no-repeat}
+.eqf .icf.boa{filter:drop-shadow(0 0 3px #7fc4ff) saturate(1.3)}
+.eqf .ic{position:relative;width:78%!important;height:78%!important}
+

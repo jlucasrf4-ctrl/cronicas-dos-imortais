@@ -1,0 +1,22 @@
+{
+  "nome": "aldeao_11",
+  "glb": "arquivos de transferência/3.11.2026/medieval peasant 3d model.glb",
+  "regiao": {
+    "xMax": 0,
+    "yMax": 0.4964599609375
+  },
+  "altura": 1.7,
+  "triangulos": 15000,
+  "cabeca": {
+    "y": 0.84,
+    "triangulos": 4000
+  },
+  "texturaSaida": 1536,
+  "texW": 2048,
+  "cor": [
+    0.98,
+    1,
+    1.06
+  ],
+  "pasta": "build/modelos/aldeao_11_tpose"
+}

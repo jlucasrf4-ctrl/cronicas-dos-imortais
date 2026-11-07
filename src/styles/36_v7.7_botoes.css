@@ -1,0 +1,19 @@
+/* ==== v7.7 — estados dos botões (documento mestre 3.1/3.2): um padrão só, carvão + cinza quente + bronze, bordas finas ====
+   disponível = .btn · selecionado = .btn.active / .btn.on / [aria-pressed=true] · bloqueado (existe, falta requisito;
+   o title diz qual) = .btn.bloq · indisponível (agora não dá) = .btn:disabled. Nos painéis escuros e nos cartões claros
+   (.v3-card, #create-card, pergaminho). */
+:root{--bt-carvao:#211d19;--bt-carvao2:#2c2621;--bt-cinza:#8f8476;--bt-bronze:#a9793f;--bt-bronze2:#d9a35a;--bt-texto:#efe3c8}
+.btn{background:linear-gradient(180deg,var(--bt-carvao2),var(--bt-carvao));border:1px solid rgba(169,121,63,.65);color:var(--bt-texto);transition:background .12s,border-color .12s,box-shadow .12s}
+.btn:hover{background:linear-gradient(180deg,#3a322a,#28221d);border-color:var(--bt-bronze2)}
+.btn:active{transform:translateY(1px)}
+.btn.active,.btn.on,.btn[aria-pressed=true]{background:linear-gradient(180deg,#7a5626,#4e3515);border-color:#f0c66e;color:#fff4d8;box-shadow:inset 0 0 0 1px rgba(255,220,150,.25),0 0 8px rgba(217,163,90,.35)}
+.btn.bloq{background:#1b1815;border:1px dashed rgba(143,132,118,.7);color:#a99c88;cursor:not-allowed}
+.btn.bloq::before{content:"🔒";font-size:.85em;margin-right:4px;filter:grayscale(1) brightness(1.4)}
+.btn.bloq:hover{background:#1b1815;border-color:var(--bt-cinza)}
+.btn:disabled,.btn:disabled:hover{background:#25221f;border:1px dashed rgba(143,132,118,.55);color:#7d7467;opacity:.75;filter:grayscale(.7);cursor:not-allowed;box-shadow:none;transform:none}
+/* cartões claros */
+.v3-card .btn,#create-card .btn,#insp-actions .btn{background:linear-gradient(180deg,#f2e6c9,#e3d1aa);border:1px solid #a07a3f;color:#3a2a17}
+.v3-card .btn:hover,#create-card .btn:hover,#insp-actions .btn:hover{background:linear-gradient(180deg,#f6ecd5,#e8d29f);border-color:#7a5520}
+.v3-card .btn.active,.v3-card .btn.on,#create-card .btn.active,#create-confirm{background:linear-gradient(180deg,#7a5626,#4e3515) !important;border-color:#e0b35f !important;color:#fff4d8 !important}
+.v3-card .btn.bloq,#create-card .btn.bloq{background:#e2d8c2;border:1px dashed #9a8c74;color:#7a6e5c}
+.v3-card .btn:disabled,#create-card .btn:disabled,#create-confirm:disabled{background:#d9d0bf !important;border:1px dashed #9a8c74 !important;color:#8a7f6e !important;opacity:.8;filter:grayscale(.8);cursor:not-allowed}

@@ -1,0 +1,25 @@
+{
+  "nome": "corpo_m04",
+  "glb": "arquivos de transferência/corpos_tripo/par_M04_M06.glb",
+  "regiao": {
+    "xMax": -0.028
+  },
+  "altura": 1.7,
+  "triangulos": 12000,
+  "espelhar": {
+    "manter": -1
+  },
+  "texturaSaida": 1536,
+  "centrarPernas": true,
+  "abas": {
+    "de": 0.52,
+    "ate": 0.66,
+    "x": 0.048
+  },
+  "cabeca": {
+    "y": 0.84,
+    "triangulos": 4000
+  },
+  "texW": 2048,
+  "pasta": "build/modelos/corpo_m04_tpose"
+}

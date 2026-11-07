@@ -1,0 +1,10 @@
+MODELOS NOVOS PARA O MODO EDITOR
+
+1. Abra o jogo pelo "Abrir jogo ao vivo.bat" (o modo ao vivo precisa estar aberto).
+2. Jogue aqui dentro um arquivo .glb (do Tripo, do Sketchfab, do Blender...).
+3. Em alguns segundos ele aparece no editor (F2 no campo), na aba "Meus modelos" da biblioteca.
+
+- O modelo é reduzido sozinho para ficar leve (uns 4 mil triângulos) e a textura vai junto.
+- O nome no editor é o nome do arquivo. Para trocar, renomeie o arquivo e jogue de novo.
+- .glb comprimido (Draco) não funciona: exporte sem compressão.
+- Se der problema, a mensagem aparece embaixo, na barra do editor.
