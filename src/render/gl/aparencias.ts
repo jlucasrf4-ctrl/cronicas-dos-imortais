@@ -3,9 +3,10 @@
    deusas ficam fora do sorteio (as cabeças delas entram).
    Cada opção tem a mesma chance, independentemente dos pesos antigos e das notas do Editor. ==== */
 import { decodificarAnim, type Anim, type DadosAnim } from "./esqueleto.ts";
-import { TINGIR, CABECAS_FORA, AJUSTE_BUSTO } from "../../data/aparencias.ts";
+import { TINGIR, CABECAS_FORA, AJUSTE_BUSTO, INTEGRAIS_FORA, CABELO_OMBRO, GOLA } from "../../data/aparencias.ts";
 import { ENCAIXES } from "../../data/encaixes.ts";
 import { unirPescoco } from "./unir-pescoco.ts";
+import { acabarPescoco, ajusteFrenteTras, bordaDaMalha, juntaNoBind, restosDeCabeloNoPescoco } from "./gola.ts";
 
 /** Onde a cabeça encaixa no corpo (espaço do jogo, pose de bind): frente +x, para cima +y. */
 export interface Encaixe {
@@ -338,10 +339,25 @@ export function comporPele(corpo: Anim, cab: CabecaDados, enc: Encaixe): Anim {
     ex /= en;
     ez /= en;
   }
+  // 2026-11-07 — de lado, o nariz (a pele mais à frente perto do meio, entre o queixo e os olhos) vai na linha do meio do
+  // esqueleto. Antes ia no "meio" do rosto original do corpo, que o cabelo de lado puxava até 0,5 u para fora; e o eixo
+  // do pescoço (ex) engana quando o cabelo cobre a nuca de um lado só (busto_16: 0,65 u).
+  let xNariz = en ? ex : 0,
+    zNariz = -Infinity;
+  for (let v = 0; v < nvH; v++) {
+    const x = hp[v * 3] / 1000,
+      y = hp[v * 3 + 1] / 1000,
+      z = hp[v * 3 + 2] / 1000;
+    // sem janela em x (2026-11-07): o rosto da busto_16 fica 0,92 u fora do x = 0 dela, e a janela |x| <= 0,35 pegava
+    // o canto do rosto e deixava a cabeça ~1 u para o lado do pescoço ("cabeça manca"; busto_01 e busto_04 também)
+    if (!pelePescoco(v) || y < 0.15 || y > 1.0 || z <= zNariz) continue;
+    zNariz = z;
+    xNariz = x;
+  }
   const u = enc.u,
     uT = (enc.uTroca ?? u) * (cab.escala ?? 1),
     baseX = enc.nariz + ez * u,
-    baseZ = enc.meio - ex * u;
+    baseZ = juntaNoBind(corpo, "Neck")?.[2] ?? enc.meio;
   for (let v = 0; v < nvH; v++) {
     let x = hp[v * 3] / 1000,
       z = hp[v * 3 + 2] / 1000;
@@ -355,10 +371,10 @@ export function comporPele(corpo: Anim, cab: CabecaDados, enc: Encaixe): Anim {
       z = ez + (z - ez) * k;
     }
     // vista de frente → jogo: a frente (z) vai para +x, a direita de quem olha (x) para -z. v8.1 — no tamanho padrão
-    // (uT), preservando a referência de encaixe definida para cada corpo
+    // (uT); de lado, o nariz na linha do meio (o ajuste de frente/trás vem depois, com a cabeça montada)
     P[o] = baseX + (z - ez) * uT;
     P[o + 1] = enc.queixo + y * uT;
-    P[o + 2] = baseZ - (x - ex) * uT;
+    P[o + 2] = baseZ - (x - xNariz) * uT;
     // v8.1 — abaixo do queixo o pescoço passa da cabeça para a junta Neck (PESCOCO.dobra u até ser todo dela): dobra
     // junto com o pescoço do corpo, em vez de ficar rígido e abrir um vão
     const wn = neck < 0 || y >= 0 || !pelePescoco(v) ? 0 : Math.min(1, -y / PESCOCO.dobra);
@@ -368,6 +384,32 @@ export function comporPele(corpo: Anim, cab: CabecaDados, enc: Encaixe): Anim {
       J[(nvC + v) * 4 + 1] = neck;
       W[(nvC + v) * 4 + 1] = wn;
     }
+  }
+  // 2026-11-07 — frente/trás: a cabeça anda até o pescoço dela cair dentro da abertura do pescoço do corpo. Alinhada só
+  // pelo nariz, a cabeça de rosto curto ficava com o pescoço à frente do corpo e abria um vão na nuca.
+  const neckB = juntaNoBind(corpo, "Neck");
+  if (neckB) {
+    const borda: number[] = [],
+      todos = bordaDaMalha(corpo, corpo.I.length / 3);
+    for (let i = 0; i < todos.length; i += 3) {
+      const y = todos[i + 1];
+      if (y < enc.queixo - 1.0 * u || y > enc.queixo + 0.1 * u) continue;
+      if (Math.hypot(todos[i] - neckB[0], todos[i + 2] - neckB[2]) > 1.6 * u) continue;
+      borda.push(todos[i], y, todos[i + 2]);
+    }
+    const pescoco: number[] = [];
+    for (let v = 0; v < nvH; v++) {
+      const y = hp[v * 3 + 1] / 1000;
+      if (pelePescoco(v) && y < -0.1 && y > -1.3) pescoco.push(v);
+    }
+    const passoP = Math.max(1, Math.ceil(pescoco.length / 400)),
+      pele: number[] = [];
+    for (let k = 0; k < pescoco.length; k += passoP) {
+      const o = (nvC + pescoco[k]) * 3;
+      pele.push(P[o], P[o + 1], P[o + 2]);
+    }
+    const dx = ajusteFrenteTras(borda, pele, u);
+    if (dx) for (let v = nvC; v < nv; v++) P[v * 3] += dx;
   }
   const I = new Uint16Array(corpo.I.length + hi.length);
   I.set(corpo.I);
@@ -401,8 +443,10 @@ export function comporPele(corpo: Anim, cab: CabecaDados, enc: Encaixe): Anim {
  * pescoço comprido, e maiores que as trocadas. Acima da base do pescoço tudo desce `baixar` (o pescoço encurta aos
  * poucos até o queixo, a cabeça desce inteira) e, do queixo para cima, a cabeça encolhe para `escala` em torno do queixo
  * (no meio da cabeça na horizontal). Puro: as posições são da pose de bind.
+ * 2026-11-07 — de lado, o meio é a linha do meio do esqueleto (a junta Neck), não a média dos vértices da cabeça: com o
+ * cabelo comprido de um lado só a média saía para aquele lado, e ao encolher o rosto escorregava para fora do pescoço.
  */
-function ajustarBustoIntegral(A: Anim, aj: { baixar: number; escala: number }, enc: Encaixe): Anim {
+export function ajustarBustoIntegral(A: Anim, aj: { baixar: number; escala: number }, enc: Encaixe): Anim {
   const P = Float32Array.from(A.P),
     nv = P.length / 3,
     uT = enc.uTroca ?? enc.u,
@@ -429,7 +473,7 @@ function ajustarBustoIntegral(A: Anim, aj: { baixar: number; escala: number }, e
       }
     if (n) {
       cx /= n;
-      cz /= n;
+      cz = juntaNoBind(A, "Neck")?.[2] ?? cz / n;
       for (let v = 0; v < nv; v++) {
         const y = P[v * 3 + 1];
         if (y <= q - 0.6 * uT) continue;
@@ -443,6 +487,128 @@ function ajustarBustoIntegral(A: Anim, aj: { baixar: number; escala: number }, e
   return { ...A, P };
 }
 
+/**
+ * 2026-11-07 — leva o rosto de um busto integral para a linha do meio do esqueleto (a junta Neck): o nariz (a pele mais
+ * à frente entre a boca e os olhos) anda de lado até ela; do queixo para cima tudo anda junto e no pescoço o
+ * deslocamento some aos poucos até a base (0,8 u abaixo do queixo), como o `baixar` do AJUSTE_BUSTO. Sem nada a mudar
+ * (menos de 0,04 u), devolve a mesma malha.
+ */
+function centrarBustoIntegral(A: Anim, mascara: Uint8Array, enc: Encaixe): Anim {
+  const meio = juntaNoBind(A, "Neck")?.[2];
+  if (meio == null || mascara.length !== A.I.length / 3) return A;
+  const uT = enc.uTroca ?? enc.u,
+    q = enc.queixo,
+    nv = A.P.length / 3,
+    pele = new Uint8Array(nv);
+  for (let t = 0; t < mascara.length; t++)
+    if (mascara[t] === 1 || mascara[t] === 3) for (let k = 0; k < 3; k++) pele[A.I[t * 3 + k]] = 1;
+  let x = -Infinity,
+    z = meio;
+  for (let v = 0; v < nv; v++) {
+    const y = A.P[v * 3 + 1];
+    if (!pele[v] || y < q + 0.15 * uT || y > q + 1.0 * uT || Math.abs(A.P[v * 3 + 2] - meio) > 0.7 * uT) continue;
+    if (A.P[v * 3] > x) {
+      x = A.P[v * 3];
+      z = A.P[v * 3 + 2];
+    }
+  }
+  const dz = meio - z;
+  if (!Number.isFinite(x) || Math.abs(dz) < 0.04 * uT) return A;
+  const P = Float32Array.from(A.P),
+    base = q - 0.8 * uT;
+  for (let v = 0; v < nv; v++) {
+    const y = P[v * 3 + 1];
+    if (y <= base) continue;
+    const t = Math.min(1, (y - base) / (q - base));
+    P[v * 3 + 2] += dz * t * t * (3 - 2 * t);
+  }
+  return { ...A, P };
+}
+
+/**
+ * 2026-11-07 — o cabelo apoiado no ombro acompanha o ombro (CABELO_OMBRO): o vértice de cabelo (dos triângulos
+ * `ehCabelo`) encostado num vértice de pele (`ehCorpo`) que vai com o ombro/braço mistura os pesos dele com os dessa
+ * pele. Só muda pesos: mesmos vértices, triângulos e ordem. Sem nada a mudar, a mesma malha.
+ */
+function cabeloAcompanhaOmbro(
+  A: Anim,
+  ehCabelo: (t: number) => boolean,
+  ehCorpo: (t: number) => boolean,
+  enc: Encaixe,
+): Anim {
+  const R = CABELO_OMBRO,
+    uT = enc.uTroca ?? enc.u,
+    q = enc.queixo,
+    nt = A.I.length / 3,
+    braco = A.juntas.map((j) => /Shoulder|Arm|Hand/.test(j)),
+    cabelo = new Set<number>(),
+    lado = R.contato * uT,
+    celulas = new Map<string, number[]>(),
+    chave = (x: number, y: number, z: number) =>
+      Math.floor(x / lado) + "," + Math.floor(y / lado) + "," + Math.floor(z / lado);
+  for (let t = 0; t < nt; t++) {
+    if (ehCabelo(t)) for (let k = 0; k < 3; k++) cabelo.add(A.I[t * 3 + k]);
+    else if (ehCorpo(t))
+      for (let k = 0; k < 3; k++) {
+        const v = A.I[t * 3 + k];
+        let w = 0;
+        for (let m = 0; m < 4; m++) if (braco[A.J[v * 4 + m]]) w += A.W[v * 4 + m];
+        if (w < R.braco) continue;
+        const c = chave(A.P[v * 3], A.P[v * 3 + 1], A.P[v * 3 + 2]);
+        (celulas.get(c) ?? celulas.set(c, []).get(c)!).push(v);
+      }
+  }
+  if (!celulas.size) return A;
+  const J = Uint8Array.from(A.J),
+    W = Float32Array.from(A.W);
+  let n = 0;
+  for (const v of cabelo) {
+    const x = A.P[v * 3],
+      y = A.P[v * 3 + 1],
+      z = A.P[v * 3 + 2];
+    if (y > q - R.abaixo * uT) continue;
+    let melhor = -1,
+      d2 = lado * lado;
+    const [cx, cy, cz] = [x, y, z].map((c) => Math.floor(c / lado));
+    for (let i = cx - 1; i <= cx + 1; i++)
+      for (let j = cy - 1; j <= cy + 1; j++)
+        for (let k = cz - 1; k <= cz + 1; k++)
+          for (const b of celulas.get(i + "," + j + "," + k) ?? []) {
+            const d = (A.P[b * 3] - x) ** 2 + (A.P[b * 3 + 1] - y) ** 2 + (A.P[b * 3 + 2] - z) ** 2;
+            if (d < d2) {
+              d2 = d;
+              melhor = b;
+            }
+          }
+    if (melhor < 0) continue;
+    const s = Math.min(1, Math.max(0, (Math.sqrt(d2) / lado - 0.3) / 0.7)),
+      f = 1 - s * s * (3 - 2 * s),
+      acum = new Map<number, number>();
+    for (const [u, p] of [
+      [v, 1 - f],
+      [melhor, f],
+    ])
+      for (let m = 0; m < 4; m++) {
+        const w = A.W[u * 4 + m] * p;
+        if (w > 0) acum.set(A.J[u * 4 + m], (acum.get(A.J[u * 4 + m]) ?? 0) + w);
+      }
+    const top = [...acum].sort((a, b) => b[1] - a[1]).slice(0, 4),
+      soma = top.reduce((a, [, w]) => a + w, 0) || 1;
+    for (let m = 0; m < 4; m++) {
+      J[v * 4 + m] = top[m]?.[0] ?? 0;
+      W[v * 4 + m] = (top[m]?.[1] ?? 0) / soma;
+    }
+    n++;
+  }
+  return n ? { ...A, J, W } : A;
+}
+
+/** O busto integral da combinação (cabeça, pescoço e ombros da mesma malha), se ela usa um (fora: INTEGRAIS_FORA). */
+export function bustoIntegral(ap: { corpo: string; cabeca: string }, bustos: BustosIntegraisDados = BUSTOS) {
+  if (INTEGRAIS_FORA.includes(ap.corpo + "|" + ap.cabeca)) return undefined;
+  return bustos.combinacoes?.find((v) => v.corpo === ap.corpo && v.cabeca === ap.cabeca);
+}
+
 /** Resolve o alias da cabeça própria também na seleção das roupas feitas para cada combinação. */
 export function cabecaDaAparencia(ap: Aparencia, dados: AparenciasDados = DADOS) {
   return ap.cabeca === "propria"
@@ -452,25 +618,45 @@ export function cabecaDaAparencia(ap: Aparencia, dados: AparenciasDados = DADOS)
 
 /* ---------- no jogo: a pele de cada aparência, montada uma vez ---------- */
 const PELES = new Map<string, Anim | DadosAnim | null>();
+/** 2026-11-07 — um número por peitoral (a gola da cabeça trocada depende dele) e o peitoral decodificado */
+const IDS_ROUPA = new WeakMap<object, number>(),
+  ROUPAS = new WeakMap<object, Anim>();
+let proximaRoupa = 1;
+function idRoupa(d: object) {
+  let id = IDS_ROUPA.get(d);
+  if (id === undefined) IDS_ROUPA.set(d, (id = proximaRoupa++));
+  return id;
+}
 /**
  * A pele de uma aparência para trocarPele (animado.ts): null = a heroína de sempre; `propria` de outro corpo pede os
  * dados dele a `dadosPropria` (a líder e as deusas vêm de vestidos.json; "heroina" = a heroína, para tingir). v8.1 —
- * com `pele`/`cabelo`, as cores trocadas (tingir).
+ * com `pele`/`cabelo`, as cores trocadas (tingir). 2026-11-07 — `peito`: o peitoral vestido; o que fica embaixo dele
+ * não precisa da gola (sem ele, na Líder a gola cobria a armadura com um poncho).
  */
 export function peleDaAparencia(
   ap: Aparencia | undefined,
   dadosPropria: (corpo: string) => DadosAnim | null,
   fontes = FONTES,
+  peito?: DadosAnim | null,
 ) {
   if (!ap) return null;
   const dados = fontes.aparencias;
   const cabeca = cabecaDaAparencia(ap, dados);
   if (cabeca !== ap.cabeca) ap = { ...ap, cabeca };
-  const k = ap.corpo + "|" + ap.cabeca + "|" + (ap.pele ?? "") + "|" + (ap.cabelo ?? "");
+  const integral = bustoIntegral(ap, fontes.bustos),
+    comGola = !integral && ap.cabeca !== "propria",
+    k =
+      ap.corpo +
+      "|" +
+      ap.cabeca +
+      "|" +
+      (ap.pele ?? "") +
+      "|" +
+      (ap.cabelo ?? "") +
+      (comGola && peito ? "|" + idRoupa(peito) : "");
   // Fontes alternativas permitem conferir a montagem sem misturar o cache dos dados do jogo.
   const guardar = fontes === FONTES;
   if (guardar && PELES.has(k)) return PELES.get(k)!;
-  const integral = fontes.bustos.combinacoes?.find((v) => v.corpo === ap.corpo && v.cabeca === ap.cabeca);
   if (integral) {
     const d = integral.anim;
     let pele: Anim | DadosAnim = d.texDe ? { ...d, tex: fontes.bustos.texturas?.[d.texDe] ?? d.tex } : d;
@@ -478,6 +664,13 @@ export function peleDaAparencia(
     const aj = AJUSTE_BUSTO[ap.corpo + "|" + ap.cabeca],
       encCorpo = dados.corpos?.find((c) => c.nome === ap.corpo)?.encaixe;
     if (aj && encCorpo) pele = ajustarBustoIntegral(decodificarAnim(pele), aj, encCorpo);
+    // 2026-11-07 — o rosto na linha do meio (mantenedor: "centraliza a cabeça no pescoço e ombros"): a cabeça de alguns
+    // bustos vem inclinada para um lado (busto_16 na F02: o nariz 0,65 u fora do meio, com o pescoço no meio)
+    if (encCorpo) {
+      const anim = "ini" in pele ? pele : decodificarAnim(pele),
+        centrada = centrarBustoIntegral(anim, bytes(integral.mascara), encCorpo);
+      if (centrada !== anim) pele = centrada;
+    }
     if (ap.pele || ap.cabelo) {
       const anim = "ini" in pele ? pele : decodificarAnim(pele),
         mascara = bytes(integral.mascara);
@@ -497,6 +690,16 @@ export function peleDaAparencia(
         );
       } else pele = tingir(anim, mascara, ap.pele, ap.cabelo, { pele: integral.refPele, cabelo: integral.refCabelo });
     }
+    // 2026-11-07 — o cabelo apoiado no ombro acompanha o ombro (CABELO_OMBRO)
+    if (encCorpo) {
+      const mascara = bytes(integral.mascara);
+      pele = cabeloAcompanhaOmbro(
+        "ini" in pele ? pele : decodificarAnim(pele),
+        (t) => mascara[t] === 2,
+        (t) => mascara[t] !== 2,
+        encCorpo,
+      );
+    }
     if (guardar) PELES.set(k, pele);
     return pele;
   }
@@ -508,13 +711,28 @@ export function peleDaAparencia(
     peleEscolhida = ap.pele,
     cor = !!(peleEscolhida || ap.cabelo);
   if (ap.cabeca === "propria") pele = ap.corpo === "heroina" && !cor ? null : dadosPropria(ap.corpo);
-  else if (corpo && cab) pele = comporPele(decodificarAnim({ ...corpo.semCabeca, clips: {} }), cab, corpo.encaixe);
+  // 2026-11-07 — sem os restos do cabelo original na boca do pescoço (a "gargantilha" vermelha da F02), antes de tingir
+  // e de acabar o pescoço, que copiam a cor do corpo
+  let restos: Map<number, number[]> | null = null;
+  if (corpo && cab && ap.cabeca !== "propria") {
+    const corpoA = decodificarAnim({ ...corpo.semCabeca, clips: {} });
+    restos = restosDeCabeloNoPescoco(
+      corpoA,
+      corpo.encaixe.queixo,
+      corpo.encaixe.uTroca ?? corpo.encaixe.u,
+      corpo.refPeleCorpo ?? corpo.refPele ?? [220, 150, 110],
+    );
+    for (const [t, c] of restos) corpoA.C.set(c, t * 3);
+    pele = comporPele(corpoA, cab, corpo.encaixe);
+  }
   if (pele && cor && corpo) {
     // a máscara: a do corpo inteiro com a cabeça própria, ou a do corpo sem cabeça seguida da cabeça (comporPele)
     const m =
       ap.cabeca === "propria"
         ? corpo.mascaraPropria && bytes(corpo.mascaraPropria)
         : corpo.mascara && cab?.mascara && Uint8Array.from([...bytes(corpo.mascara), ...bytes(cab.mascara)]);
+    // os restos limpos são pele (alguns estavam como cabelo e pegariam a cor de cabelo escolhida)
+    if (m && restos) for (const t of restos.keys()) m[t] = 1;
     const refs =
       ap.cabeca === "propria"
         ? { pele: corpo.refPeleCorpo ?? corpo.refPele, cabelo: corpo.refCabelo }
@@ -537,6 +755,18 @@ export function peleDaAparencia(
       } else pele = tingir(anim, m, peleEscolhida, ap.cabelo, refs);
     }
   }
+  // 2026-11-07 — o cabelo apoiado no ombro acompanha o ombro (CABELO_OMBRO); antes da gola, que fica registrada na
+  // malha final (extrasDoPescoco)
+  if (pele && corpo && cab?.mascara && comGola) {
+    const mascara = bytes(cab.mascara),
+      ntCorpo = bytes(corpo.semCabeca.malha.i).length / 6;
+    pele = cabeloAcompanhaOmbro(
+      "ini" in pele ? pele : decodificarAnim(pele),
+      (t) => t >= ntCorpo && mascara[t - ntCorpo] === 2,
+      (t) => t < ntCorpo,
+      corpo.encaixe,
+    );
+  }
   const ajuste = ENCAIXES[ap.corpo + "|" + ap.cabeca];
   if (pele && corpo && cab?.mascara && ajuste) {
     const anim = "ini" in pele ? pele : decodificarAnim(pele);
@@ -551,6 +781,34 @@ export function peleDaAparencia(
       corCabeca,
       cab.branco,
     ).malha;
+  } else if (pele && corpo && cab && comGola) {
+    // 2026-11-07 — se a abertura do pescoço do corpo fica para fora do pescoço da cabeça (o vão), a gola cobre (gola.ts).
+    // Depois de tingir: as máscaras são só do corpo e da cabeça; o pano tem a cor dele
+    const anim = "ini" in pele ? pele : decodificarAnim(pele),
+      hex = (h?: string) => (h ? hexRgb(h) : undefined),
+      evitar = [hex(ap.cabelo) ?? cab.refCabelo, hex(peleEscolhida) ?? cab.refPele].filter(
+        (c): c is number[] => c?.length === 3,
+      );
+    let cobertura = peito ? ROUPAS.get(peito) : undefined;
+    if (peito && !cobertura) ROUPAS.set(peito, (cobertura = decodificarAnim({ ...peito, clips: {} })));
+    pele = acabarPescoco(anim, {
+      ntCorpo: bytes(corpo.semCabeca.malha.i).length / 6,
+      nvCorpo: bytes(corpo.semCabeca.malha.p).length / 6,
+      mascaraCabeca: cab.mascara ? bytes(cab.mascara) : null,
+      queixo: corpo.encaixe.queixo,
+      u: corpo.encaixe.uTroca ?? corpo.encaixe.u,
+      semente: ap.corpo + "|" + ap.cabeca,
+      evitar,
+      branco: cab.branco,
+      cobertura,
+      mascaraCorpo: corpo.mascara ? bytes(corpo.mascara) : null,
+      pele: GOLA.panoNos.includes(ap.corpo)
+        ? undefined
+        : {
+            corpo: hex(peleEscolhida) ?? corpo.refPeleCorpo ?? corpo.refPele ?? [220, 150, 110],
+            cabeca: hex(peleEscolhida) ?? cab.refPele ?? corpo.refPele ?? [220, 150, 110],
+          },
+    });
   }
   if (guardar) PELES.set(k, pele);
   return pele;

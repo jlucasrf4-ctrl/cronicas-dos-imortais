@@ -17,6 +17,7 @@ import { dadosCacador } from "./cacador_anim.ts";
 import { GL3 } from "../../core/state.ts";
 import type { GLMesh } from "../../core/tipos.ts";
 import { DANO } from "../../data/combate.ts";
+import { INTEGRAIS_FORA } from "../../data/aparencias.ts";
 import type { Equip, Item } from "../../core/tipos.ts";
 
 interface Vestido {
@@ -84,7 +85,9 @@ function visualDo(item: Item | null | undefined, aceitos: readonly VisualRoupa[]
 export function roupaDaAparencia(visual: Aparencia | undefined, modelo: string, obter = vestidoPorNome) {
   const corpo = !visual?.corpo || visual.corpo === "heroina" || visual.corpo === "lider" ? "corpo_f01" : visual.corpo;
   if (!/^corpo_f0[1-6]$/.test(corpo)) return null;
-  const porCombinacao = visual && obter(`${corpo}__${cabecaDaAparencia(visual)}__${modelo}`);
+  // as roupas feitas para um busto integral só servem nele (2026-11-07: a F16 da F02 deixou de usar o dela)
+  const cab = visual ? cabecaDaAparencia(visual) : null,
+    porCombinacao = cab && !INTEGRAIS_FORA.includes(corpo + "|" + cab) ? obter(`${corpo}__${cab}__${modelo}`) : null;
   return porCombinacao?.partes ? porCombinacao : obter(`${corpo}__${modelo}`);
 }
 
@@ -136,18 +139,24 @@ export function vestirComoHeroi(visual: Aparencia | undefined, heroi?: string, e
     return;
   }
   const partes = partesVestidas(visual, equip);
-  vestirHeroina(ocultarPeleCoberta(peleDoVisual(visual), [partes?.peito, partes?.pernas, partes?.pes]));
+  vestirHeroina(ocultarPeleCoberta(peleDoVisual(visual, partes?.peito), [partes?.peito, partes?.pernas, partes?.pes]));
   vestirHeroinaPecas(partes?.peito ?? null, partes?.pernas ?? null, partes?.pes ?? null);
 }
 function partesVestidas(visual: Aparencia | undefined, equip?: Equip) {
   return partesDaArmadura(visual, equip);
 }
-/** A pele de uma aparência (null = a heroína de sempre), com a cabeça própria da líder vinda dos manequins. */
-export function peleDoVisual(visual: Aparencia | undefined) {
-  return peleDaAparencia(visual, (corpo) => {
-    if (/^corpo_f0[1-6]$/.test(corpo)) return vestidoPorNome(corpo)?.anim ?? null;
-    return corpo === "heroina" ? dadosHeroina() : (vestidoPorNome(PROPRIA[corpo] ?? corpo)?.anim ?? null);
-  });
+/** A pele de uma aparência (null = a heroína de sempre), com a cabeça própria da líder vinda dos manequins.
+ *  2026-11-07 — `peito`: o peitoral vestido (a gola do pescoço só cobre o que ele deixa à mostra). */
+export function peleDoVisual(visual: Aparencia | undefined, peito?: DadosAnim | null) {
+  return peleDaAparencia(
+    visual,
+    (corpo) => {
+      if (/^corpo_f0[1-6]$/.test(corpo)) return vestidoPorNome(corpo)?.anim ?? null;
+      return corpo === "heroina" ? dadosHeroina() : (vestidoPorNome(PROPRIA[corpo] ?? corpo)?.anim ?? null);
+    },
+    undefined,
+    peito,
+  );
 }
 
 /* ---------- v8.0 — o personagem sorteado no retrato da criação: animado de verdade, parado, sem armas ---------- */
@@ -230,7 +239,7 @@ export function desenharRetratoVivo(
   if (!RETRATO.X) RETRATO.X = novoComoHeroina(); // v8.1: com as peças presas da heroína (a arma da demonstração)
   const X = RETRATO.X;
   const partes = partesVestidas(visual, equip);
-  trocarPele(X, ocultarPeleCoberta(peleDoVisual(visual), [partes?.peito, partes?.pernas, partes?.pes]));
+  trocarPele(X, ocultarPeleCoberta(peleDoVisual(visual, partes?.peito), [partes?.peito, partes?.pernas, partes?.pes]));
   const agora = performance.now(),
     dt = RETRATO.t ? Math.min(0.1, (agora - RETRATO.t) / 1000) : 0;
   RETRATO.t = agora;

@@ -6707,6 +6707,256 @@
     "categoria": "itens",
     "g": 0.485,
     "e": 0.88
+   },
+   {
+    "id": 986,
+    "m": "cen:pedra_4",
+    "x": 2409.3,
+    "z": 16991.3,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 0.777,
+    "e": 1.13
+   },
+   {
+    "id": 987,
+    "m": "cen:pedra_4",
+    "x": 2466.1,
+    "z": 17013.2,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 1.897,
+    "e": 0.999
+   },
+   {
+    "id": 988,
+    "m": "cen:pedra_4",
+    "x": 2465.3,
+    "z": 17010.9,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 4.358,
+    "e": 0.987
+   },
+   {
+    "id": 989,
+    "m": "cen:pedra_4",
+    "x": 2486.4,
+    "z": 17008.5,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 6.001,
+    "e": 1.18
+   },
+   {
+    "id": 990,
+    "m": "cen:pedra_4",
+    "x": 2516.9,
+    "z": 16957.1,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 3.622,
+    "e": 4
+   },
+   {
+    "id": 991,
+    "m": "cen:pedra_4",
+    "x": 2450.3,
+    "z": 16934.1,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 3.654,
+    "e": 4
+   },
+   {
+    "id": 992,
+    "m": "cen:pedra_4",
+    "x": 2470.6,
+    "z": 16982.5,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 4.784,
+    "e": 4
+   },
+   {
+    "id": 993,
+    "m": "cen:pedra_4",
+    "x": 2480.8,
+    "z": 16959.8,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 3.291,
+    "e": 4
+   },
+   {
+    "id": 994,
+    "m": "cen:pedra_4",
+    "x": 2554.7,
+    "z": 17007.3,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 0.745,
+    "e": 4
+   },
+   {
+    "id": 995,
+    "m": "cen:pedra_4",
+    "x": 2517.7,
+    "z": 16942.7,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 2.717,
+    "e": 4
+   },
+   {
+    "id": 996,
+    "m": "cen:pedra_4",
+    "x": 2544.5,
+    "z": 17037.3,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 5.089,
+    "e": 4
+   },
+   {
+    "id": 997,
+    "m": "cen:pedra_4",
+    "x": 2529,
+    "z": 16987.2,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 1.737,
+    "e": 4
+   },
+   {
+    "id": 998,
+    "m": "cen:pedra_4",
+    "x": 2482.4,
+    "z": 16932.9,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 0.954,
+    "e": 4
+   },
+   {
+    "id": 999,
+    "m": "cen:pedra_4",
+    "x": 2497.8,
+    "z": 16922.3,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 1.26,
+    "e": 4
+   },
+   {
+    "id": 1000,
+    "m": "cen:pedra_4",
+    "x": 2495.8,
+    "z": 16958.1,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 5.12,
+    "e": 4
+   },
+   {
+    "id": 1001,
+    "m": "cen:pedra_4",
+    "x": 2489.7,
+    "z": 16943,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 2.62,
+    "e": 4
+   },
+   {
+    "id": 1002,
+    "m": "cen:pedra_4",
+    "x": 2486.4,
+    "z": 16956.4,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 1.573,
+    "e": 4
+   },
+   {
+    "id": 1003,
+    "m": "cen:pedra_4",
+    "x": 2481.5,
+    "z": 17056.5,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 0.797,
+    "e": 4
+   },
+   {
+    "id": 1004,
+    "m": "cen:pedra_4",
+    "x": 2538.4,
+    "z": 17067.8,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 6.055,
+    "e": 4
+   },
+   {
+    "id": 1005,
+    "m": "cen:pedra_4",
+    "x": 2503.5,
+    "z": 16997.1,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 4.143,
+    "e": 4
+   },
+   {
+    "id": 1006,
+    "m": "cen:pedra_4",
+    "x": 2444.6,
+    "z": 16984.1,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 1.115,
+    "e": 0.958
+   },
+   {
+    "id": 1007,
+    "m": "cen:pedra_4",
+    "x": 2501.5,
+    "z": 17027.9,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 5.474,
+    "e": 4
+   },
+   {
+    "id": 1008,
+    "m": "cen:pedra_4",
+    "x": 2534,
+    "z": 17003.5,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 0.568,
+    "e": 4
+   },
+   {
+    "id": 1009,
+    "m": "cen:pedra_4",
+    "x": 2509.6,
+    "z": 17046,
+    "pavimento": 0,
+    "categoria": "pedras",
+    "g": 4.816,
+    "e": 4
+   },
+   {
+    "id": 1011,
+    "m": "cen:outono_1",
+    "x": 2695.9,
+    "z": 17191.7,
+    "pavimento": 0,
+    "categoria": "arvores",
+    "g": 0.48,
+    "e": 0.817
    }
   ],
   "acamp": [
@@ -11700,6 +11950,6 @@
   "mato:100:314"
  ],
  "aparencias": {},
- "proximo": 986,
- "salvoEm": "2026-11-05T09:37:13.128Z"
+ "proximo": 1012,
+ "salvoEm": "2026-11-07T19:01:38.065Z"
 }

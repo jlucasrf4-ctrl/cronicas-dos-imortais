@@ -4,3 +4,12 @@
 #mm-ferr button:hover{background:rgba(70,48,20,.95)}
 #mm-ferr button:active{transform:translateY(1px)}
 #mm-volta{padding:0 8px}
+/* no campo: redondo, pequeno, só a volta da heroína (ui/hud.ts hudMinimapLocal, tamanho em MM_LOCAL.px) */
+#minimap.no-campo{right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));padding:0;border-radius:50%;background:none;border:0;box-shadow:none;opacity:.82;transition:opacity .2s}
+#minimap.no-campo:hover{opacity:1}
+#minimap.no-campo canvas{width:128px;height:128px;border-radius:50%;cursor:default;border:2px solid rgba(224,179,95,.55);box-shadow:0 4px 14px rgba(0,0,0,.55),inset 0 0 0 1px rgba(0,0,0,.5)}
+#minimap.no-campo .mm-t{display:none}
+#minimap.no-campo #mm-ferr{left:50%;right:auto;top:auto;bottom:-9px;transform:translateX(-50%);gap:3px;opacity:.75;transition:opacity .2s}
+#minimap.no-campo:hover #mm-ferr{opacity:1}
+#minimap.no-campo #mm-ferr button{min-width:22px;height:18px;padding:0 5px;font-size:.6rem;border-radius:9px}
+#minimap.cena-intro{display:none}

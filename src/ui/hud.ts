@@ -1,7 +1,7 @@
 /* ==== Fase 4 — HUD do mapa: brasão, relógio, velocidades, minimapa (base/18) ==== */
 import { TELAS, camera, JANELAS, world, dungeon } from "../core/state.ts";
 import { constrainCamera, applyCameraTransform, zoomAt } from "../map/camera.ts";
-import { explorarNevoa } from "../map/explorar.ts";
+import { explorarNevoa, vistos as explorados, EXPLORA } from "../map/explorar.ts";
 import { armadilhasDesenhar, marcarAqui } from "../map/armadilhas.ts";
 import { sairDoCampo } from "../map/transicao.ts";
 import { openGameMenu } from "./titulo.ts";
@@ -89,6 +89,7 @@ export function hudBuild() {
     if (dungeon.active) sairDoCampo();
   });
   const go = (e: PointerEvent) => {
+    if (dungeon.active) return; // no campo o clique não mexe na câmera do mapa (escondida)
     const r = HUD.mm!.getBoundingClientRect(),
       wx = ((e.clientX - r.left) / r.width) * TELAS.worldW,
       wy = ((e.clientY - r.top) / r.height) * TELAS.worldH,
@@ -164,15 +165,123 @@ export function hudUpdate() {
   }
   // v8.3 — no campo o minimapa mostra só "Mapa" (volta); no mapa, os botões de zoom
   const emCampo = !!dungeon.active;
+  const mmEl = document.getElementById("minimap");
+  if (mmEl) mmEl.classList.toggle("cena-intro", emCampo && dungeon.mode === "intro");
   const vol = document.getElementById("mm-volta"),
     zs = [document.getElementById("mm-mais"), document.getElementById("mm-menos")];
   if (vol && vol.style.display !== (emCampo ? "" : "none")) vol.style.display = emCampo ? "" : "none";
   for (const z of zs) if (z && z.style.display !== (emCampo ? "none" : "")) z.style.display = emCampo ? "none" : "";
   hudMinimap();
 }
+/** v8.3 — no campo o `#app` fica escondido (expedicao/preparo.ts), e o minimapa morava nele: entrando, ele vai para
+    o `#dungeon-view`; saindo, volta para o `#app`. Na cena inicial ele não aparece. */
+export function hudMinimapLugar(noCampo: boolean) {
+  const mm = document.getElementById("minimap"),
+    alvo = document.getElementById(noCampo ? "dungeon-view" : "app");
+  if (!mm || !alvo) return;
+  if (mm.parentElement !== alvo) alvo.appendChild(mm);
+  mm.classList.toggle("no-campo", noCampo);
+  hudUpdate();
+}
+/** v8.3 — o minimapa do campo: redondo, pequeno, só a volta da heroína (mantenedor 2026-11-07: "quero algo mais
+    local, redondo e discreto no cantinho"). `raio` em unidades do mapa (a vista do campo tem ~137 de largura), `px` =
+    diâmetro na tela, `nitidez` = pixels do canvas por pixel da tela. */
+const MM_LOCAL = { raio: 120, px: 128, nitidez: 2 };
+const MML = { fog: null as HTMLCanvasElement | null };
+function hudMinimapLocal(cv: HTMLCanvasElement) {
+  const S = MM_LOCAL.px * MM_LOCAL.nitidez;
+  if (cv.width !== S || cv.height !== S) {
+    cv.width = S;
+    cv.height = S;
+    HUD.mmBase = null; // a base do mapa inteiro é refeita quando voltar ao mapa
+  }
+  const h = dungeon.hero && world.heroes.includes(dungeon.hero) ? dungeon.hero : world.heroes[0];
+  const c = cv.getContext("2d")!;
+  c.clearRect(0, 0, S, S);
+  if (!h || !Number.isFinite(h.x) || !Number.isFinite(h.y)) return;
+  const R = MM_LOCAL.raio,
+    k = S / (2 * R),
+    x0 = h.x - R,
+    y0 = h.y - R;
+  c.save();
+  c.beginPath();
+  c.arc(S / 2, S / 2, S / 2, 0, 7);
+  c.clip();
+  c.fillStyle = "#1d2a33"; // fora do mapa: mar escuro
+  c.fillRect(0, 0, S, S);
+  c.imageSmoothingQuality = "high";
+  // a fonte mais nítida que houver: a arte vetorial do mapa ou a imagem do mapa
+  const img = TELAS.mapImg,
+    kImg = img.naturalWidth / TELAS.worldW,
+    kOv = MAPART.on && MAPART.ready ? (MAPART.ov.width - MA_PAD * 2) / TELAS.worldW : 0;
+  if (kOv >= kImg) c.drawImage(MAPART.ov, MA_PAD + x0 * kOv, MA_PAD + y0 * kOv, 2 * R * kOv, 2 * R * kOv, 0, 0, S, S);
+  else c.drawImage(img, x0 * kImg, y0 * kImg, 2 * R * kImg, 2 * R * kImg, 0, 0, S, S);
+  // névoa: só as células já exploradas aparecem
+  if (!MML.fog || MML.fog.width !== S) {
+    MML.fog = document.createElement("canvas");
+    MML.fog.width = S;
+    MML.fog.height = S;
+  }
+  const f = MML.fog.getContext("2d")!;
+  f.globalCompositeOperation = "source-over";
+  f.clearRect(0, 0, S, S);
+  f.fillStyle = "rgba(12,8,4,.8)";
+  f.fillRect(0, 0, S, S);
+  f.globalCompositeOperation = "destination-out";
+  const cel = EXPLORA.celula,
+    cs = cel * k;
+  for (const key of explorados()) {
+    const cx = (key % 10000) - 5000,
+      cy = Math.floor(key / 10000) - 5000,
+      px = (cx * cel - x0) * k,
+      py = (cy * cel - y0) * k;
+    if (px > S || py > S || px + cs < 0 || py + cs < 0) continue;
+    f.fillRect(px, py, cs + 1, cs + 1);
+  }
+  f.globalCompositeOperation = "source-over";
+  c.drawImage(MML.fog, 0, 0);
+  // armadilhas disparadas, pontos marcados e cidades, nas mesmas contas do mapa inteiro
+  c.save();
+  c.translate(-x0 * k, -y0 * k);
+  armadilhasDesenhar(c, k);
+  for (const ct of CITIES) {
+    c.fillStyle = "#ffe08a";
+    c.strokeStyle = "#2a1a08";
+    c.lineWidth = 1.5 * MM_LOCAL.nitidez;
+    c.beginPath();
+    c.arc(ct.x * k, ct.y * k, 3 * MM_LOCAL.nitidez, 0, 7);
+    c.fill();
+    c.stroke();
+  }
+  // os outros heróis por perto
+  for (const o of world.heroes) {
+    if (o === h || !Number.isFinite(o.x)) continue;
+    c.fillStyle = o.color;
+    c.strokeStyle = "#fff";
+    c.lineWidth = MM_LOCAL.nitidez;
+    c.beginPath();
+    c.arc(o.x * k, o.y * k, 2.6 * MM_LOCAL.nitidez, 0, 7);
+    c.fill();
+    c.stroke();
+  }
+  c.restore();
+  // a heroína no meio
+  c.fillStyle = h.color;
+  c.strokeStyle = "#fff";
+  c.lineWidth = 1.4 * MM_LOCAL.nitidez;
+  c.shadowColor = "#000";
+  c.shadowBlur = 4;
+  c.beginPath();
+  c.arc(S / 2, S / 2, 3.6 * MM_LOCAL.nitidez, 0, 7);
+  c.fill();
+  c.stroke();
+  c.restore();
+}
 export function hudMinimap() {
   const cv = HUD.mm;
   if (!cv || !TELAS.worldW || !TELAS.mapImg || !TELAS.mapImg.complete) return;
+  if (dungeon.active) return hudMinimapLocal(cv);
+  if (cv.width !== 200) cv.width = 200;
   const W = cv.width,
     H = Math.round((W * TELAS.worldH) / TELAS.worldW);
   if (cv.height !== H) {

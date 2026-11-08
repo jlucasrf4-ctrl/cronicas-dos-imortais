@@ -17,7 +17,7 @@ const ACUM = new Map<string, number>();
 
 const chave = (cx: number, cy: number) => (cy + 5000) * 10000 + (cx + 5000);
 
-function vistos(): Set<number> {
+export function vistos(): Set<number> {
   if (!econ.explorado) econ.explorado = [];
   if (CACHE.ref !== econ.explorado) {
     CACHE.ref = econ.explorado;
