@@ -61,6 +61,7 @@ import {
   folVel,
   folFugindo,
 } from "./tipos.ts";
+import { folCorrida } from "./cansaco.ts";
 import { ISC } from "../intro/cena.ts";
 import { STAT } from "../data/atributos.ts";
 import { pushEvent } from "../sim/eventos.ts";
@@ -877,6 +878,20 @@ function lockPounce(m: Monster) {
   m.ly = Math.max(T, Math.min(dungeon.rows * T - T, m.y + Math.sin(a) * reach));
 }
 export function updateDungeonMonster(this: unknown, m: Monster, dt: number) {
+  // v8.1 (2026-11-08): o quanto ele correu neste quadro cansa (field/cansaco.ts); empurrão e salto de lugar não contam
+  const x0 = m?.x,
+    y0 = m?.y;
+  try {
+    return updateDungeonMonsterBase5.apply(this, arguments as Repasse);
+  } finally {
+    if (m?.alive && dt > 0 && !m.kx && !m.ky) {
+      const andou = Math.hypot(m.x - x0, m.y - y0);
+      if (andou < dungeon.tile * 3) folCorrida(m, andou / dt, dt);
+    }
+  }
+}
+// etapa de updateDungeonMonster: v6.8 + v6.2
+function updateDungeonMonsterBase5(this: unknown, m: Monster, dt: number) {
   /* v6.8 */
   if (m && m.alive && m.critter) {
     critAI(m, dt);

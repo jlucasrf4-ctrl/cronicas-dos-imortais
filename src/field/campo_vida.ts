@@ -11,6 +11,7 @@ import { bleedTick } from "./combate.ts";
 import { angSD } from "../render/gl/renderer.ts";
 import { querLobo } from "../campanha/lobos.ts";
 import { pontoPerto, mundoMover } from "../map/mundo.ts";
+import { cansadoAI } from "./cansaco.ts";
 import type { Monster, Ponto } from "../core/tipos.ts";
 
 /* ==== v6.8 — Campo com vida: pássaros, coelhos e cervos (neutros) e, às vezes, um lobo que decide se te ataca ==== */
@@ -266,10 +267,17 @@ function critAIBase(m: Monster, dt: number) {
     m.wob = Math.max(-0.4, Math.min(0.4, m.wob));
     const want = Math.atan2(vy, vx) + m.wob;
     m.fa = m.fa == null ? want : m.fa + angSD(want, m.fa) * Math.min(1, dt * 3.5);
-    if (m.folMax && !(m.ferido! > 0)) {
-      m.fol = Math.max(m.folMax * 0.35, m.fol! - 0.35 * dt);
-      m.folT = 0;
-    } /* correr cansa (sem ferida não desmaia) */
+    // v8.1 (2026-11-08): correr cansa de verdade (field/cansaco.ts folCorrida; antes o fôlego voltava a 35% a cada
+    // quadro e a corrida nunca cansava); cansado, ele escolhe a saída
+    const cs = cansadoAI(m, thr, dt);
+    if (cs === "parado") {
+      m.st = "graze";
+      return;
+    }
+    if (cs && cs !== "luta") {
+      critMove(m, cs.x - m.x, cs.y - m.y, S.flee * (m.slow! > 0 ? 0.5 : 1), dt);
+      return;
+    }
     critMove(
       m,
       Math.cos(m.fa),
@@ -278,6 +286,18 @@ function critAIBase(m: Monster, dt: number) {
       dt,
     );
     return;
+  }
+  // v8.1: cansado longe de quem fugia, continua descansando (ou indo para a moita) até recuperar
+  if (m.cansado) {
+    const cs = cansadoAI(m, { x: d.px, y: d.py }, dt);
+    if (cs === "parado") {
+      m.st = "graze";
+      return;
+    }
+    if (cs && cs !== "luta") {
+      critMove(m, cs.x - m.x, cs.y - m.y, S.flee, dt);
+      return;
+    }
   }
   if (m.calmT! > 0) {
     m.calmT! -= dt;
@@ -338,6 +358,22 @@ export function loboAI(m: Monster, dt: number) {
   if (m.stun! > 0) return;
   const dp = Math.hypot(d.px - m.x, d.py - m.y);
   if (m.fugir) {
+    // v8.1 (2026-11-08): cansado, o lobo encurralado vira e luta; longe, descansa ou vai para a moita (field/cansaco.ts)
+    const cs = cansadoAI(m, { x: d.px, y: d.py }, dt, true);
+    if (cs === "luta") {
+      spawnDungeonToast("🐺 encurralado!", m.x, m.y - 30, "#ff7a5a", 12);
+      loboBravo(m);
+      return;
+    }
+    if (cs === "parado") {
+      m.st = "recover";
+      return;
+    }
+    if (cs) {
+      critMove(m, cs.x - m.x, cs.y - m.y, (m.spd || 38) * 1.6, dt);
+      m._yaw = m.ang;
+      return;
+    }
     critMove(m, m.x - d.px, m.y - d.py, (m.spd || 38) * 1.6, dt);
     m._yaw = m.ang;
     if (

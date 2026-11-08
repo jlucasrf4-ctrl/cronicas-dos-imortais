@@ -698,6 +698,8 @@ export interface Monster {
   posto?: { x: number; y: number } | null; // v8.2: aonde o javali vai para ter a linha livre até ela (creatures/javali.ts)
   rodeio?: number; // v8.1: para que lado o javali rodeia a heroína (1 ou −1; troca quando um tronco barra)
   desespero?: number; // v8.1: s que faltam do fôlego de desespero depois de levantar (FOLEGO.desespero)
+  /** v8.1 (2026-11-08) — o bicho cansado da corrida e a saída que escolheu (field/cansaco.ts) */
+  cansado?: { modo: "devagar" | "descansa" | "esconde"; t: number; moita?: { x: number; y: number; r: number } };
   feroz?: number; // v8.1: o dano (dm) de antes da fúria do desespero, para devolver
   bichoMapa?: Animal | Wild; // v8.0: o mesmo bicho no mapa (campo aberto; map/mundo.ts); v8.1: a raposa é Wild
   _sangue?: Ponto; // v8.0: onde caiu a última gota de sangue dele (field/rastro.ts)

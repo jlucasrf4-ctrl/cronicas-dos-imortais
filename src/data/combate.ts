@@ -21,6 +21,28 @@ export const COMBO_WINDOW = 0.75; // segundos para encadear o próximo clique
 /* Ataque básico automático (clique no inimigo): no máximo `porSeg` golpes por segundo, acelerado pelo atributo
    velocidade como os demais golpes (mantenedor, 2026-11-06: "menos de 1,5 ataques por segundo", referência LoL). */
 export const ATAQUE_AUTO = { porSeg: 1.5 };
+/* Cansaço dos bichos na corrida (mantenedor, 2026-11-08: "quando eles levantem e deem a corridona eles se cansem com isso
+   mas é possível você desistir pra se poupar"; field/cansaco.ts). Correndo (mais de `limiar` casas/s) o bicho gasta
+   `gasto` do fôlego máximo por segundo e não recupera; sozinha a corrida não derruba (para em `piso`), só deixa lento
+   pelas faixas de FOLEGO.vel. Andando recupera `andaRegen` do normal. Abaixo de `abaixo` ele está cansado e escolhe a
+   saída pela situação (mantenedor: "quero que o inimigo escolha a melhor forma"), revendo a cada `rever` s, até voltar a
+   `volta`: o predador com você a menos de `lutaPerto` casas vira e luta; você a mais de `longe` casas, para e descansa
+   (recupera `descansaRegen`× mais rápido); uma moita a até `moita` casas e mais perto dele do que de você, vai se
+   esconder nela e descansa lá até você chegar a `perto` casas; senão, segue fugindo devagar. */
+export const CANSACO = {
+  limiar: 1.5,
+  gasto: 0.06,
+  piso: 0.04,
+  andaRegen: 0.5,
+  abaixo: 0.25,
+  volta: 0.6,
+  rever: 1.2,
+  lutaPerto: 3,
+  longe: 6,
+  moita: 7,
+  perto: 2.5,
+  descansaRegen: 2.5,
+};
 /* Básico do arco (mesma opção do automático). Mantenedor, 2026-11-06: "o range tá muito grande… os tiros estão sendo
    rajadão; o tiro deve demonstrar o percurso da flecha antes de atirar: clica, barulhinho de puxar a corda, 3 segundos,
    atira". Clicar no inimigo puxa a corda por `puxada` s parada (andando demora mais, como no carregado; Força acelera),
