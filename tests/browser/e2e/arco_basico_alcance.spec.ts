@@ -1,9 +1,13 @@
 /* 2026-11-06 — básico do arco no ataque automático e o anel de alcance enquanto segura Alt. Desde a v8.1 (mantenedor:
    "clica, barulhinho de puxar a corda, 3 segundos, atira"): o clique puxa a corda (ARCO_BASICO.puxada) mirando no alvo,
-   solta 1 flecha quando enche, segura a corda se o alvo saiu do alcance e abaixa o arco no clique no chão. */
+   solta 1 flecha quando enche, segura a corda se o alvo saiu do alcance e abaixa o arco no clique no chão.
+   2026-11-08 (estilo LoL): a puxada é curta (0,2 s), o ritmo é o do básico automático (d.autoCd), fora do alcance ela
+   abaixa o arco sem atirar, e com o arco na mão o anel de alcance fica sempre no chão (Alt só nas outras armas). */
 import { test, expect, entrarComHeroi, campoDireto } from "./comum.ts";
 
-test("arco: clique no inimigo puxa a corda e solta sozinha ao alcance; Alt mostra o alcance", async ({ jogo }) => {
+test("arco: clique no inimigo atira reto ao alcance no ritmo do básico; o anel do arco fica sempre", async ({
+  jogo,
+}) => {
   test.skip(jogo.referencia, "controle novo de 2026-11-06");
   test.setTimeout(180000);
   await jogo.js("__t.OPT.ataqueAutomatico=true");
@@ -36,19 +40,20 @@ test("arco: clique no inimigo puxa a corda e solta sozinha ao alcance; Alt mostr
     evento('pointerdown',m.x,m.y); evento('pointerup',m.x,m.y);
     const n0=d.arrows.length; t.renderDungeonFrame(.016);
     // puxando: a corda começou a encher, nenhuma flecha saiu ainda
-    const puxando=d.charging && d.tiroAuto && d.charge<0.1 && d.arrows.length===n0 && t.econ.quiver.n===10;
+    const puxando=d.charging && d.tiroAuto && d.charge<0.3 && d.arrows.length===n0 && t.econ.quiver.n===10;
     d.charge=0.9999; t.renderDungeonFrame(.016);
     const soltou=d.arrows.length-n0===1 && !d.charging && d.cd>0, flechas=t.econ.quiver.n;
-    // a próxima puxada começa depois da pausa, sem flecha nova na hora
-    d.cd=0; t.renderDungeonFrame(.016); const ritmo=d.charging && d.tiroAuto && d.arrows.length-n0===1;
-    // o alvo saiu do alcance com a corda cheia: ela segura, não atira
+    // a próxima puxada espera o ritmo do básico (autoCd), depois começa sem flecha nova na hora
+    d.cd=0; t.renderDungeonFrame(.016); const espera=!d.charging && d.autoCd>0.2;
+    d.autoCd=0; t.renderDungeonFrame(.016); const ritmo=espera && d.charging && d.tiroAuto && d.arrows.length-n0===1;
+    // o alvo saiu do alcance com a corda cheia: abaixa o arco sem atirar (o alvo continua marcado)
     d.px=600-T*(A.alcance+2); d.charge=0.9999; t.renderDungeonFrame(.016);
-    const segura=d.charging && d.tiroAuto && d.arrows.length-n0===1;
+    const segura=!d.charging && !d.tiroAuto && d.arrows.length-n0===1 && t.econ.quiver.n===9 && !!d.alvoAutomatico;
     // longe sem estar puxando: não começa a puxar
     d.charging=false; d.tiroAuto=false; d.cd=0; t.renderDungeonFrame(.016);
     const longe=!d.charging && d.arrows.length-n0===1;
     // clique no chão durante a puxada: abaixa o arco
-    d.px=600-T*(A.alcance-0.5); d.cd=0; t.renderDungeonFrame(.016);
+    d.px=600-T*(A.alcance-0.5); d.cd=0; d.autoCd=0; t.renderDungeonFrame(.016);
     const comecou=d.charging && d.tiroAuto;
     evento('pointerdown',600-T*(A.alcance-0.5),300+T*3); evento('pointerup',600-T*(A.alcance-0.5),300+T*3);
     t.renderDungeonFrame(.016);
@@ -56,7 +61,7 @@ test("arco: clique no inimigo puxa a corda e solta sozinha ao alcance; Alt mostr
     window.dispatchEvent(new KeyboardEvent('keydown',{code:'AltLeft',bubbles:true}));
     const a=t.anelAlcance(); const alt=!!a && Math.abs(a.basico-T*A.alcance)<0.01 && a.carregado>a.basico;
     window.dispatchEvent(new KeyboardEvent('keyup',{code:'AltLeft',bubbles:true}));
-    const solto=t.anelAlcance()===null;
+    const solto=t.anelAlcance()!==null; // com o arco, o anel fica mesmo sem Alt
     return {puxando,soltou,flechas,ritmo,segura,longe,parou,alt,solto};
   })()`);
   expect(r).toEqual({

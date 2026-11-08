@@ -1,0 +1,74 @@
+/* v8.1 — as janelas na direção Tinta e Cinza (2026-11-08: o mantenedor pediu o HUD traço solto como padrão e "tudo
+   deve ter esse padrão"): superfície Carvão com um brilho de brasa embaixo, linha fina em cima e embaixo, cantos retos;
+   títulos em versalete; botões só com o traço embaixo (o ativo em brasa); o dourado vira brasa. Vale para os cartões
+   claros (pergaminho: .v3-card, inspetor, registro) e para os escuros. O editor (F2) fica como está. */
+html.hud-traco :is(.v3-card,.mv-card,#inv-card,#ra-card,#fg-card,#camp-card,#fire-card,#gs-card,#mount-card,#tame-card,#an-card,
+  .inv-win,#bag-win,#diario,#est-painel,.pg-card,#log-modal-card,#inspector,#hero-panel,#stats-panel,#event-feed,#controls,
+  #econ-bar,#win-dock,#lobo-menu,#isc-choice,#rastreio,#dica,#missao,#map-tip,#camp-prompt,#minimap,#inv-selbar,#cacada-aviso,
+  #sword-hud,#mv-toast,#rune-notif,#dungeon-hint,#focus-hud){
+  --ink:#ddd5c8;--ink-soft:#a39d92;--wood-deep:#efe9dd;--parchment:#ddd5c8;--card-bg:#1b1918;
+  --gold:#ff8a3a;--gold-bright:#ffb07a;--panel-border:rgba(239,233,221,.2);
+  background:radial-gradient(ellipse 70% 40% at 50% 118%,rgba(255,106,42,.11),transparent 70%),rgba(27,25,24,.97)!important;
+  border:0!important;border-block:1px solid rgba(239,233,221,.22)!important;border-radius:0!important;
+  box-shadow:0 18px 50px rgba(0,0,0,.6)!important;color:#ddd5c8}
+/* o que fica por cima do mapa e da cena é mais leve: deixa ver o fundo */
+html.hud-traco :is(#hero-panel,#stats-panel,#event-feed,#controls,#econ-bar,#win-dock,#rastreio,#dica,#missao,#map-tip,#camp-prompt,
+  #minimap,#sword-hud,#dungeon-hint,#focus-hud,#mv-toast,#rune-notif){background:rgba(27,25,24,.86)!important;box-shadow:0 8px 24px rgba(0,0,0,.45)!important}
+html.hud-traco .mv-card::before{display:none}
+/* o fundo atrás das janelas */
+html.hud-traco :is(.v3-modal,#inv-modal,#ra-modal,#fg-modal,#camp-modal,#fire-modal,#gs-modal,#mount-modal,#tame-modal,#ana-modal,
+  #carp-modal,#musgo-modal,#log-modal){background:rgba(10,9,8,.78)!important}
+
+/* títulos */
+html.hud-traco :is(.v3-card,.mv-card,#inv-card,#ra-card,#fg-card,#camp-card,#fire-card,#gs-card,#mount-card,#tame-card,#an-card,
+  #bag-win,#diario,#est-painel,.pg-card,#log-modal-card,#inspector,#hero-panel,#stats-panel) :is(h1,h2,h3,h4,.win-bar,#insp-name){
+  font-weight:500;font-variant:small-caps;letter-spacing:.1em;color:#efe9dd!important;text-shadow:0 0 14px rgba(255,106,42,.28)}
+html.hud-traco :is(.win-sub,.sh-cols h3,.sh-card h3,.cla-ordens-topo b,.prep77 .eq-slot small){color:#ff8a3a!important}
+html.hud-traco #bag-win .win-bar,html.hud-traco #log-modal-head{background:none!important;border-bottom:1px solid rgba(239,233,221,.16)}
+html.hud-traco :is(#insp-id,#insp-state,#insp-meta,.create-note,.attr-label,.stat-bar-wrap .lbl){color:#a39d92!important}
+
+/* botões dentro das janelas e painéis: sem caixa, só o traço embaixo */
+html.hud-traco :is(.v3-card,.mv-card,#inv-card,#ra-card,#fg-card,#camp-card,#fire-card,#gs-card,#mount-card,#tame-card,#an-card,
+  .inv-win,#bag-win,#diario,#est-painel,.pg-card,#log-modal-card,#inspector,#hero-panel,#stats-panel,#controls,#win-dock,#lobo-menu,
+  #isc-choice,#inv-selbar,#hud-speed) :is(.btn,.mv-b,.hero-btn,.pg-b,.pg-todos){
+  background:none!important;border:0!important;border-bottom:1px solid rgba(239,233,221,.35)!important;border-radius:0!important;
+  box-shadow:none!important;color:#ddd5c8!important;font-variant:small-caps;letter-spacing:.06em;filter:none;text-shadow:none}
+html.hud-traco :is(.v3-card,.mv-card,#inv-card,#ra-card,#fg-card,#camp-card,#fire-card,#gs-card,#mount-card,#tame-card,#an-card,
+  .inv-win,#bag-win,#diario,#est-painel,.pg-card,#log-modal-card,#inspector,#hero-panel,#stats-panel,#controls,#win-dock,#lobo-menu,
+  #isc-choice,#inv-selbar,#hud-speed) :is(.btn,.mv-b,.hero-btn,.pg-b,.pg-todos):hover:not(:disabled){
+  border-bottom-color:#ff8a3a!important;color:#ffd9b8!important;background:rgba(255,106,42,.06)!important}
+html.hud-traco :is(.v3-card,.mv-card,#inv-card,#ra-card,#fg-card,#camp-card,#fire-card,#gs-card,#mount-card,#tame-card,#an-card,
+  .inv-win,#bag-win,#diario,#est-painel,.pg-card,#log-modal-card,#inspector,#hero-panel,#stats-panel,#controls,#win-dock,#lobo-menu,
+  #isc-choice,#inv-selbar,#hud-speed) :is(.btn,.mv-b,.hero-btn):is(.on,.active,.pri,[aria-pressed=true]){
+  border-bottom:2px solid #ff8a3a!important;color:#ffb07a!important;text-shadow:0 0 10px rgba(255,106,42,.35)}
+html.hud-traco :is(.v3-card,.mv-card,#inv-card,#ra-card,#fg-card,#camp-card,#fire-card,#gs-card,#mount-card,#tame-card,#an-card,
+  .inv-win,#bag-win,#diario,#est-painel,.pg-card,#log-modal-card,#inspector,#hero-panel,#stats-panel,#controls,#win-dock,#lobo-menu,
+  #isc-choice,#inv-selbar) :is(.btn,.mv-b,.hero-btn):disabled{opacity:.4;border-bottom-style:dashed!important}
+html.hud-traco :is(.v3-card,.mv-card,#inv-card,#fg-card,#camp-card,.inv-win,#bag-win,#hero-panel) .btn.bloq{color:#8f877b!important;border-bottom-style:dashed!important}
+
+/* fechar: um x sem bolinha */
+html.hud-traco :is(.win-x,#inspector-close,#missao-fechar){background:none!important;border:0!important;box-shadow:none!important;color:rgba(239,233,221,.55)!important}
+html.hud-traco :is(.win-x,#inspector-close,#missao-fechar):hover{color:#ff8a3a!important}
+
+/* campos e chaves */
+html.hud-traco :is(.v3-card,.mv-card,#inv-card,#fg-card,#camp-card,#an-card,.inv-win,#bag-win,#diario,#inspector,#hero-panel,#stats-panel) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea){
+  background:#121110!important;border:0!important;border-bottom:1px solid rgba(239,233,221,.35)!important;border-radius:0!important;color:#efe9dd!important}
+html.hud-traco :is(input,select,textarea):focus{outline:none;border-bottom-color:#ff8a3a!important}
+html.hud-traco input[type=range]{accent-color:#ff8a3a}
+html.hud-traco .mv-sw{background:#2a2725!important;border-color:rgba(239,233,221,.25)!important}
+html.hud-traco .mv-sw.on{background:#6d1f08!important;border-color:#ff8a3a!important}
+
+/* linhas e cartões de dentro: o dourado vira cinza fino */
+html.hud-traco :is(.mv-slot,.fg-row,.cla-card,.ra-res,.hunt-sel,#econ-bar>span,.mv-opt,.cla-ordens,.v3-card hr,.st-box,.hab-card){
+  border-color:rgba(239,233,221,.14)!important;border-radius:2px!important;background-color:rgba(255,255,255,.025)!important}
+html.hud-traco :is(.mv-slot,.fg-row,.cla-card):hover{border-color:rgba(255,138,58,.5)!important;background-color:rgba(255,106,42,.05)!important}
+html.hud-traco .cla-card.foco{border-color:#ff8a3a!important;background-color:rgba(255,106,42,.09)!important}
+html.hud-traco .cla-barra.prog i,html.hud-traco .ra-bar i,html.hud-traco #sword-hud .bb i{background:linear-gradient(90deg,#6d1406,#d23d14 65%,#ffae55)!important}
+html.hud-traco :is(.cla-barra,.ra-bar,#sword-hud .bb){border-radius:0!important;border:0!important;background:rgba(239,233,221,.14)!important}
+html.hud-traco :is(#ra-cv,#fg-mg canvas){border-color:rgba(239,233,221,.18)!important;border-radius:0!important}
+html.hud-traco :is(.v3-card,#inv-card,.inv-win,#bag-win) .dslot{border-color:rgba(239,233,221,.2)!important;background-color:rgba(0,0,0,.25)!important;border-radius:3px!important}
+/* abas: só o traço */
+html.hud-traco :is(#camp-tabs,#mp-tabs) .btn.on{color:#ffb07a!important}
+
+/* rolagem fina em cinza */
+html.hud-traco :is(.v3-card,.mv-card,#inv-card,#fg-card,#camp-card,.inv-win,#bag-win,#diario,#inspector,#hero-panel,#log-modal-card){scrollbar-width:thin;scrollbar-color:#4f4a44 transparent}

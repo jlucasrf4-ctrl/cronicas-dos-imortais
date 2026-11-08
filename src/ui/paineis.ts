@@ -216,9 +216,6 @@ export function openOptions(onClose?: null) {
       '<div class="mv-opt"><label>▭ Fita de estados sob os pés<small>Clique nela para ver todos os efeitos e as necessidades</small></label>' +
       sw("estFita") +
       "</div>" +
-      '<div class="mv-opt"><label>〰 HUD do campo em traço solto<small>Sem painel: linhas finas sobre a cena, vida em brasa; fazer flechas no arco; falas e progresso em carvão</small></label>' +
-      sw("hudTraco") +
-      "</div>" +
       '<div class="mv-opt"><label>✨ Runas Naturais<small>Aparecem no mapa e na masmorra</small></label>' +
       sw("runas") +
       "</div>" +

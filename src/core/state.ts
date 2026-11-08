@@ -206,7 +206,7 @@ export const OPT_DEF = {
   estSelos: true,
   estFita: true,
   // v8.1: o HUD do campo no estilo "Traço solto" com destaque brasa (styles/63_v8.1_hud_traco.css)
-  hudTraco: false,
+  hudTraco: true, // 2026-11-08: sempre ligado (ui/opcoes.ts); fica só pelos saves antigos
   // v8.1: a receita do segurar C (field/craft_rapido.ts, data/craft_rapido.ts)
   craftRapido: "flechas",
 };

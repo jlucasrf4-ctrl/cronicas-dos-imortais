@@ -6,7 +6,6 @@ import { MOB, mobAim } from "../ui/celular.ts";
 import { dungeon, TELAS, econ, OPT } from "../core/state.ts";
 import {
   sfx,
-  somPuxarCorda,
   shakeScreen,
   addRing,
   xpBurst,
@@ -40,7 +39,17 @@ import {
   applyStunRaw,
   ropeTug,
 } from "./faca_corda.ts";
-import { KNIFE_KEYS, COMBO, COMBO_WINDOW, WEAPONS, POUNCE_LOCK, ALFA, ARCO_FOL, ARCO_BASICO } from "../data/combate.ts";
+import {
+  KNIFE_KEYS,
+  COMBO,
+  COMBO_WINDOW,
+  WEAPONS,
+  POUNCE_LOCK,
+  ALFA,
+  ARCO_FOL,
+  ARCO_BASICO,
+  ATAQUE_AUTO,
+} from "../data/combate.ts";
 import {
   dmgKeyFor,
   danoEfeitos,
@@ -1502,7 +1511,7 @@ function fireArrowBase() {
   });
   if (ch < 0.25) spawnDungeonToast("Carga fraca", dungeon.px, dungeon.py - 26, "#c9b88a");
 }
-/* ---- v8.1: básico do arco = puxar a corda (ARCO_BASICO.puxada s) mirando no alvo, com o percurso no chão, e soltar ---- */
+/* ---- v8.1: básico do arco (2026-11-08, estilo LoL): no alcance, puxada curta (ARCO_BASICO.puxada s) e a flecha sai reta no alvo ---- */
 /** A corda está puxada para o básico do arco: mira no alvo automático e solta sozinha. */
 function puxandoBasico() {
   return !!(dungeon.charging && dungeon.tiroAuto);
@@ -1538,11 +1547,12 @@ export function puxarBasico(alvo: Monster) {
   d.full = 0;
   d.pinged = true; // a corda cheia já é o tiro: sem o "ping" do carregado
   if (d._pararPuxada) d._pararPuxada();
-  d._pararPuxada = somPuxarCorda(ARCO_BASICO.puxada);
+  d._pararPuxada = null;
+  sfx("draw");
   return true;
 }
-/** Um quadro da puxada do básico: enche a corda (andando demora mais, como no carregado; Força acelera) e, cheia, solta
-    se o alvo está ao alcance — senão segura a corda, sem gastar fôlego, até ele voltar. Sem alvo, abaixa o arco. */
+/** Um quadro da puxada do básico: enche a corda (Força acelera) e, cheia, solta reto no alvo se ele está ao alcance —
+    senão abaixa o arco sem gastar a flecha (autoAttack puxa de novo quando ele voltar). Sem alvo, abaixa o arco. */
 function puxadaBasico(dt: number, andando: boolean) {
   const d = dungeon,
     alvo = d.alvoAutomatico,
@@ -1559,11 +1569,15 @@ function puxadaBasico(dt: number, andando: boolean) {
     return;
   }
   const rapidez = 1 + Math.max(0, attrOf(HERO()!, "forca") - 5) * STAT.forDraw;
-  d.charge = Math.min(1, d.charge! + (dt * rapidez) / (B.puxada * (andando ? 1.8 / 1.1 : 1)));
+  void andando;
+  d.charge = Math.min(1, d.charge! + (dt * rapidez) / B.puxada);
   if (d.charge < 1) return;
   const corpo = wolfBody(alvo),
     q = bodyDist(corpo, d.px, d.py);
-  if (q.d - corpo.r > d.tile * B.alcance) return;
+  if (q.d - corpo.r > d.tile * B.alcance) {
+    largarBasico(true);
+    return;
+  }
   if (!econ.test && econ.quiver.n <= 0) {
     largarBasico(true);
     d.alvoAutomatico = null;
@@ -1575,8 +1589,10 @@ function puxadaBasico(dt: number, andando: boolean) {
     ang = Math.atan2(q.y - d.py, q.x - d.px);
   largarBasico(true);
   d.shotT = performance.now();
-  d.cd = B.pausa;
-  d.cdMax = B.pausa;
+  // o ritmo do básico automático: o intervalo entre tiros conta desde o começo da puxada
+  d.autoCd = Math.max(0.05, atkSpeedMult() / ATAQUE_AUTO.porSeg - B.puxada);
+  d.cd = 0.08;
+  d.cdMax = 0.08;
   sfx("shoot");
   reveal();
   eqWear("costas", 1);
@@ -1586,7 +1602,7 @@ function puxadaBasico(dt: number, andando: boolean) {
     y: d.py,
     vx: Math.cos(ang) * B.velocidade,
     vy: Math.sin(ang) * B.velocidade,
-    life: (d.tile * (B.alcance + 0.5)) / B.velocidade,
+    life: (d.tile * (B.alcance + 0.75)) / B.velocidade,
     dmg: bowBaseDmg(h, arcoLv) * B.dano * eqBowMult(h),
     hits: new Set(),
     full: false,
@@ -1652,58 +1668,9 @@ export function cancelarTiro() {
   spawnDungeonToast("Tiro cancelado", d.px, d.py - 26, "#c9b88a", 11);
   return true;
 }
-/** v8.1 — o percurso da flecha do básico, no chão: tracejado até onde ela vai acertar o alvo (vermelho e até o fim do
-    alcance se ele está longe), com a parte já puxada da corda cheia por cima e a ponta no fim. */
-function drawAimBasico() {
-  const d = dungeon,
-    c = TELAS.dCtx,
-    alvo = d.alvoAutomatico,
-    ch = d.charge || 0,
-    ang = aimAngle(),
-    ini = 10;
-  let len = d.tile * ARCO_BASICO.alcance,
-    alcanca = false;
-  if (alvo?.alive) {
-    const corpo = wolfBody(alvo),
-      q = bodyDist(corpo, d.px, d.py);
-    alcanca = q.d - corpo.r <= len;
-    if (alcanca) len = Math.max(ini + 6, Math.hypot(q.x - d.px, q.y - d.py));
-  }
-  const cor = alcanca ? "255,224,138" : "255,130,110";
-  c.save();
-  c.translate(d.px, d.py);
-  c.rotate(ang);
-  c.lineCap = "round";
-  c.setLineDash([5, 6]);
-  c.lineWidth = 1.5;
-  c.strokeStyle = "rgba(" + cor + ",.5)";
-  c.beginPath();
-  c.moveTo(ini, 0);
-  c.lineTo(len, 0);
-  c.stroke();
-  c.setLineDash([]);
-  c.lineWidth = 3;
-  c.strokeStyle = "rgba(" + cor + "," + (0.55 + 0.4 * ch) + ")";
-  c.beginPath();
-  c.moveTo(ini, 0);
-  c.lineTo(ini + (len - ini) * ch, 0);
-  c.stroke();
-  c.fillStyle = "rgba(" + cor + "," + (0.5 + 0.5 * ch) + ")";
-  c.beginPath();
-  c.moveTo(len + 7, 0);
-  c.lineTo(len - 4, -5);
-  c.lineTo(len - 4, 5);
-  c.closePath();
-  c.fill();
-  c.restore();
-  c.fillStyle = "rgba(0,0,0,.55)";
-  c.fillRect(d.px - 16, d.py + 24, 32, 4);
-  c.fillStyle = ch >= 1 ? "#ffe08a" : "#9fe3ff";
-  c.fillRect(d.px - 16, d.py + 24, 32 * ch, 4);
-}
 export function drawAim() {
   if (!dungeon.charging) return;
-  if (dungeon.tiroAuto) return drawAimBasico();
+  if (dungeon.tiroAuto) return; // o básico (puxada de 0,2 s) não desenha percurso, como no LoL
   const c = TELAS.dCtx,
     ch = dungeon.charge!,
     len = bowRange(ch),

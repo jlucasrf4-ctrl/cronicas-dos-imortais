@@ -83,6 +83,7 @@ export const estilos: BlocoEstilo[] = [
       "src/styles/63_v8.1_hud_traco.css",
       "src/styles/64_v8.1_craft_rapido.css",
       "src/styles/65_v8.1_modelos_teste.css",
+      "src/styles/66_v8.1_janelas_carvao.css",
     ],
   },
   { id: "ico-css", arquivos: ["src/styles/icones-pintados.css"] },

@@ -371,8 +371,12 @@ export function d3Near(_now?: number) {
   c.fillRect(0, 0, bw, bh);
   d3Ground();
 }
-export function d3Follow(k: number) {
-  // câmera acompanha o herói (com zoom), sem mostrar muito além da arena
+/** v8.1 (2026-11-08) — quanto a câmera se adianta para a mira (field/chao.ts olharMira), suavizado em d3Follow. */
+const ADIANTE = { x: 0, z: 0 };
+/** Câmera acompanha o herói (com zoom), sem mostrar muito além da arena. `ox`/`oz` = o ponto que precisa caber na
+ *  tela (a ponta do alcance do arco mirado), relativo ao herói: a câmera anda até ele caber com uma folga, sem perder
+ *  o herói de vista; sem ponto, volta devagar para o centro. */
+export function d3Follow(k: number, ox = 0, oz = 0) {
   const d = dungeon,
     T = d.tile,
     W = d.cols * T,
@@ -381,8 +385,22 @@ export function d3Follow(k: number) {
     vh = D3.ch / (D3.SIN! * D3.s),
     mx = T * 1.2,
     mz = T * 1.2;
-  const tx = vw >= W + 2 * mx ? W / 2 : Math.max(vw / 2 - mx, Math.min(W - vw / 2 + mx, d.px)),
-    tz = vh >= H + 2 * mz ? H / 2 : Math.max(vh / 2 - mz - T * 0.6, Math.min(H - vh / 2 + mz, d.py));
+  // o quanto o ponto passa da borda (folga de 0,8 tile), limitado para o herói ficar a 1,5 tile da borda oposta
+  const passa = (o: number, meia: number) => {
+    const folga = meia - T * 0.8,
+      lim = Math.max(0, meia - T * 1.5),
+      s = Math.abs(o) > folga ? Math.sign(o) * (Math.abs(o) - folga) : 0;
+    return Math.max(-lim, Math.min(lim, s));
+  };
+  const qx = passa(ox, vw / 2),
+    qz = passa(oz, vh / 2),
+    ka = Math.min(1, k * (qx || qz ? 0.7 : 0.45));
+  ADIANTE.x += (qx - ADIANTE.x) * ka;
+  ADIANTE.z += (qz - ADIANTE.z) * ka;
+  const fx = d.px + ADIANTE.x,
+    fz = d.py + ADIANTE.z;
+  const tx = vw >= W + 2 * mx ? W / 2 : Math.max(vw / 2 - mx, Math.min(W - vw / 2 + mx, fx)),
+    tz = vh >= H + 2 * mz ? H / 2 : Math.max(vh / 2 - mz - T * 0.6, Math.min(H - vh / 2 + mz, fz));
   D3.cx += (tx - D3.cx) * k;
   D3.cz += (tz - D3.cz) * k;
 }
