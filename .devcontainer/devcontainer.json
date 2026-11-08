@@ -1,0 +1,13 @@
+{
+  // GitHub Codespaces: abre o projeto num computador do GitHub e já liga o jogo ao vivo (como o "Abrir jogo ao vivo.bat").
+  // O jogo abre numa aba do navegador; o Modo Editor (F2) salva nos arquivos do Codespace.
+  "name": "Crônicas dos Imortais",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "hostRequirements": { "memory": "8gb" },
+  "postCreateCommand": "npm ci --no-audit --no-fund",
+  "postAttachCommand": "npm run dev",
+  "forwardPorts": [5173],
+  "portsAttributes": { "5173": { "label": "Jogo", "onAutoForward": "openBrowser" } },
+  // o endereço do Codespaces (*.app.github.dev) não é localhost: sem isto o Vite recusa a página
+  "containerEnv": { "__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS": ".app.github.dev" }
+}
