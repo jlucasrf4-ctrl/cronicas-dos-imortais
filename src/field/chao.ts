@@ -973,95 +973,6 @@ export function sfx(kind: string) {
     if (kind === "perfect") setTimeout(() => sfx("near"), 70);
   } catch (e) {}
 }
-/** v8.1 — a corda sendo puxada no básico do arco, por `dur` s: um chiado de couro no começo, a madeira rangendo
-    (ruído em banda subindo de tom, picotado cada vez mais rápido) e a tensão da corda (tom baixo subindo). Devolve
-    a função que corta o som quando a puxada acaba antes (alvo morreu, cancelou). */
-export function somPuxarCorda(dur: number): () => void {
-  try {
-    const ac = (SOM._ac = SOM._ac || new (window.AudioContext || window.webkitAudioContext)()),
-      t0 = ac.currentTime,
-      fim = t0 + dur,
-      saida = ac.createGain();
-    saida.connect(_out());
-    const ruido = (seg: number) => {
-      const n = Math.max(1, Math.floor(ac.sampleRate * seg)),
-        b = ac.createBuffer(1, n, ac.sampleRate),
-        dd = b.getChannelData(0);
-      for (let i = 0; i < n; i++) dd[i] = Math.random() * 2 - 1;
-      const s = ac.createBufferSource();
-      s.buffer = b;
-      return s;
-    };
-    // couro e penas: a flecha encaixando
-    const chiado = ruido(0.08),
-      hp = ac.createBiquadFilter(),
-      cg = ac.createGain();
-    hp.type = "highpass";
-    hp.frequency.value = 2800;
-    cg.gain.setValueAtTime(0.12, t0);
-    cg.gain.exponentialRampToValueAtTime(0.001, t0 + 0.08);
-    chiado.connect(hp);
-    hp.connect(cg);
-    cg.connect(saida);
-    // a madeira rangendo
-    const range = ruido(dur),
-      bp = ac.createBiquadFilter(),
-      pico = ac.createGain(),
-      env = ac.createGain(),
-      lfo = ac.createOscillator(),
-      lfoG = ac.createGain();
-    bp.type = "bandpass";
-    bp.Q.value = 7;
-    bp.frequency.setValueAtTime(240, t0);
-    bp.frequency.exponentialRampToValueAtTime(820, fim);
-    pico.gain.value = 0.55;
-    lfo.type = "square";
-    lfo.frequency.setValueAtTime(20, t0);
-    lfo.frequency.linearRampToValueAtTime(46, fim);
-    lfoG.gain.value = 0.45;
-    lfo.connect(lfoG);
-    lfoG.connect(pico.gain);
-    env.gain.setValueAtTime(0.0001, t0);
-    env.gain.exponentialRampToValueAtTime(0.16, t0 + 0.12);
-    env.gain.linearRampToValueAtTime(0.07, t0 + dur * 0.5);
-    env.gain.linearRampToValueAtTime(0.12, t0 + dur * 0.95);
-    env.gain.linearRampToValueAtTime(0.0001, fim);
-    range.connect(bp);
-    bp.connect(pico);
-    pico.connect(env);
-    env.connect(saida);
-    // a tensão da corda
-    const o = ac.createOscillator(),
-      lp = ac.createBiquadFilter(),
-      og = ac.createGain();
-    o.type = "triangle";
-    o.frequency.setValueAtTime(150, t0);
-    o.frequency.exponentialRampToValueAtTime(310, fim);
-    lp.type = "lowpass";
-    lp.frequency.value = 900;
-    og.gain.setValueAtTime(0.0001, t0);
-    og.gain.exponentialRampToValueAtTime(0.025, t0 + 0.3);
-    og.gain.linearRampToValueAtTime(0.04, t0 + dur * 0.95);
-    og.gain.linearRampToValueAtTime(0.0001, fim);
-    o.connect(lp);
-    lp.connect(og);
-    og.connect(saida);
-    const fontes = [chiado, range, lfo, o];
-    for (const f of fontes) f.start(t0);
-    for (const f of fontes) f.stop(fim + 0.05);
-    return () => {
-      try {
-        const t = ac.currentTime;
-        saida.gain.cancelScheduledValues(t);
-        saida.gain.setValueAtTime(saida.gain.value, t);
-        saida.gain.linearRampToValueAtTime(0, t + 0.08);
-        for (const f of fontes) f.stop(t + 0.1);
-      } catch (_) {}
-    };
-  } catch (e) {
-    return () => {};
-  }
-}
 
 export function spawnLoot(x: number, y: number, drop: boolean, boss?: boolean) {
   /* v6.8 — criatura do Campo: o saque vem da tabela dela */
@@ -1450,10 +1361,21 @@ function alcanceBasico(step = 0) {
  *  no 3D o renderer desenha os anéis no chão (render/gl/renderer.ts). */
 export function anelAlcance(): { basico: number; carregado: number } | null {
   const d = dungeon;
-  if (!d.active || d.dead || !d.hero || !(d.keys?.AltLeft || d.keys?.AltRight)) return null;
+  // 2026-11-08: com o arco na mão o alcance fica sempre no chão; nas outras armas, segurando Alt
+  if (!d.active || d.dead || !d.hero) return null;
+  if (d.weapon !== "bow" && !(d.keys?.AltLeft || d.keys?.AltRight)) return null;
   if (d.weapon !== "melee" && d.weapon !== "bow") return null;
   const T = d.tile;
   return { basico: T * alcanceBasico(0), carregado: d.weapon === "bow" ? bowRange(1) : 0 };
+}
+/** v8.1 (2026-11-08) — o ponto que a câmera precisa mostrar, relativo ao herói: puxando o arco carregado, a ponta do
+ *  alcance máximo na direção da mira ("mirando para baixo não consigo ver a ponta do range"). */
+function olharMira() {
+  const d = dungeon;
+  if (d.weapon !== "bow" || !d.charging || d.tiroAuto || d.dead) return { x: 0, z: 0 };
+  const a = aimAngle(),
+    L = bowRange(1) + d.tile * 0.3;
+  return { x: Math.cos(a) * L, z: Math.sin(a) * L };
 }
 function drawAlcance() {
   const A = anelAlcance();
@@ -1510,7 +1432,7 @@ function autoAttack(dt: number) {
     step = d.comboT! > 0 ? (d.combo || 0) % 3 : 0;
   if (q.d - wolfBody(m).r > d.tile * alcanceBasico(step)) return;
   if (d.weapon === "bow") {
-    puxarBasico(m); // v8.1: puxa a corda (ARCO_BASICO.puxada s) e solta sozinha em updateCharge
+    puxarBasico(m); // v8.1: puxada curta (ARCO_BASICO.puxada s) e solta reto no alvo em updateCharge
     return;
   }
   // Reutiliza o golpe completo: combo, recarga, dano, avanço e efeitos da arma.
@@ -2017,7 +1939,10 @@ export function renderDungeonFrame(deltaSec: number) {
     D3.inFrame = true;
     if (!D3.cw) fitDungeonCanvas();
     if (D3.gl) {
-      if (!ED.on) d3Follow(0.12); // v8.1: no editor a câmera é solta
+      if (!ED.on) {
+        const o = olharMira();
+        d3Follow(0.12, o.x, o.z); // v8.1: no editor a câmera é solta
+      }
       if (dungeon.mouseC) dungeon.mouse = dPoint(dungeon.mouseC);
     }
     d3Ground();

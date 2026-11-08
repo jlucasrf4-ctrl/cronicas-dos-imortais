@@ -28,7 +28,11 @@ export const ATAQUE_AUTO = { porSeg: 1.5 };
    arco (a força da carga cheia; o carregado vai de 0,45 a 1,5 ×, mas não empurra nem crava como o cheio manual), 1
    flecha, sem fôlego, e `pausa` s até a próxima puxada. Se o alvo sai do alcance, ela segura a corda até ele voltar. */
 // 2026-11-06: "a puxada tá muito lenta, aumenta em 50% a velocidade" → 3 s ÷ 1,5 = 2 s.
-export const ARCO_BASICO = { alcance: 3.5, puxada: 2, dano: 1.5, pausa: 0.4, velocidade: 420 };
+// 2026-11-08: "o ataque básico do arco carregando eu não curti… deixar igual no LoL: tá na área, consegue atirar e vai em
+// direção do inimigo mas em linha reta" → no alcance, uma puxada curta (`puxada` s, a animação do disparo) e a flecha
+// sai reta até onde o alvo está, no ritmo do básico automático (ATAQUE_AUTO.porSeg, acelerado pela velocidade). Com
+// ~1,5 tiro/s o dano por flecha caiu (1,5 → 0,45 × o base do arco) para o básico seguir abaixo do carregado cheio.
+export const ARCO_BASICO = { alcance: 3.5, puxada: 0.2, dano: 0.45, velocidade: 560 };
 export const POUNCE_LOCK = 0.35; // tempo em que a área do bote fica visível (e travada) antes do salto
 
 interface Arma {
@@ -188,7 +192,17 @@ export const DANO = {
   CRAVAR: <Record<string, Cravada>>{
     // v8.0: a flecha tira uma FRAÇÃO do fôlego do bicho (era 5 fixos: 1 cravada sempre derrubava cervo e coelho)
     // v8.1 (mantenedor, 2026-10-30): a flecha fica cravada (1 de fôlego por segundo) e cada queda sangra 3 (1 por s)
-    flecha: { pago: "tick", dur: 5, folego: 5, folFrac: 0.25, folFracCheia: 0.45, vida: 3, max: 4, fica: 1, sangraQueda: 3 },
+    flecha: {
+      pago: "tick",
+      dur: 5,
+      folego: 5,
+      folFrac: 0.25,
+      folFracCheia: 0.45,
+      vida: 3,
+      max: 4,
+      fica: 1,
+      sangraQueda: 3,
+    },
     lanca_arremesso: { pago: "tick", dur: 6, folego: 9, vida: 4 },
     faca: { pago: "arranque", tempoMax: 3, inicial: 4, teto: 9, ganho: 1.5 },
     espada: { pago: "arranque", tempoMax: 4, inicial: 5, teto: 12, ganho: 1.5 },
@@ -270,7 +284,7 @@ export const EXAUSTAO = {
   impactoMachado: 0.03,
   impactoMachadoEm: 0.18,
 };
-export const ARCO_FOL ={ passo: 0.4, gasto: 10, volta: 2.5 };
+export const ARCO_FOL = { passo: 0.4, gasto: 10, volta: 2.5 };
 /* v8.0 — parry como janela ativa (mantenedor, 2026-10-24: "acertando o tempo, outro bicho atacando junto… o parry só
    conta no primeiro"): o clique abre a janela; cada golpe de frente que CHEGA dentro dela é avaliado na hora em que
    chega (perfeito até PARRY_PERFECT s depois do clique, parcial até PARRY_NEAR). Antes era uma foto do clique: só valia

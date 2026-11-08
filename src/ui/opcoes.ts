@@ -39,7 +39,8 @@ export function optApply() {
     maApplyMode();
   }
   // v8.1: o HUD do campo "Traço solto" (styles/63_v8.1_hud_traco.css)
-  document.documentElement.classList.toggle("hud-traco", !!OPT.hudTraco);
+  // 2026-11-08: virou o padrão (o mantenedor pediu); a opção antiga salva é ignorada
+  document.documentElement.classList.add("hud-traco");
   for (const id of ["empty-hint", "dungeon-hint"]) {
     const el = document.getElementById(id);
     if (el) el.style.visibility = OPT.hints ? "" : "hidden";
