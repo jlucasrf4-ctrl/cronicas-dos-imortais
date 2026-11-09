@@ -1,19 +1,24 @@
-/* v8.3 — barra de XP em destaque (mantenedor 2026-11-09): moldura dourada, enchimento violeta→ouro com brilho de
-   vidro, marcas a cada 10%, ponta acesa, o número atual/próximo nível por cima, e um pulso quando ganha experiência
-   (.ganhou, ligado por dungeon.xpPulso em chao.ts). Vale também com o HUD "Traço solto" e no celular. */
+/* v8.3 — barra de XP em destaque (mantenedor 2026-11-09): pílula arredondada com borda discreta na paleta do HUD
+   (bronze sobre carvão), enchimento líquido violeta→ouro (reflexo de vidro, brilho atravessando, superfície
+   ondulando na ponta), o número atual/próximo nível por cima, e um pulso quando ganha experiência (.ganhou, ligado por
+   dungeon.xpPulso em chao.ts). Vale também com o HUD "Traço solto" e no celular. */
 #dh-card{min-width:160px!important;max-width:200px!important}
-#dungeon-hud .dh-xp,html.hud-traco:not(.mob) #dungeon-hud .dh-xp{position:relative;height:15px!important;margin-top:5px;border-radius:8px;overflow:hidden;
-  background:repeating-linear-gradient(90deg,transparent 0 calc(10% - 1px),rgba(255,214,140,.16) calc(10% - 1px) 10%),linear-gradient(180deg,#120a1c,#24163a)!important;
-  border:1px solid #c9a35a;box-shadow:0 0 0 1px rgba(0,0,0,.7),inset 0 2px 4px rgba(0,0,0,.7),0 0 10px rgba(176,107,255,.25)}
-#dungeon-hud .dh-xp i,html.hud-traco:not(.mob) #dungeon-hud .dh-xp i{position:relative;border-radius:8px 0 0 8px;
-  background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 50%),linear-gradient(90deg,#4b1d8f,#9a4dff 55%,#ffcf6a)!important;
-  box-shadow:0 0 10px rgba(176,107,255,.75);transition:width .45s cubic-bezier(.2,.8,.2,1)}
-#dungeon-hud .dh-xp i::after{content:"";position:absolute;right:-2px;top:-2px;bottom:-2px;width:4px;border-radius:2px;background:#fff6d8;box-shadow:0 0 8px 2px #ffd27a,0 0 3px #fff}
-#dh-xptxt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:4px;font:700 .66rem/1 Lora,serif;letter-spacing:.06em;color:#fff;
-  text-shadow:0 0 3px #000,0 1px 1px #000,0 0 6px rgba(120,60,200,.9);font-variant:normal;pointer-events:none}
-#dh-lvl{display:inline-block;min-width:16px;padding:1px 6px;border-radius:9px;background:linear-gradient(180deg,#ffe7a8,#c9963c);color:#2a1a08!important;font-size:.64rem;font-weight:800;box-shadow:0 0 6px rgba(255,200,90,.55),inset 0 -1px 0 rgba(0,0,0,.25)}
+#dungeon-hud .dh-xp,html.hud-traco:not(.mob) #dungeon-hud .dh-xp{position:relative;height:14px!important;margin-top:5px;border-radius:99px;overflow:hidden;
+  background:linear-gradient(180deg,rgba(14,12,10,.92),rgba(33,29,25,.92))!important;border:1px solid rgba(169,121,63,.5);box-shadow:inset 0 1px 3px rgba(0,0,0,.65)}
+#dungeon-hud .dh-xp i,html.hud-traco:not(.mob) #dungeon-hud .dh-xp i{position:relative;border-radius:99px;overflow:hidden;
+  background:linear-gradient(180deg,#d9b8ff 0%,#9a4dff 38%,#4b1d8f 100%)!important;box-shadow:0 0 8px rgba(154,77,255,.55);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+/* tom dourado chegando na ponta */
+#dungeon-hud .dh-xp i::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 55%,rgba(255,207,106,.55));border-radius:inherit}
+/* brilho atravessando + reflexo de vidro em cima */
+#dungeon-hud .dh-xp i::after{content:"";position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(180deg,rgba(255,255,255,.4) 0 22%,transparent 23%),linear-gradient(100deg,transparent 40%,rgba(255,255,255,.35) 50%,transparent 60%);
+  background-size:100% 100%,220% 100%;background-repeat:no-repeat;animation:dhXpLiquido 2.8s linear infinite}
+@keyframes dhXpLiquido{from{background-position:0 0,130% 0}to{background-position:0 0,-130% 0}}
+#dh-xptxt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:700 .64rem/1 Lora,serif;letter-spacing:.06em;color:#fff8e3;
+  text-shadow:0 0 3px #000,0 1px 1px #000;font-variant:normal;pointer-events:none}
+#dh-lvl{display:inline-block;padding:1px 7px;border-radius:99px;background:rgba(33,29,25,.9);border:1px solid rgba(169,121,63,.55);color:#ffe08a!important;font-size:.64rem;font-weight:700}
 #dh-name{font-size:.86rem;letter-spacing:.02em;text-shadow:0 1px 2px #000}
 #dungeon-hud .dh-xp.ganhou{animation:dhXpPulso .9s ease-out}
-#dungeon-hud .dh-xp.ganhou i{filter:brightness(1.45) saturate(1.2)}
-@keyframes dhXpPulso{0%{box-shadow:0 0 0 1px rgba(0,0,0,.7),0 0 0 0 rgba(255,214,140,.95),0 0 18px rgba(176,107,255,.95)}100%{box-shadow:0 0 0 1px rgba(0,0,0,.7),0 0 0 7px rgba(255,214,140,0),0 0 10px rgba(176,107,255,.25)}}
+#dungeon-hud .dh-xp.ganhou i{filter:brightness(1.4)}
+@keyframes dhXpPulso{0%{box-shadow:inset 0 1px 3px rgba(0,0,0,.65),0 0 0 0 rgba(217,184,255,.8),0 0 14px rgba(154,77,255,.8)}100%{box-shadow:inset 0 1px 3px rgba(0,0,0,.65),0 0 0 6px rgba(217,184,255,0),0 0 0 rgba(154,77,255,0)}}
 html.mob #dh-card{max-width:44vw!important;min-width:0!important}
