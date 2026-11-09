@@ -1,6 +1,7 @@
 /* ==== Fase 4 — 3D da masmorra em Canvas 2D: projeção ortográfica inclinada (base/10) ==== */
-import { dungeon, TELAS, OPT } from "../core/state.ts";
+import { dungeon, TELAS } from "../core/state.ts";
 import { drawPrepPortrait } from "../expedicao/preparo.ts";
+import { desenharPlacaHeroi } from "./placa_heroi.ts";
 import type { Hero } from "../core/tipos.ts";
 
 /* ===== 3D da dungeon: projeção ortográfica inclinada (câmera de cima, ~58°) com sprites em pé ===== */
@@ -416,16 +417,8 @@ function d3HeroCv(h: Hero) {
 export function d3Hero(h: Hero) {
   // figura em pé (a mesma do preparo), com sombra, nome e flash de dano
   if (D3.gl) {
-    if (!OPT.textos) return;
-    const c = TELAS.dCtx,
-      x = dungeon.px,
-      y = dungeon.py - 40;
-    c.font = "11px Lora, serif";
-    c.textAlign = "center";
-    c.fillStyle = "#1c140b";
-    c.fillText(h.name, x + 0.5, y + 0.5);
-    c.fillStyle = "#fff8e3";
-    c.fillText(h.name, x, y);
+    // v8.3: nome + vida + mana sempre acima da cabeça (placa_heroi.ts), mesmo com OPT.textos desligado
+    desenharPlacaHeroi(TELAS.dCtx, h, dungeon.px, dungeon.py - 38);
     return;
   }
   const c = TELAS.dCtx,
@@ -455,10 +448,5 @@ export function d3Hero(h: Hero) {
     c.drawImage(D3.heroRed!, 13, 28, 104, 150, x - ww / 2, y - hh / 2, ww, hh);
   }
   c.restore();
-  c.font = "11px Lora, serif";
-  c.textAlign = "center";
-  c.fillStyle = "#1c140b";
-  c.fillText(h.name, x + 0.5, y - hh / 2 - 3.5);
-  c.fillStyle = "#fff8e3";
-  c.fillText(h.name, x, y - hh / 2 - 4);
+  desenharPlacaHeroi(c, h, x, y - hh / 2 - 3);
 }

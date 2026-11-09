@@ -143,6 +143,7 @@ import { AFFINITIES } from "../data/nascimento.ts";
 import { trainTick } from "./treino.ts";
 import { mobDungeonTick } from "../ui/celular.ts";
 import { mundoMover } from "../map/mundo.ts";
+import { desenharPlacaHeroi } from "./placa_heroi.ts";
 import type { Aparo, GradeTela, Hero, InvGrid, Item, LootChao, Monster, Repasse } from "../core/tipos.ts";
 
 export function tryAddToInv(inv: InvGrid, key: string, tier?: number) {
@@ -2145,12 +2146,7 @@ export function renderDungeonFrame(deltaSec: number) {
     TELAS.dCtx.strokeStyle = "#1c140b";
     TELAS.dCtx.lineWidth = 1.6;
     TELAS.dCtx.stroke();
-    TELAS.dCtx.font = "11px Lora, serif";
-    TELAS.dCtx.textAlign = "center";
-    TELAS.dCtx.fillStyle = "#1c140b";
-    TELAS.dCtx.fillText(h.name, dungeon.px + 0.5, dungeon.py - 17.5);
-    TELAS.dCtx.fillStyle = "#fff8e3";
-    TELAS.dCtx.fillText(h.name, dungeon.px, dungeon.py - 18);
+    desenharPlacaHeroi(TELAS.dCtx, h, dungeon.px, dungeon.py - 16);
   }
 
   drawDungeonExtras(deltaSec);
@@ -2209,6 +2205,18 @@ export function renderDungeonFrame(deltaSec: number) {
     $e("dh-lvl").textContent = "Nv." + hh.lvl;
     $e("dh-aff").textContent = AFFINITIES[hh.aff].icon;
     $e("dh-xpfill").style.width = Math.round((hh.xp / xpNeed(hh.lvl)) * 100) + "%";
+    /* v8.3 — barra de XP com o número (atual/próximo nível) e brilho ao ganhar */
+    {
+      const bx = $e("dh-xpfill").parentElement!;
+      let tx = document.getElementById("dh-xptxt");
+      if (!tx) {
+        tx = document.createElement("span");
+        tx.id = "dh-xptxt";
+        bx.appendChild(tx);
+      }
+      tx.textContent = "XP " + Math.floor(hh.xp) + " / " + xpNeed(hh.lvl);
+      bx.classList.toggle("ganhou", d.xpPulso! > 0);
+    }
     const st = $e("dh-st");
     st.style.width = Math.max(0, d.gstam == null ? 100 : d.gstam) + "%";
     st.style.background = d.guardBroken! > 0 ? "#ff6b6b" : d.runLock ? "#ffb347" : d.running ? "#b8f08a" : "#9fe3ff";

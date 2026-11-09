@@ -1054,6 +1054,7 @@ function updateDungeonFlowBase(dt: number) {
   if (d.riposte! > 0) d.riposte! -= dt;
   if (d.boost! > 0) d.boost! -= dt;
   if (d.hpBarShake! > 0) d.hpBarShake! -= dt;
+  if (d.xpPulso! > 0) d.xpPulso! -= dt;
   {
     const hh = HERO()!,
       con = attrOf(hh, "constituicao");

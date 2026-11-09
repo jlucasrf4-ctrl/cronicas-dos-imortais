@@ -82,6 +82,12 @@ export function addHeroXp(h: Hero | null | undefined, amt: number) {
   if (!h || !(amt > 0)) return;
   ensureHero(h);
   h.xp += amt;
+  /* v8.3 — o número da experiência sobe acima do herói e a barra de XP brilha */
+  if (dungeon && dungeon.active && dungeon.hero === h) {
+    const n = amt >= 1 ? Math.round(amt) : Math.round(amt * 10) / 10;
+    spawnDungeonToast("+" + n + " XP", dungeon.px + 14, dungeon.py - 58, "#d9a8ff", amt >= 10 ? 15 : 12);
+    dungeon.xpPulso = 0.9;
+  }
   while (h.xp >= xpNeed(h.lvl)) {
     h.xp -= xpNeed(h.lvl);
     h.lvl++;

@@ -906,6 +906,7 @@ export interface Dungeon {
   hurtVig?: number;
   hpTrail?: number | null;
   hpBarShake?: number;
+  xpPulso?: number; // v8.3: brilho da barra de XP depois de ganhar experiência (s)
   bowFlash?: number;
   swFlash?: number;
   pcFlash?: number;
