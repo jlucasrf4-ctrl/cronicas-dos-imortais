@@ -2,9 +2,9 @@
    nível por cima, e um pulso quando ganha experiência (.ganhou, ligado por dungeon.xpPulso em chao.ts). Vale também
    com o HUD "Traço solto" e no celular. */
 #dh-card{min-width:150px!important;max-width:190px!important}
-#dungeon-hud .dh-xp,html.hud-traco:not(.mob) #dungeon-hud .dh-xp{position:relative;height:11px!important;margin-top:4px;border-radius:3px;background:rgba(20,12,30,.78)!important;border:1px solid rgba(217,168,255,.45);box-shadow:inset 0 1px 3px rgba(0,0,0,.6);overflow:hidden}
+#dungeon-hud .dh-xp,html.hud-traco:not(.mob) #dungeon-hud .dh-xp{position:relative;height:15px!important;margin-top:4px;border-radius:3px;background:rgba(20,12,30,.78)!important;border:1px solid rgba(217,168,255,.45);box-shadow:inset 0 1px 3px rgba(0,0,0,.6);overflow:hidden}
 #dungeon-hud .dh-xp i,html.hud-traco:not(.mob) #dungeon-hud .dh-xp i{background:linear-gradient(90deg,#6a2fb8,#b06bff 60%,#ffd27a)!important;box-shadow:0 0 8px rgba(176,107,255,.7);transition:width .35s ease-out}
-#dh-xptxt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:700 .58rem/1 Lora,serif;letter-spacing:.04em;color:#fff;text-shadow:0 0 2px #000,0 1px 1px #000;font-variant:normal;pointer-events:none}
+#dh-xptxt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:700 .68rem/1 Lora,serif;letter-spacing:.04em;color:#fff;text-shadow:0 0 2px #000,0 1px 1px #000;font-variant:normal;pointer-events:none}
 #dungeon-hud .dh-xp.ganhou{animation:dhXpPulso .9s ease-out}
 #dungeon-hud .dh-xp.ganhou i{filter:brightness(1.5)}
 @keyframes dhXpPulso{0%{box-shadow:0 0 0 0 rgba(217,168,255,.9),0 0 14px rgba(255,210,122,.9);transform:scaleY(1.25)}100%{box-shadow:0 0 0 6px rgba(217,168,255,0),0 0 0 rgba(255,210,122,0);transform:scaleY(1)}}
